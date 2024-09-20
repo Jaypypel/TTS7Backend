@@ -1,19 +1,13 @@
 package com.TTS.DbWebAPIs.Entity;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 
-import java.sql.Time;
-
+//new class created
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class TimeShareMeasurables {
-
+public class DailyTimeShareMeasurables {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -22,10 +16,10 @@ public class TimeShareMeasurables {
     @JoinColumn(name = "timeshareId", referencedColumnName = "id")
     private TimeShare fkTimeShareId;
 
-    @OneToOne
-    @JoinColumn(name = "delgtMsrblesId", referencedColumnName = "id")
-    private DelegationMeasurables fkDelegationMeasurablesId;
-
+    /* @OneToOne
+     @JoinColumn(name = "delgtMsrblesId", referencedColumnName = "id")
+     private DelegationMeasurables fkDelegationMeasurablesId;
+ */
     @OneToOne
     @JoinColumn(name = "measurablesId", referencedColumnName = "id")
     private Measurables fkMeasurablesID;
@@ -33,5 +27,4 @@ public class TimeShareMeasurables {
     private Long measurableQuantity;
 
     private String measurableUnit;
-
 }

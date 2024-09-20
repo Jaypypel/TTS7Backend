@@ -15,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     private String fullName;
 
@@ -29,8 +29,8 @@ public class User {
 
     private LocalTime time;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<Long> projectId = new HashSet<>();
+    @ManyToMany(mappedBy = "FK_Authentication_ID")
+    private Set<Project> projectId = new HashSet<>();
 
 
     

@@ -3,6 +3,8 @@ package com.TTS.DbWebAPIs.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalTime;
+
 @Data
 @Entity
 public class Task {
@@ -14,9 +16,13 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "activity_id", referencedColumnName = "id")
-    private String FK_ACTIVITY_ID;
+    private Activity FK_ACTIVITY_ID;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName= "username")
-    private String FK_User_ID;
+    @JoinColumn(name = "user_id", referencedColumnName= "id")
+    private User FK_User_ID;
+
+    //added
+    private LocalTime createdOn;
+
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -18,31 +19,33 @@ public class TaskManagement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long ID;
+    private  long id;
 
     @ManyToOne
-    @JoinColumn(name = "taskOwner", referencedColumnName = "username")
-    private   Long FKTaskOwnerUserID;
+    @JoinColumn(name = "taskOwner", referencedColumnName = "id")
+    private   User FKTaskOwnerUserID;
 
     @ManyToOne
     @JoinColumn(
             name = "task"
     )
-    private   String FKTaskReceivedUserID;
+    private   User FKTaskReceivedUserID;
 
-    private  Long ActivityId;
+    //private  Long ActivityId;
 
     private  String ActivityName;
 
-    private  Long Task_ID;
+  //  private  Long Task_ID;
 
     private String taskName;
 
-    private Long ProjectId;
+    private Long projectId;
 
-    private  String ProjectName;
+    private  String projectName;
 
-    private Date ExpectedDate;
+    private LocalDateTime expectedDate;
+    //added new expectedTime
+    private LocalTime expectedTime;
 
     private String expectedTotalTime;
 

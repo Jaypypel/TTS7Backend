@@ -2,27 +2,32 @@ package com.TTS.DbWebAPIs.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
-@Entity
 @Data
-public class TimeShare {
-
+@Entity
+public class DailyTimeShare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @OneToOne
-    @JoinColumn(name = "taskHandler", referencedColumnName="id")
-    private TaskManagement FKTaskManagementId;
+
 
     private LocalDateTime DateOfTimeShare;
+
+    //add new
+    private String projectCode;
+
+    //add new
+    private String projectName;
+
+    //add new
+    private String activityName;
+
+    //add new
+    private String taskName;
 
     private LocalTime startTime;
 
@@ -34,4 +39,7 @@ public class TimeShare {
 
     private LocalTime createdOn;
 
+    @ManyToOne
+    @JoinColumn(name="userID", referencedColumnName = "id")
+    private User userid;
 }

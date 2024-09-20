@@ -16,7 +16,7 @@ public class UserService {
     UserRepository userRepository;
 
     public boolean registerUser(User inputUser){
-        User oldUser = userRepository.findByFullNameAndUserNameAndPasswordAndEmailAndMobileNo(inputUser.getFullName(),inputUser.getUsername(), inputUser.getPassword(), inputUser.getEmail(), inputUser.getMobileNo());
+        User oldUser = userRepository.findByFullNameAndUsernameAndPasswordAndEmailAndMobileNo(inputUser.getFullName(),inputUser.getUsername(), inputUser.getPassword(), inputUser.getEmail(), inputUser.getMobileNo());
         if(oldUser != null){
             return false;
         }
@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public Optional<User> getUserbyUsernameAndPassword(String username, String password) throws Exception {
-       return Optional.ofNullable(userRepository.findByUserNameAndPassword(username,password).orElseThrow(() -> new Exception("invalid details")));
+       return Optional.ofNullable(userRepository.findByUsernameAndPassword(username,password).orElseThrow(() -> new Exception("invalid details")));
     }
 
 

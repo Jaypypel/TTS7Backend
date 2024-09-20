@@ -16,11 +16,11 @@ public class DelegationMeasurables {
 
     @OneToOne
     @JoinColumn(name = "taskHander", referencedColumnName = "id")
-    private Long fkTaskManagementID;
+    private TaskManagement fkTaskManagementID;
 
     @OneToOne
     @JoinColumn(name = "measurableId", referencedColumnName = "id")
-    private Long fkMeasurableId;
+    private Measurables fkMeasurableId;
 
     private Long expectedMeasurableQuantity;
 
