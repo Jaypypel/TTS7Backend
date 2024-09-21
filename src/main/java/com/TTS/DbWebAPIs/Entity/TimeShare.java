@@ -9,6 +9,7 @@ import org.springframework.cglib.core.Local;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -16,11 +17,19 @@ public class TimeShare {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "taskHandler", referencedColumnName="id")
-    private TaskManagement FKTaskManagementId;
+    private TaskManagement FKTaskManagementId;//check
+
+
+    @OneToOne(mappedBy = "fkTimeShareId")
+    private DailyTimeShareMeasurables dailyTimeShareMeasurables;//check
+
+    @OneToOne(mappedBy = "fkTimeShareId")
+    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
+
 
     private LocalDateTime DateOfTimeShare;
 
@@ -35,3 +44,4 @@ public class TimeShare {
     private LocalTime createdOn;
 
 }
+/**/

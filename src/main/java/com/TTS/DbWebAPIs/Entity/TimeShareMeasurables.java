@@ -20,11 +20,10 @@ public class TimeShareMeasurables {
 
     @OneToOne
     @JoinColumn(name = "timeshareId", referencedColumnName = "id")
-    private TimeShare fkTimeShareId;
+    private TimeShare fkTimeShareId;//check
 
-    @OneToOne
-    @JoinColumn(name = "delgtMsrblesId", referencedColumnName = "id")
-    private DelegationMeasurables fkDelegationMeasurablesId;
+    @OneToOne(mappedBy = "timeShareMeasurable")
+    private DelegationMeasurables fkDelegationMeasurablesId;//check
 
     @OneToOne
     @JoinColumn(name = "measurablesId", referencedColumnName = "id")

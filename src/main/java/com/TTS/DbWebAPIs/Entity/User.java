@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,8 +30,26 @@ public class User {
 
     private LocalTime time;
 
-    @ManyToMany(mappedBy = "FK_Authentication_ID")
-    private Set<Project> projectId = new HashSet<>();
+    @ManyToMany(mappedBy = "usersAssociated",cascade = CascadeType.ALL)
+    private Set<Project> projectId = new HashSet<>();//check
+
+    @OneToMany(mappedBy = "userid")
+    private List<DailyTimeShare> userAssociated;//check
+
+    @OneToMany(mappedBy = "userAssociated")
+    private List<Task> taskAssociated;//check
+
+    @OneToMany(mappedBy = "FKTaskOwnerUserID", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TaskManagement> taskOwner;//check
+
+    @OneToMany(mappedBy = "FKTaskReceivedUserID")
+    private List<TaskManagement> taskReceiver;//check
+
+    @OneToMany(mappedBy = "userId")
+    private List<TimeShareOtherActivity> otherActivitiesAssociated;//check
+
+    @OneToMany(mappedBy = "user")
+    private List<Activity> userActivity;//check
 
 
     

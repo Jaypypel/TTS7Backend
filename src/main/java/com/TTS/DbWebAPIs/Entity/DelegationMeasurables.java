@@ -14,13 +14,17 @@ public class DelegationMeasurables {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "taskHander", referencedColumnName = "id")
-    private TaskManagement fkTaskManagementID;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "taskHandler", referencedColumnName = "id")
+    private TaskManagement fkTaskManagementID;//check
 
     @OneToOne
     @JoinColumn(name = "measurableId", referencedColumnName = "id")
-    private Measurables fkMeasurableId;
+    private Measurables fkMeasurableId;//check
+
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private TimeShareMeasurables timeShareMeasurable;//check
 
     private Long expectedMeasurableQuantity;
 

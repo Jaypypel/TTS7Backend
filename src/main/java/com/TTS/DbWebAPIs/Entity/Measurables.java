@@ -26,6 +26,15 @@ public class Measurables {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User userId;
 
+    @OneToOne(mappedBy = "fkMeasurablesID")
+    private DailyTimeShareMeasurables measurablesAssociated;//ccheck
+
+    @OneToOne(mappedBy = "fkMeasurableId")
+    private DelegationMeasurables delegationMeasurablesAssociated;//check
+
+    @OneToOne(mappedBy = "fkMeasurablesID")
+    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
+
     private LocalTime createdOn;
 
 

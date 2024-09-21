@@ -16,11 +16,11 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "activity_id", referencedColumnName = "id")
-    private Activity FK_ACTIVITY_ID;
+    private Activity activityAssociated;//check
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName= "id")
-    private User FK_User_ID;
+    private User userAssociated;//check
 
     //added
     private LocalTime createdOn;

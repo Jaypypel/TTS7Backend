@@ -2,7 +2,7 @@ package com.TTS.DbWebAPIs.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
+
 
 //new class created
 @Data
@@ -10,19 +10,15 @@ import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitializat
 public class DailyTimeShareMeasurables {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "timeshareId", referencedColumnName = "id")
-    private TimeShare fkTimeShareId;
+    private TimeShare fkTimeShareId;//check
 
-    /* @OneToOne
-     @JoinColumn(name = "delgtMsrblesId", referencedColumnName = "id")
-     private DelegationMeasurables fkDelegationMeasurablesId;
- */
     @OneToOne
     @JoinColumn(name = "measurablesId", referencedColumnName = "id")
-    private Measurables fkMeasurablesID;
+    private Measurables fkMeasurablesID;//check
 
     private Long measurableQuantity;
 

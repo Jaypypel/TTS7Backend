@@ -17,9 +17,8 @@ public class Project {
 
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "activity_id", referencedColumnName = "id")
-    private List<User> FK_Activity_ID;
+    @OneToMany(mappedBy = "projectAssociated")
+    private List<Activity> activitiesAssociated;//check
 
     @ManyToMany
     @JoinTable(
@@ -27,7 +26,7 @@ public class Project {
         joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> FK_Authentication_ID = new HashSet<>();
+    private Set<User> usersAssociated = new HashSet<>();//check
 
     //added new
     private LocalTime createdOn;

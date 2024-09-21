@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.aot.generate.GeneratedTypeReference;
 
 import java.time.LocalTime;
+import java.util.List;
 
 
 @Entity
@@ -23,7 +24,14 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name= "user_id", referencedColumnName = "id")
-    private User FK_USER_ID;
+    private User user;//check
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
+    private Project projectAssociated;//check
+
+    @OneToMany(mappedBy = "activityAssociated")
+    private List<Task> taskAssociated;//check
 
     private LocalTime createdOn;
 

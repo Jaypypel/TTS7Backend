@@ -21,15 +21,18 @@ public class TaskManagement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "taskOwner", referencedColumnName = "id")
-    private   User FKTaskOwnerUserID;
+    private   User FKTaskOwnerUserID;//check
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
-            name = "task"
+            name = "taskReceiver", referencedColumnName = "id"
     )
-    private   User FKTaskReceivedUserID;
+    private   User FKTaskReceivedUserID;//check
+
+    @OneToOne(mappedBy = "FKTaskManagementId")
+    private TimeShare timeShareAssociated;//check
 
     //private  Long ActivityId;
 
@@ -62,5 +65,9 @@ public class TaskManagement {
     private LocalTime taskAcceptedOn;
 
     private String status;
+
+
+    @OneToOne(mappedBy = "fkTaskManagementID")
+    private DelegationMeasurables delegationMeasurablesAssociated;//check
 
 }
