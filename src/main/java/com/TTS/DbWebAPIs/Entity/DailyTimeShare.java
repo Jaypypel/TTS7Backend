@@ -13,20 +13,14 @@ public class DailyTimeShare {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-
-
     private LocalDateTime DateOfTimeShare;
 
-    //add new
     private String projectCode;
 
-    //add new
     private String projectName;
 
-    //add new
     private String activityName;
 
-    //add new
     private String taskName;
 
     private LocalTime startTime;

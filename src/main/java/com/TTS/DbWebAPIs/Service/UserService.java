@@ -6,6 +6,8 @@ import com.TTS.DbWebAPIs.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,6 +35,16 @@ public class UserService {
 
     public Optional<User> getUserbyUsernameAndPassword(String username, String password) throws Exception {
        return Optional.ofNullable(userRepository.findByUsernameAndPassword(username,password).orElseThrow(() -> new Exception("invalid details")));
+    }
+
+    //get a list of username through users list
+    public List<String> getUsernameList(){
+        List<String> username = new ArrayList<>();
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            username.add(user.getUsername());
+        }
+        return username;
     }
 
 
