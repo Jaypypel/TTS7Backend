@@ -23,4 +23,12 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
     @Query("SELECT p.name AS name FROM Project")
     List<ProjectName> findByName();
 
+    @Query("SELECT COUNT(dts.projectName) FROM Daily_Time_Share dts WHERE dts.user.id =: userId" +
+            "AND dts.dateOfTimeShare BETWEEN dts.startDate =: startDate AND =: endDate")
+    Integer findByProjectName(Long userId, LocalDate startDate, LocalDate endDate);
+
+    Project findByName(String projectname);
+
+
+
 }

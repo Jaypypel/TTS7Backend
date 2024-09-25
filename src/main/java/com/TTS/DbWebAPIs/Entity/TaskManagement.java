@@ -23,13 +23,13 @@ public class TaskManagement {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "taskOwner", referencedColumnName = "id")
-    private   User FKTaskOwnerUserID;//check
+    private   User taskOwnerUserID;//check
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "taskReceiver", referencedColumnName = "id"
     )
-    private   User FKTaskReceivedUserID;//check
+    private   User taskReceivedUserID;//check
 
     @OneToOne(mappedBy = "FKTaskManagementId")
     private TimeShare timeShareAssociated;//check
