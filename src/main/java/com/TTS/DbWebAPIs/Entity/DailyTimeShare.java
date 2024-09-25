@@ -13,7 +13,7 @@ public class DailyTimeShare {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    private LocalDateTime DateOfTimeShare;
+    private LocalDateTime dateOfTimeShare;
 
     private String projectCode;
 
@@ -27,7 +27,7 @@ public class DailyTimeShare {
 
     private LocalTime endTime;
 
-    private String TimeDifference;
+    private String timeDifference;
 
     private String description;
 
@@ -35,5 +35,5 @@ public class DailyTimeShare {
 
     @ManyToOne
     @JoinColumn(name="userID", referencedColumnName = "id")
-    private User userid;
+    private User user;
 }

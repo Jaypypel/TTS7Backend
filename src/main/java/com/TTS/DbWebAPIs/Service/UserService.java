@@ -12,15 +12,15 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserServiceInterface {
 
     @Autowired
     UserRepository userRepository;
 
-    public boolean registerUser(User inputUser){
+    public User registerUser(User inputUser){
         User oldUser = userRepository.findByFullNameAndUsernameAndPasswordAndEmailAndMobileNo(inputUser.getFullName(),inputUser.getUsername(), inputUser.getPassword(), inputUser.getEmail(), inputUser.getMobileNo());
         if(oldUser != null){
-            return false;
+            return null;
         }
 
         User newUser = new User();
@@ -29,8 +29,7 @@ public class UserService {
         newUser.setPassword(inputUser.getPassword());
         newUser.setEmail(inputUser.getEmail());
         newUser.setMobileNo(inputUser.getMobileNo());
-        userRepository.save(newUser);
-        return true;
+        return userRepository.save(newUser);
     }
 
     public Optional<User> getUserbyUsernameAndPassword(String username, String password) throws Exception {
