@@ -1,4 +1,22 @@
 package com.TTS.DbWebAPIs.Service;
 
-public class MeasurableUnitService {
+import com.TTS.DbWebAPIs.Entity.MeasurableUnit;
+import com.TTS.DbWebAPIs.Repository.MeasurableUnitRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+
+@Service
+@RequiredArgsConstructor
+public class MeasurableUnitService implements MeasurableUnitServiceInterface {
+
+    private final MeasurableUnitRepository measurableUnitRepository;
+
+    @Override
+    public List<MeasurableUnit> getMeasurableUnitList() {
+        return measurableUnitRepository.findAll();
+    }
 }

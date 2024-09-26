@@ -22,5 +22,8 @@ public interface TaskManagementRepository  extends JpaRepository<TaskManagement,
     @Query("SELECT tm from TaskManagement tm WHERE tm.taskOwnerUserId.id =: truId")
     List<TaskManagement> findByTasKOwnerUserId(Long truId);
 
+    @Query("SELECT MAX(t.id) FROM TaskManagement t")
+    Long findMaxId();
+
    //@Query("SELECT tm from TaskManagement tm WHERE tm.")
 }

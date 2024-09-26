@@ -4,7 +4,7 @@ import com.TTS.DbWebAPIs.Entity.DelegationMeasurables;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -24,22 +24,13 @@ public interface TaskManagementServiceInterface {
 
     TaskManagement updateTaskManagementCompletedStatus(Long taskId);
 
-    TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID,
-                                           TimeShare timeShareAssociated, String ActivityName, String
-                                           taskName, Long
-                                           projectId, String
-                                           projectName, LocalDate
-                                           expectedDate, LocalTime
-                                           expectedTime,String
-                                           expectedTotalTime,String
-                                           description,LocalTime
-                                           TaskAssignedOn,LocalTime
-                                           actualTotalTime,LocalTime
-                                           taskSeenOn,LocalTime
-                                           taskCompletedOn,LocalTime
-                                           taskAcceptedOn,String
-                                           status, DelegationMeasurables
-                                           delegationMeasurablesAssociated);
+    TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, TimeShare timeShareAssociated, String activityName,
+                                   String taskName, String projectId, String projectName, LocalDateTime expectedDate,
+                                   LocalTime expectedTime, String expectedTotalTime, String description, LocalTime taskAssignedOn,
+                                   String actualTotalTime, LocalTime taskSeenOn, LocalTime taskCompletedOn, LocalTime taskAcceptedOn,
+                                   String status, List<DelegationMeasurables> delegationMeasurablesAssociated);
+
+    TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId);
 
     List<TaskManagement> getSendModificationTaskList(Long touId, String status);
 
@@ -58,6 +49,8 @@ public interface TaskManagementServiceInterface {
     Integer getApprovedTaskCount(Long userId);
 
     Integer getCompletedTaskCount(Long userId);
+
+    Long getMaxDelegationTaskId();
 
 
 }

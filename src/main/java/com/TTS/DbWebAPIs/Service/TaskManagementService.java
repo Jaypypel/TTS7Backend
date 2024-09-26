@@ -24,6 +24,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     private final ActivityRepository activityRepository;
     private  final ProjectRepository projectRepository;
 
+    /*the function is  used in existing tts app for the receivedModfifcationtAskList,*/
     @Override
     public List<TaskManagement> getAcceptedTaskList(Long truId, String status) {
         return taskManagementRepository.findByTaskReceivedUserIDAndStatus(truId,status);
@@ -37,7 +38,8 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         existingTaskManagement.setTaskCompletedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
     }
-    //passed name of project as id since id needs to be unique
+    //passed name of project as id since id needs to be uniquef
+    //need to refactor and ask delegatonMeasurablesAssociated
     @Override
     public TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, TimeShare timeShareAssociated, String activityName,
                                           String taskName, String projectId, String projectName, LocalDateTime expectedDate,
@@ -81,7 +83,19 @@ public class TaskManagementService implements TaskManagementServiceInterface{
             delegationMeasurable.setFkTaskManagementID(saveAssignedTaskManagement);
             delegationMeasurable.setId(Long.parseLong(delegationMeasurable.getFkMeasurableId().getName().replaceAll("[^0-9]", ""))); // Example: setting value
             // Set other fields as required
+            delegationMeasurable.setActualMeasurableQuantity(delegationMeasurable.getActualMeasurableQuantity());
+            delegationMeasurable.setExpectedMeasurableQuantity(delegationMeasurable.getExpectedMeasurableQuantity());
+            delegationMeasurable.setMeasurableUnit(delegationMeasurable.getMeasurableUnit());
         });
+        return saveAssignedTaskManagement;
+    }
+
+    @Override
+    public TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId) {
+        TaskManagement existingTask = taskManagementRepository.findById(taskId).orElseThrow(()-> new RuntimeException("task not found"));
+        existingTask.setDescription(description);
+        existingTask.setStatus("revised");
+        return existingTask;
     }
 
     @Override
@@ -153,6 +167,12 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     @Override
     public Integer getCompletedTaskCount(Long userId) {
         return taskManagementRepository.findByTaskReceivedUserIDAndStatus(userId, "completed").size();
+    }
+
+    @Override
+    public Long getMaxDelegationTaskId() {
+        Long maxId = taskManagementRepository.findMaxId();
+        return maxId + 1;
     }
 
 
