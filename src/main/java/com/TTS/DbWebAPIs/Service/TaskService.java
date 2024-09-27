@@ -44,7 +44,7 @@ public class TaskService implements TaskServiceInterface{
         User inputUser = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("user not found "));
         Activity inputActivity = activityRepository.findById(activtyId).orElseThrow(() -> new RuntimeException("activity not found"));
         Task task = new Task();
-        task.setUserAssociated(inputUser);
+        task.setUser(inputUser);
         task.setActivityAssociated(inputActivity);
         task.setName(taskName);
         task.setCreatedOn(createdOn);

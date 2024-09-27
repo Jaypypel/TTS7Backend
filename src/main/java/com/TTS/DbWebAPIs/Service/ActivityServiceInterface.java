@@ -10,7 +10,7 @@ import java.util.List;
 public interface ActivityServiceInterface {
 
     List<String> getActivityNames();
-
+    //need to return only Id and name as an object
     List<Activity> getActivityList(String userId);
 
     Activity addActivity(Long userId, String activityName, LocalTime createdOn);

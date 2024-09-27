@@ -6,6 +6,7 @@ import com.TTS.DbWebAPIs.Entity.User;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectCode;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectName;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface ProjectServiceInterface {
     List<ProjectCode> getProjectCodeList();
     List<ProjectName> getProjectNameList();
     Project addProject(Long userId, Activity activityID, Long projectCode, String projectName, LocalTime createdOn);
+    Integer getProjectCount(Long userId, LocalDate startDate, LocalDate endDate);
 }

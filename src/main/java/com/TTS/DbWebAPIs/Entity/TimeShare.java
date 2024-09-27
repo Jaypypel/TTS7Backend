@@ -31,7 +31,7 @@ public class TimeShare {
     private TimeShareMeasurables timeShareMeasurablesAssociated;//check
 
 
-    private LocalDateTime DateOfTimeShare;
+    private LocalDateTime dateOfTimeShare;
 
     private LocalTime startTime;
 

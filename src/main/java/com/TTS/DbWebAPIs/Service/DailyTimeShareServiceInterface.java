@@ -12,4 +12,10 @@ public interface DailyTimeShareServiceInterface {
     Optional<List<DailyTimeShare>> getDailyTimeShareList(Long userId, LocalDate dateOfTimeShare);
 
     DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare, List<DailyTimeShareMeasurables> dailyTimeShareMeasurablesList);
+
+    List<DailyTimeShare> getUserDTSReportDetails(Long userId, LocalDate startDate, LocalDate endDate);
+
+    List<String> getProjectConsumedTime(Long userID, LocalDate startDate, LocalDate endDate);
+
+    Integer getMaxDailyTimeShareId();
 }

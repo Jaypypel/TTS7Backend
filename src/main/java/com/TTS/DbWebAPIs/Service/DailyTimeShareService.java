@@ -35,6 +35,20 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
         return  dailyTimeShareRepository.save(dailyTimeShare);
     }
 
+    @Override
+    public List<DailyTimeShare> getUserDTSReportDetails(Long userId, LocalDate startDate, LocalDate endDate) {
+        return dailyTimeShareRepository.getUserDTSReportDetails(userId,startDate,endDate);
+    }
+
+    @Override
+    public List<String> getProjectConsumedTime(Long userID, LocalDate startDate, LocalDate endDate) {
+        return dailyTimeShareRepository.findTimeDiffByIdAndDateRange(userID, startDate,endDate);
+    }
+
+    @Override
+    public Integer getMaxDailyTimeShareId() {
+        return dailyTimeShareRepository.findMaxDailyTimeShareId();
+    }
 
 
 }

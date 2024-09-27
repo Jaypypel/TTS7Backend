@@ -38,6 +38,15 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         existingTaskManagement.setTaskCompletedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
     }
+
+    @Override
+    public TaskManagement addActualTotalTime(Long assignedTaskId, String actualTotalTime) {
+        TaskManagement existingTaskManagement = taskManagementRepository.findById(assignedTaskId).orElseThrow(()-> new RuntimeException("task not found"));
+        existingTaskManagement.setActualTotalTime(actualTotalTime);
+        return existingTaskManagement;
+
+    }
+
     //passed name of project as id since id needs to be uniquef
     //need to refactor and ask delegatonMeasurablesAssociated
     @Override
@@ -102,7 +111,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     public TaskManagement updateTaskManagementSeenOnTime(Long taskId) {
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
         LocalTime taskSeenOnTime = LocalTime.now();
-        existingTaskManagement.setTaskCompletedOn(taskSeenOnTime);
+        existingTaskManagement.setTaskSeenOn(taskSeenOnTime);
         return taskManagementRepository.save(existingTaskManagement);
     }
 
@@ -173,6 +182,11 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     public Long getMaxDelegationTaskId() {
         Long maxId = taskManagementRepository.findMaxId();
         return maxId + 1;
+    }
+
+    @Override
+    public String getActutalTotalTime(Long assignedTaskId) {
+        return taskManagementRepository.getActualTotalfromId(assignedTaskId);
     }
 
 

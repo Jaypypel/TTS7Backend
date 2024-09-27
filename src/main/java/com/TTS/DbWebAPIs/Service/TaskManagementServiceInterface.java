@@ -1,6 +1,7 @@
 package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.DelegationMeasurables;
+import com.TTS.DbWebAPIs.Entity.Task;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 
@@ -23,6 +24,8 @@ public interface TaskManagementServiceInterface {
     TaskManagement updateTaskManagementAcceptTime(Long taskId);
 
     TaskManagement updateTaskManagementCompletedStatus(Long taskId);
+
+    TaskManagement addActualTotalTime(Long assignedTaskId,String actualTotalTime);
 
     TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, TimeShare timeShareAssociated, String activityName,
                                    String taskName, String projectId, String projectName, LocalDateTime expectedDate,
@@ -52,5 +55,6 @@ public interface TaskManagementServiceInterface {
 
     Long getMaxDelegationTaskId();
 
+    String getActutalTotalTime(Long assignedTaskId);
 
 }

@@ -28,7 +28,7 @@ public class TimeShareOtherActivity {
 
     private LocalTime endTime;
 
-    private LocalTime timeDifference;
+    private String timeDifference;
 
     private String Description;
 

@@ -11,7 +11,7 @@ import java.time.LocalTime;
 public class DailyTimeShare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     private LocalDateTime dateOfTimeShare;
 

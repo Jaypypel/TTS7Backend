@@ -17,17 +17,19 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
     @Query("SELECT p.id AS Id FROM Project")
     List<ProjectCode> findById();
 
-    @Query("SELECT COUNT(DISTINCT(p.id)) FROM Daily_Time_Share dts WHERE dts.user.id = :userId AND dts.dateOfTimeShare BETWEEN dts.startDate =: startDate AND dts.endDate")
-    Integer getProjectCount(Long ProjectId, LocalDate startDate, LocalDate endDate);
+    @Query("SELECT COUNT(DISTINCT(p.id)) FROM DailyTimeShare dts WHERE dts.user.id = :userId AND dts.dateOfTimeShare BETWEEN  :startDate AND :endDate")
+    Integer findByUserIdAndDateRange(Long ProjectId, LocalDate startDate, LocalDate endDate);
 
     @Query("SELECT p.name AS name FROM Project")
     List<ProjectName> findByName();
 
-    @Query("SELECT COUNT(dts.projectName) FROM Daily_Time_Share dts WHERE dts.user.id =: userId" +
-            "AND dts.dateOfTimeShare BETWEEN dts.startDate =: startDate AND =: endDate")
+    @Query("SELECT COUNT(dts.projectName) FROM DailyTimeShare dts WHERE dts.user.id =: userId" +
+            "AND dts.dateOfTimeShare BETWEEN :startDate AND :endDate")
     Integer findByProjectName(Long userId, LocalDate startDate, LocalDate endDate);
 
     Project findByName(String projectname);
+
+
 
 
 

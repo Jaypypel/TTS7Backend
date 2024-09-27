@@ -10,6 +10,7 @@ import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -51,5 +52,10 @@ public class ProjectService implements ProjectServiceInterface  {
         newProject.setName(projectName);
         newProject.setCreatedOn(createdOn);
         return projectRepository.save(newProject);
+    }
+
+    @Override
+    public Integer getProjectCount(Long userId, LocalDate startDate, LocalDate endDate) {
+        return projectRepository.findByUserIdAndDateRange(userId,startDate,endDate);
     }
 }

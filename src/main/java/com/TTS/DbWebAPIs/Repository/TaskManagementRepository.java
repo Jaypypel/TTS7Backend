@@ -25,5 +25,7 @@ public interface TaskManagementRepository  extends JpaRepository<TaskManagement,
     @Query("SELECT MAX(t.id) FROM TaskManagement t")
     Long findMaxId();
 
+    @Query("SELECT tm.actualTotalTime as ActualTotalTime FROM TaskManagement tm WHERE tm.id =: assignedTaskId")
+    String getActualTotalfromId(Long assignedTaskId);
    //@Query("SELECT tm from TaskManagement tm WHERE tm.")
 }

@@ -1,4 +1,7 @@
 package com.TTS.DbWebAPIs.Repository;
 
-public interface OtherActivityRepository {
+import com.TTS.DbWebAPIs.Entity.OtherActivity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OtherActivityRepository  extends JpaRepository<OtherActivity,Long> {
 }
