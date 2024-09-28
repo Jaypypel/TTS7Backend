@@ -5,16 +5,15 @@ import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface DailyTimeShareServiceInterface {
 
-    Optional<List<DailyTimeShare>> getDailyTimeShareList(Long userId, LocalDate dateOfTimeShare);
+    List<DailyTimeShare> getDailyTimeShareList(Long userId, LocalDate dateOfTimeShare);
 
     DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare, List<DailyTimeShareMeasurables> dailyTimeShareMeasurablesList);
-
+    //can be moved to user controller
     List<DailyTimeShare> getUserDTSReportDetails(Long userId, LocalDate startDate, LocalDate endDate);
-
+    //can be moved to project controller
     List<String> getProjectConsumedTime(Long userID, LocalDate startDate, LocalDate endDate);
 
     Integer getMaxDailyTimeShareId();

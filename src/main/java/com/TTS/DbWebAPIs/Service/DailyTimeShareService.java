@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +20,8 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
 
     //get a list of Daily TimeShare
     @Override
-    public Optional<List<DailyTimeShare>> getDailyTimeShareList(Long userId, LocalDate dateOfTimeShare){
-        return Optional.ofNullable(dailyTimeShareRepository.findAllByUsernameAndDateOfTimeShare(userId, dateOfTimeShare));
+    public List<DailyTimeShare> getDailyTimeShareList(Long userId, LocalDate dateOfTimeShare){
+        return dailyTimeShareRepository.findAllByUsernameAndDateOfTimeShare(userId, dateOfTimeShare);
     }
 
     //add a daily timeshare

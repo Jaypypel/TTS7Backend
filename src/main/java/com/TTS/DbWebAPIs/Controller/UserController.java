@@ -3,6 +3,7 @@ package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.User;
 import com.TTS.DbWebAPIs.Service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("app/user")
+@RequiredArgsConstructor
 public class UserController {
 
     @Autowired
