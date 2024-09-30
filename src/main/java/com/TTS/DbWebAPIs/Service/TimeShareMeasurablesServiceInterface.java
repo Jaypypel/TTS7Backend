@@ -5,6 +5,7 @@ import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
 
 public interface TimeShareMeasurablesServiceInterface {
 
-    TimeShareMeasurables addTimeShareMeasurables(Long timeShareId, Measurables measuableId, Long measurableQuantity, String measurableUnit);
+    TimeShareMeasurables addTimeShareMeasurables(Long timeShareId, Measurables measuableId, Long measurableQuantity,
+                                                 String measurableUnit);
 
 }

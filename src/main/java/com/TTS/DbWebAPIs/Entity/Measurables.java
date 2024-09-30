@@ -24,7 +24,7 @@ public class Measurables {
 
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "id")
-    private User userId;
+    private User user;
 
     @OneToOne(mappedBy = "fkMeasurablesID")
     private DailyTimeShareMeasurables measurablesAssociated;//ccheck

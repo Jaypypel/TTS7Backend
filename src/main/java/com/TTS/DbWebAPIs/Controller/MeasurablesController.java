@@ -1,6 +1,7 @@
 package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.Measurables;
+import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import com.TTS.DbWebAPIs.Service.MeasurablesService;
 import com.TTS.DbWebAPIs.Service.MeasurablesServiceInterface;

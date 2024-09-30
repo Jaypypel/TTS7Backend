@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Controller;
 
 
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Exceptions.AlreadyExistException;
 import com.TTS.DbWebAPIs.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,19 @@ public class UserController {
 //    }
 
     @PostMapping("/register")
-    public ResponseEntity<String> Registration(@RequestBody User inputUser) {
-        boolean isRegistered = userService.registerUser(inputUser);
+    public ResponseEntity<?> Registration(@RequestBody User inputUser) {
+//        boolean isRegistered = userService.registerUser(inputUser);
+//          Us
+//        if (isRegistered) {
+//            // If user registration is successful, return HTTP 200 OK with a success message.
+//            return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+//        } else {
+//            // If the user already exists, return HTTP 409 Conflict with an appropriate message.
+//            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
+//        }
+        User user = userService.registerUser(inputUser);
+        return ResponseEntity.ok("user register successfully");
 
-        if (isRegistered) {
-            // If user registration is successful, return HTTP 200 OK with a success message.
-            return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
-        } else {
-            // If the user already exists, return HTTP 409 Conflict with an appropriate message.
-            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
-        }
     }
 
 //    @GetMapping("/login")

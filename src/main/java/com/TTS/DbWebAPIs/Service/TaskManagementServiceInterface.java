@@ -55,6 +55,6 @@ public interface TaskManagementServiceInterface {
 
     Long getMaxDelegationTaskId();
 
-    String getActutalTotalTime(Long assignedTaskId);
+    String getActualTotalTime(Long assignedTaskId);
 
 }

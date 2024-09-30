@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project,Long> {
@@ -14,18 +15,18 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
     @Query("SELECT p.id FROM   Project p WHERE p.name =: projectName")
     Integer findByProjectCode(String projectName);
 
-    @Query("SELECT p.id AS Id FROM Project")
+    @Query("SELECT p.id AS Id FROM Project p")
     List<ProjectCode> findById();
 
-    @Query("SELECT COUNT(DISTINCT(p.id)) FROM DailyTimeShare dts WHERE dts.user.id = :userId AND dts.dateOfTimeShare BETWEEN  :startDate AND :endDate")
-    Integer findByUserIdAndDateRange(Long ProjectId, LocalDate startDate, LocalDate endDate);
+    @Query("SELECT COUNT(DISTINCT(dts.projectName)) FROM DailyTimeShare dts WHERE dts.user.id = :userId AND dts.dateOfTimeShare BETWEEN  :startDate AND :endDate")
+    Integer findByUserIdAndDateRange(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query("SELECT p.name AS name FROM Project")
+    @Query("SELECT p.name AS Name FROM Project p")
     List<ProjectName> findByName();
 
-    @Query("SELECT COUNT(dts.projectName) FROM DailyTimeShare dts WHERE dts.user.id =: userId" +
-            "AND dts.dateOfTimeShare BETWEEN :startDate AND :endDate")
-    Integer findByProjectName(Long userId, LocalDate startDate, LocalDate endDate);
+    @Query("SELECT COUNT(d.projectName) FROM DailyTimeShare d WHERE d.user.id =:userId" +
+            "  AND d.dateOfTimeShare BETWEEN :startDate AND :endDate")
+    Integer findByIdAndDateRange(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
     Project findByName(String projectname);
 

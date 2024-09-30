@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -54,8 +55,15 @@ public class ProjectService implements ProjectServiceInterface  {
         return projectRepository.save(newProject);
     }
 
+
+
     @Override
-    public Integer getProjectCount(Long userId, LocalDate startDate, LocalDate endDate) {
+    public Integer getProjectCount(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
         return projectRepository.findByUserIdAndDateRange(userId,startDate,endDate);
+    }
+
+    @Override
+    public Integer getProjectFrequency(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+        return projectRepository.findByIdAndDateRange(userId,startDate,endDate);
     }
 }

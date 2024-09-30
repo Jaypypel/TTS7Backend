@@ -1,6 +1,7 @@
 package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.Measurables;
+import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

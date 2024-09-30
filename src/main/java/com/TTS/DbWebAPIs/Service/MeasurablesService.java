@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,13 @@ public class MeasurablesService implements MeasurablesServiceInterface{
     * same*/
     @Override
     public List<Measurables> getDTSMeasurablesList(Long dtsId) {
-        List<Measurables>  dailyTimeShareMeasurables = new ArrayList<>();
-        Measurables dailyTimeShareMeasurable;
-        while(measurablesRepository.getMeasurables(dtsId)!=null){
-            dailyTimeShareMeasurable = measurablesRepository.getMeasurables(dtsId);
-            dailyTimeShareMeasurables.add(dailyTimeShareMeasurable);
-        }
+        List<Measurables>  dailyTimeShareMeasurables = measurablesRepository.findMeasurablesById(dtsId);
+
+//        MeasurablesIdAndName dailyTimeShareMeasurable;
+//        while(measurablesRepository.getMeasurables(dtsId)!=null){
+//            dailyTimeShareMeasurable = measurablesRepository.getMeasurables(dtsId);
+//            dailyTimeShareMeasurables.add(dailyTimeShareMeasurable);
+//        }
         return dailyTimeShareMeasurables;
     }
 
@@ -46,19 +48,19 @@ public class MeasurablesService implements MeasurablesServiceInterface{
 
     @Override
     public Integer getMeasurableCount(Long userId, LocalDate startDate, LocalDate endDate) {
-        return measurablesRepository.findByByUserAndDateRange(userId,startDate,endDate);
+        return measurablesRepository.findByUserAndDateRange(userId,startDate,endDate);
     }
 
     @Override
     public List<Measurables> getMeasurableListForUserID(Long userId) {
-        return measurablesRepository.findbyUserId(userId);
+        return measurablesRepository.findByUserId(userId);
     }
 
     @Override
     public Measurables addMeasurable(Long userId, String measurableName, LocalTime createdOn) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("user not found"));
         Measurables measurables = new Measurables();
-        measurables.setUserId(user);
+        measurables.setUser(user);
         measurables.setName(measurableName);
         measurables.setCreatedOn(createdOn);
         return measurables;

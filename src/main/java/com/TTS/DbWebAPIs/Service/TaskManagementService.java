@@ -185,7 +185,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     }
 
     @Override
-    public String getActutalTotalTime(Long assignedTaskId) {
+    public String getActualTotalTime(Long assignedTaskId) {
         return taskManagementRepository.getActualTotalfromId(assignedTaskId);
     }
 

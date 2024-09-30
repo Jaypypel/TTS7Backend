@@ -33,16 +33,16 @@ public class User {
     @ManyToMany(mappedBy = "usersAssociated",cascade = CascadeType.ALL)
     private Set<Project> projectId = new HashSet<>();//check
 
-    @OneToMany(mappedBy = "userid")
+    @OneToMany(mappedBy = "user")
     private List<DailyTimeShare> userAssociated;//check
 
-    @OneToMany(mappedBy = "userAssociated")
-    private List<Task> taskAssociated;//check
+    @OneToMany(mappedBy = "user")
+    private List<Task> task;//check
 
-    @OneToMany(mappedBy = "FKTaskOwnerUserID", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "taskOwnerUserID", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaskManagement> taskOwner;//check
 
-    @OneToMany(mappedBy = "FKTaskReceivedUserID")
+    @OneToMany(mappedBy = "taskReceivedUserID")
     private List<TaskManagement> taskReceiver;//check
 
     @OneToMany(mappedBy = "userId")

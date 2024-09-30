@@ -5,6 +5,7 @@ import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Repository.DailyTimeShareMeasurblesRepository;
+import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,12 +45,12 @@ public class DailyTimeShareMeasurablesService implements DailyTimeShareMeasurabl
     /*need to check whether getting list of dtsMeasurables or measurables since in the TTSDailyShareFragment Measurable model is different from than the db measurable model*/
     @Override
     public List<Measurables> getDailyTimeShareMeasurablesList(Long dtsId) {
-        List<Measurables>  dailyTimeShareMeasurables = new ArrayList<>();
-        Measurables dailyTimeShareMeasurable;
-        while(measurablesRepository.getMeasurables(dtsId)!=null){
-            dailyTimeShareMeasurable = measurablesRepository.getMeasurables(dtsId);
-            dailyTimeShareMeasurables.add(dailyTimeShareMeasurable);
-        }
+        List<Measurables>  dailyTimeShareMeasurables = measurablesRepository.findMeasurablesById(dtsId);
+//        MeasurablesIdAndName dailyTimeShareMeasurable;
+//        while(measurablesRepository.getMeasurables(dtsId)!=null){
+//            dailyTimeShareMeasurable = measurablesRepository.getMeasurables(dtsId);
+//            dailyTimeShareMeasurables.add(dailyTimeShareMeasurable);
+//        }
         return dailyTimeShareMeasurables;
     }
 }

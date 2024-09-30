@@ -12,10 +12,10 @@ public interface ActivityRepository extends JpaRepository<Activity,Long> {
     @Query("Select DISTINCT a.name from Activity a")
     List<String> getActivityNames();
 
-    @Query("Select DISTINCT a from Activity where a.user.id =:userId")
+    @Query("Select DISTINCT a from Activity a where a.user.id =:userId")
     List<Activity> getActivityList(Long userId);
 
-    @Query("Select COUNT(DISTINCT(dts.activityName)) From DailyTimeShare dts WHERE  dts.user.id = :userID AND dts.dateOFTimeShare" +
+    @Query("Select COUNT(DISTINCT(dts.activityName)) From DailyTimeShare dts WHERE  dts.user.id = :userId AND dts.dateOfTimeShare" +
             " BETWEEN :startDate AND  :endDate")
     Integer ActivityCount(Long userId, String startDate, String endDate);
 
