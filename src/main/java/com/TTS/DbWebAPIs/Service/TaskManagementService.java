@@ -27,7 +27,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     /*the function is  used in existing tts app for the receivedModfifcationtAskList,*/
     @Override
     public List<TaskManagement> getAcceptedTaskList(Long truId, String status) {
-        return taskManagementRepository.findByTaskReceivedUserIDAndStatus(truId,status);
+        return taskManagementRepository.findByIdAndStatus(truId,status);
     }
 
     @Override
@@ -145,37 +145,38 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
     @Override
     public List<TaskManagement> getSendModificationTaskList(Long touId, String status) {
-        return taskManagementRepository.findByTaskOwnerUserIDAndStatus(touId,status);
+        return taskManagementRepository.findByTaskOwnerUserIdAndStatus(touId,status);
     }
 
     @Override
     public List<TaskManagement> getTaskList(Long truId) {
-        return taskManagementRepository.findByTasKReceivedUserId(truId);
+        return taskManagementRepository.findByTaskReceivedUserId(truId);
     }
 
     @Override
     public List<TaskManagement> getDelegatedTaskList(Long touId) {
-        return taskManagementRepository.findByTasKOwnerUserId(touId);
+        return taskManagementRepository.findByTaskOwnerUserId(touId);
     }
 
     @Override
     public Integer getPendingTaskCount(Long userId){
-        return taskManagementRepository.findByTaskReceivedUserIDAndStatus(userId,"pending").size();
+        return taskManagementRepository.findByIdAndStatus(
+                userId,"pending").size();
     }
 
     @Override
     public Integer getAcceptedTaskCount(Long userId) {
-        return taskManagementRepository.findByTaskReceivedUserIDAndStatus(userId, "In-Process").size();
+        return taskManagementRepository.findByIdAndStatus(userId, "In-Process").size();
     }
 
     @Override
     public Integer getApprovedTaskCount(Long userId) {
-        return taskManagementRepository.findByTaskReceivedUserIDAndStatus(userId, "approved").size();
+        return taskManagementRepository.findByIdAndStatus(userId, "approved").size();
     }
 
     @Override
     public Integer getCompletedTaskCount(Long userId) {
-        return taskManagementRepository.findByTaskReceivedUserIDAndStatus(userId, "completed").size();
+        return taskManagementRepository.findByIdAndStatus(userId, "completed").size();
     }
 
     @Override
@@ -186,7 +187,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
     @Override
     public String getActualTotalTime(Long assignedTaskId) {
-        return taskManagementRepository.getActualTotalfromId(assignedTaskId);
+        return taskManagementRepository.getActualTotalFromId(assignedTaskId);
     }
 
 

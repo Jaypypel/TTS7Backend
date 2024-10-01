@@ -32,19 +32,19 @@ public class ActivityService implements ActivityServiceInterface{
 
     //add an activity
     @Override
-    public Activity addActivity(Long userId, String activityName) {
+    public Activity addActivity(Long userId, String activityName, LocalDate createdOn) {
         Activity inputActivity = new Activity();
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         inputActivity.setUser(user);
         inputActivity.setName(activityName);
-        LocalTime activityCreatedOn = LocalTime.now();
-        inputActivity.setCreatedOn(activityCreatedOn);
+   //     LocalDate activityCreatedOn = LocalDate.now();
+        inputActivity.setCreatedOn(createdOn);
         return activityRepository .save(inputActivity);
     }
 
     //getActivityCount
     @Override
-    public Integer getActivityCount(Long userId, String startDate, String endDate) {
+    public Integer getActivityCount(Long userId, LocalDate startDate, LocalDate endDate) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         return activityRepository.ActivityCount(userId,startDate,endDate);
     }

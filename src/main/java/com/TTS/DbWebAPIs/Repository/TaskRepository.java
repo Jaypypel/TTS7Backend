@@ -11,14 +11,14 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task,Long> {
 
-    @Query("SELECT DISTINCT(t.name) as name FROM Task WHERE t.user.id =: userID")
-    List<TaskName> findByUser(String userId);
+    @Query("SELECT DISTINCT(t.name) as Name FROM Task t WHERE t.user.id =:userId")
+    List<TaskName> findById(String userId);
 
-    @Query("SELECT COUNT(DISTINCT(dts.taskName)) FROM DailyTimeShare dts dts.user.id =: userId " +
-            "AND dts.dateOfTimeShare BETWEEN :startDate AND :endDate")
+    @Query("SELECT COUNT(DISTINCT(d.taskName)) FROM DailyTimeShare d WHERE d.user.id =:userId" +
+            " AND d.dateOfTimeShare BETWEEN :startDate AND :endDate")
     Integer findByUserIdAndStartDateAndEndDate(Long userId, LocalDate startDate, LocalDate endDate);
 
-    @Query("SELECT COUNT(dts.taskName) FROM DailyTimeShare dts dts.user.id =: userId " +
-            "AND dts.dateOfTimeShare BETWEEN :startDate AND :endDate")
-    Integer findByUserIdAndStartDateAndEndDateToGetFrequency(Long userId, LocalDate startDate, LocalDate endDate);
+    @Query("SELECT COUNT(d.taskName) FROM DailyTimeShare d WHERE d.user.id =:userId" +
+            " AND d.dateOfTimeShare BETWEEN :startDate AND :endDate")
+    Integer findByIdAndStartDateAndEndDate(Long userId, LocalDate startDate, LocalDate endDate);
 }

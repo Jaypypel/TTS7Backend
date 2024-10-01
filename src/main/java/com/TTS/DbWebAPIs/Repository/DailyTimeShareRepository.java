@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface DailyTimeShareRepository extends JpaRepository<DailyTimeShare,Long> {
-    List<DailyTimeShare> findAllByUsernameAndDateOfTimeShare(Long userid, LocalDate dateOfTimeShare);
+    List<DailyTimeShare> findAllByIdAndDateOfTimeShare(Long userid, LocalDate dateOfTimeShare);
 
 //    @Query("SELECT dts, m.name, dtsm.measurableQuantity, dtsm.measurableUnit " +
 //            "FROM DailyTimeShare dts " +

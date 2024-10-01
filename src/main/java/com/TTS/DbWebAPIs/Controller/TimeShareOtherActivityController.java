@@ -18,7 +18,7 @@ public class TimeShareOtherActivityController {
 
     private  final TimeShareOtherActivityServiceInterface timeShareOtherActivityService;
 
-    @PostMapping("/add/time-share-activity")
+    @PostMapping("/add/timeshareactivity")
     ResponseEntity<TimeShareOtherActivity> addOtherActivity(Long userId, String activityName, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, LocalTime createdOn){
         TimeShareOtherActivity timeShareOtherActivity = timeShareOtherActivityService.addOtherActivity(userId,activityName,date,startTime,endTime,timeDifference,description,createdOn);
         return ResponseEntity.ok(timeShareOtherActivity);

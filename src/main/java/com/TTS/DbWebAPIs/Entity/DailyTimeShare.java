@@ -3,6 +3,7 @@ package com.TTS.DbWebAPIs.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -13,7 +14,7 @@ public class DailyTimeShare {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime dateOfTimeShare;
+    private LocalDate dateOfTimeShare;
 
     private String projectCode;
 

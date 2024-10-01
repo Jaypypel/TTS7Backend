@@ -33,23 +33,23 @@ public class User {
     @ManyToMany(mappedBy = "usersAssociated",cascade = CascadeType.ALL)
     private Set<Project> projectId = new HashSet<>();//check
 
-    @OneToMany(mappedBy = "user")
-    private List<DailyTimeShare> userAssociated;//check
-
-    @OneToMany(mappedBy = "user")
-    private List<Task> task;//check
-
-    @OneToMany(mappedBy = "taskOwnerUserID", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TaskManagement> taskOwner;//check
-
-    @OneToMany(mappedBy = "taskReceivedUserID")
-    private List<TaskManagement> taskReceiver;//check
-
-    @OneToMany(mappedBy = "userId")
-    private List<TimeShareOtherActivity> otherActivitiesAssociated;//check
-
-    @OneToMany(mappedBy = "user")
-    private List<Activity> userActivity;//check
+//    @OneToMany(mappedBy = "user")
+//    private List<DailyTimeShare> userAssociated;//check
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Task> task;//check
+//
+//    @OneToMany(mappedBy = "taskOwnerUserID", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<TaskManagement> taskOwner;//check
+//
+//    @OneToMany(mappedBy = "taskReceivedUserID")
+//    private List<TaskManagement> taskReceiver;//check
+//
+//    @OneToMany(mappedBy = "userId")
+//    private List<TimeShareOtherActivity> otherActivitiesAssociated;//check
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Activity> userActivity;//check
 
 
     

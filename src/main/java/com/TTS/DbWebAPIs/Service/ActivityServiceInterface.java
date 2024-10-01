@@ -13,7 +13,7 @@ public interface ActivityServiceInterface {
     //need to return only id and name as an object
     List<Activity> getActivityList(Long userId);
 
-    Activity addActivity(Long userId, String activityName);
+    Activity addActivity(Long userId, String activityName, LocalDate createdOn);
 
-    Integer getActivityCount(Long userId, String startDate, String endDate);
+    Integer getActivityCount(Long userId, LocalDate startDate, LocalDate endDate);
 }

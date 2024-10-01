@@ -14,7 +14,7 @@ public class TimeShareMeasurablesController {
 
     private final TimeShareMeasurablesServiceInterface timeShareMeasurablesService;
 
-    @PostMapping("add/timeharemeasurable/{timeShareId}/{measurableQuantity/{measurableUnit}")
+    @PostMapping("/add/timeharemeasurable/{timeShareId}/{measurableQuantity}/{measurableUnit}")
     ResponseEntity<TimeShareMeasurables> addTimeShareMeasurables(@PathVariable Long timeShareId,
                                                                  @RequestBody  Measurables measuableId,
                                                                  @PathVariable Long measurableQuantity,

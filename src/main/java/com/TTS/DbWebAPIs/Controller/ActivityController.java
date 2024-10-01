@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;;
 import java.util.Collections;
 import java.util.List;
@@ -40,14 +41,14 @@ public class ActivityController {
         }
 
         @GetMapping("/activityCount/{userId}/{startDate}/{endDate}")
-        ResponseEntity<Integer>  getActivityCount(@PathVariable Long userId, @PathVariable String startDate, @PathVariable String endDate) throws SQLException{
+        ResponseEntity<Integer>  getActivityCount(@PathVariable Long userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate) throws SQLException{
             Integer activityCount = activityService.getActivityCount(userId, startDate, endDate);
             return ResponseEntity.ok(activityCount);
         }
 
-        @PostMapping("/activity/{userId}/{actvtyNme}")
-        ResponseEntity<Activity>  addActivity(@PathVariable Long userId, @PathVariable String actvtyNme){
-                Activity activity = activityService.addActivity(userId,actvtyNme);
+        @PostMapping("/activity/{userId}/{actvtyNme}/{createdOn}")
+        ResponseEntity<Activity>  addActivity(@PathVariable Long userId, @PathVariable String actvtyNme, @PathVariable LocalDate createdOn){
+                Activity activity = activityService.addActivity(userId,actvtyNme,createdOn);
                 return ResponseEntity.ok(activity);
 
         }

@@ -21,7 +21,7 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
     //get a list of Daily TimeShare
     @Override
     public List<DailyTimeShare> getDailyTimeShareList(Long userId, LocalDate dateOfTimeShare){
-        return dailyTimeShareRepository.findAllByUsernameAndDateOfTimeShare(userId, dateOfTimeShare);
+        return dailyTimeShareRepository.findAllByIdAndDateOfTimeShare(userId, dateOfTimeShare);
     }
 
     //add a daily timeshare

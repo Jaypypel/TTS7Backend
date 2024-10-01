@@ -26,7 +26,7 @@ public class TaskService implements TaskServiceInterface{
 
     @Override
     public List<TaskName> getTaskNameList(String userId) {
-        return taskRepository.findByUser(userId);
+        return taskRepository.findById(userId);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TaskService implements TaskServiceInterface{
 
     @Override
     public Integer getTaskFreqeuncyCount(Long userId, LocalDate startDate, LocalDate endDate) {
-        return taskRepository.findByUserIdAndStartDateAndEndDateToGetFrequency(userId,startDate,endDate);
+        return taskRepository.findByIdAndStartDateAndEndDate(userId,startDate,endDate);
     }
 
     @Override

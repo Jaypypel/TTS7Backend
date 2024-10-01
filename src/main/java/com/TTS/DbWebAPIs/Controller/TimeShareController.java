@@ -31,11 +31,12 @@ public class TimeShareController {
         return ResponseEntity.ok(timeShareList);
     }
 
-    @GetMapping("/timeshare/maximum/id}")
+    @GetMapping("/timeshare/maxId")
     ResponseEntity<Long> getMaxTimeShareId(){
         Long maxTimeShareId = timeShareService.getMaxTimeShareId();
         return ResponseEntity.ok(maxTimeShareId);
     }
+
 
     ResponseEntity<TimeShare> addTimeShare(@PathVariable Long taskId,@PathVariable LocalDateTime date,
                                            @PathVariable LocalTime startTime, @PathVariable LocalTime endTime,

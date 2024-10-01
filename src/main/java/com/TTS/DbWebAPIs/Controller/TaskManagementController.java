@@ -75,7 +75,7 @@ public class TaskManagementController {
         return ResponseEntity.ok(taskManagements);
     }
 
-    @GetMapping("/{truId}/list")
+    @GetMapping("delegated/{truId}/list")
     ResponseEntity<List<TaskManagement>> getDelegatedTaskList(@PathVariable Long touId){
         List<TaskManagement> taskManagements = taskManagementService.getDelegatedTaskList(touId);
         return ResponseEntity.ok(taskManagements);

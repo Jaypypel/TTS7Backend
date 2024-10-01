@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.aot.generate.GeneratedTypeReference;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -33,6 +34,6 @@ public class Activity {
     @OneToMany(mappedBy = "activityAssociated")
     private List<Task> taskAssociated;//check
 
-    private LocalTime createdOn;
+    private LocalDate createdOn;
 
 }
