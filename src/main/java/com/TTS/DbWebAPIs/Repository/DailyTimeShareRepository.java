@@ -1,12 +1,10 @@
 package com.TTS.DbWebAPIs.Repository;
 
 import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
-import com.TTS.DbWebAPIs.Entity.TimeShare;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface DailyTimeShareRepository extends JpaRepository<DailyTimeShare,Long> {
@@ -23,7 +21,7 @@ public interface DailyTimeShareRepository extends JpaRepository<DailyTimeShare,L
              "                    \"LEFT JOIN MEASURABLES ON DAILY_TIME_SHARE_MEASURABLE.FK_MEASURABLE_ID = MEASURABLES.ID\\n\" +\n" +
              "                    \"WHERE DAILY_TIME_SHARE.FK_AUTHENTICATION_USER_ID = ? AND \\n\" +\n" +
              "                    \"DAILY_TIME_SHARE.DATE_OF_TIME_SHARE BETWEEN ? AND ? \"", nativeQuery = true)
-    List<DailyTimeShare> getUserDTSReportDetails(Long userId,LocalDate startDate, LocalDate endDate);
+    List<DailyTimeShare> getUserDTSReportDetails(Long userId, LocalDate startDate, LocalDate endDate);
 
     @Query("SELECT dts.timeDifference " +
             "FROM DailyTimeShare dts " +

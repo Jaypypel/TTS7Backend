@@ -47,7 +47,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectNames);
     }
 
-    @PostMapping("/project/")
+    @PostMapping("/project/{userId}/{activityId}/{projectCode}/{prjNme}/{crtdOn}")
     ResponseEntity<Project> addProject(@PathVariable Long userId, @PathVariable Activity activityId, @PathVariable Long projectCode, @PathVariable String prjNme, @PathVariable LocalTime crtdOn){
       Project project = projectService.addProject(userId,activityId,projectCode,prjNme,crtdOn);
       return ResponseEntity.ok(project);

@@ -16,7 +16,7 @@ public class DailyTimeShareMeasurables {
     @JoinColumn(name = "timeshareId", referencedColumnName = "id")
     private TimeShare fkTimeShareId;//check
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "measurablesId", referencedColumnName = "id")
     private Measurables fkMeasurablesID;//check
 

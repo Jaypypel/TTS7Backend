@@ -26,7 +26,7 @@ public class Measurables {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
-    @OneToOne(mappedBy = "fkMeasurablesID")
+    @OneToOne(mappedBy = "fkMeasurablesID", cascade = CascadeType.MERGE)
     private DailyTimeShareMeasurables measurablesAssociated;//ccheck
 
     @OneToOne(mappedBy = "fkMeasurableId")

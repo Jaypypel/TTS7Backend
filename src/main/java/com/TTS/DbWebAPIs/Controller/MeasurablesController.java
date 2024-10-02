@@ -46,7 +46,7 @@ public class MeasurablesController {
         return ResponseEntity.ok(measurables);
     }
 
-    @PostMapping("/measurable/{userID}/{measurableName}/{createdOn}")
+    @PostMapping("/measurable/{userId}/{measurableName}/{createdOn}")
     ResponseEntity<Measurables> addMeasurable(@PathVariable Long userId, @PathVariable String measurableName, @PathVariable LocalTime createdOn){
         Measurables measurables = measurablesService.addMeasurable(userId,measurableName,createdOn);
         return ResponseEntity.ok(measurables);

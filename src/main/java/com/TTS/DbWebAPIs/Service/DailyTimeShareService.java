@@ -5,6 +5,7 @@ import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 
 import com.TTS.DbWebAPIs.Repository.DailyTimeShareRepository;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DailyTimeShareService implements DailyTimeShareServiceInterface{
 
-    DailyTimeShareRepository dailyTimeShareRepository;
-    DailyTimeShareMeasurablesServiceInterface dailyTimeShareMeasurablesServiceInterface;
+  private final   DailyTimeShareRepository dailyTimeShareRepository;
+  private  final   DailyTimeShareMeasurablesServiceInterface dailyTimeShareMeasurablesServiceInterface;
 
     //get a list of Daily TimeShare
     @Override
@@ -26,6 +27,7 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
 
     //add a daily timeshare
     /*here need to check how can we pass dailyTimeshare Id to addDailyTimeShareMeasurables function*/
+    @Transactional
     @Override
     public DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare, List<DailyTimeShareMeasurables> dailyTimeShareMeasurablesList){
         for(DailyTimeShareMeasurables dailyTimeShareMeasurable: dailyTimeShareMeasurablesList){

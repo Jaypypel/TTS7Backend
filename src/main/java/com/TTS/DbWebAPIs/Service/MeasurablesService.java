@@ -63,6 +63,7 @@ public class MeasurablesService implements MeasurablesServiceInterface{
         measurables.setUser(user);
         measurables.setName(measurableName);
         measurables.setCreatedOn(createdOn);
+        measurablesRepository.save(measurables);
         return measurables;
     }
 }

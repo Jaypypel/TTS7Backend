@@ -18,8 +18,8 @@ import java.util.List;
 public class DailyTimeShareMeasurablesService implements DailyTimeShareMeasurablesServiceInterface {
 
 
-    DailyTimeShareMeasurblesRepository dailyTimeShareMeasurblesRepository;
-    MeasurablesRepository measurablesRepository;
+   private final DailyTimeShareMeasurblesRepository dailyTimeShareMeasurblesRepository;
+   private final MeasurablesRepository measurablesRepository;
 
     @Override
     public DailyTimeShareMeasurables addDailyTimeShareMeasurables(TimeShare timeShareId, Measurables mesrblId, Long mesrbQuantity, String mesrbUnit) {
