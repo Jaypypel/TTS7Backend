@@ -27,8 +27,9 @@ public interface TaskManagementServiceInterface {
 
     TaskManagement addActualTotalTime(Long assignedTaskId,String actualTotalTime);
 
-    TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, TimeShare timeShareAssociated, String activityName,
-                                   String taskName, String projectId, String projectName, LocalDateTime expectedDate,
+    //remove TimeShare timeShareAssociated
+    TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, String activityName,
+                                   String taskName, Long projectId, String projectName, LocalDateTime expectedDate,
                                    LocalTime expectedTime, String expectedTotalTime, String description, LocalTime taskAssignedOn,
                                    String actualTotalTime, LocalTime taskSeenOn, LocalTime taskCompletedOn, LocalTime taskAcceptedOn,
                                    String status, List<DelegationMeasurables> delegationMeasurablesAssociated);

@@ -24,11 +24,11 @@ public class TimeShare {
     private TaskManagement FKTaskManagementId;//check
 
 
-    @OneToOne(mappedBy = "fkTimeShareId")
-    private DailyTimeShareMeasurables dailyTimeShareMeasurables;//check
-
-    @OneToOne(mappedBy = "fkTimeShareId")
-    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
+//    @OneToOne(mappedBy = "fkTimeShareId")
+//    private DailyTimeShareMeasurables dailyTimeShareMeasurables;//check
+//
+//    @OneToOne(mappedBy = "fkTimeShareId")
+//    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
 
 
     private LocalDateTime dateOfTimeShare;

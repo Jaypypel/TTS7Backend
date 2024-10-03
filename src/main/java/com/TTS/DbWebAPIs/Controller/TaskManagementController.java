@@ -1,21 +1,63 @@
 package com.TTS.DbWebAPIs.Controller;
 
+import com.TTS.DbWebAPIs.DTO.TaskAssignedDTO;
+import com.TTS.DbWebAPIs.Entity.DelegationMeasurables;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
 import com.TTS.DbWebAPIs.Service.TaskManagementServiceInterface;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("tasks")
+@RequestMapping("tasksm")
 public class TaskManagementController {
 
     private  final TaskManagementServiceInterface taskManagementService;
+
+    //tested at the 4:41 pm on 3rd of oct
+    @PostMapping("/taskm")
+    ResponseEntity<?> addAssignedTask(@RequestBody TaskAssignedDTO taskAssignedDTO){
+        System.out.println("Received taskAssignedDTO: " + taskAssignedDTO);
+        try {
+            String activityName = taskAssignedDTO.getTaskManagement().getActivityName();
+
+            // Check if ActivityName is not null or empty
+            if (activityName == null || activityName.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity name cannot be null or empty");
+            }
+
+            TaskManagement taskManagement = taskManagementService.addAssignedTask(
+                    taskAssignedDTO.getTaskManagement().getTaskOwnerUserID().getId(),
+                    taskAssignedDTO.getTaskManagement().getTaskReceivedUserID().getId(),
+                    activityName,
+                    taskAssignedDTO.getTaskManagement().getTaskName(),
+                    taskAssignedDTO.getTaskManagement().getProjectId()
+                    ,taskAssignedDTO.getTaskManagement().getProjectName(),
+                    taskAssignedDTO.getTaskManagement().getExpectedDate(),
+                    taskAssignedDTO.getTaskManagement().getExpectedTime(),
+                    taskAssignedDTO.getTaskManagement().getExpectedTotalTime(),
+                    taskAssignedDTO.getTaskManagement().getDescription(),
+                    taskAssignedDTO.getTaskManagement().getTaskAssignedOn(),
+                    taskAssignedDTO.getTaskManagement().getActualTotalTime(),
+                    taskAssignedDTO.getTaskManagement().getTaskSeenOn(),
+                    taskAssignedDTO.getTaskManagement().getTaskCompletedOn(),
+                    taskAssignedDTO.getTaskManagement().getTaskAcceptedOn(),
+                    taskAssignedDTO.getTaskManagement().getStatus(),taskAssignedDTO.getDelegationMeasurablesLlist());
+             return ResponseEntity.ok(taskManagement);
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
 
     @GetMapping(" /list/accepted/{truId}/{status}")
     ResponseEntity<List<TaskManagement>> getAcceptedTaskList(@PathVariable Long  truId, @PathVariable String status){

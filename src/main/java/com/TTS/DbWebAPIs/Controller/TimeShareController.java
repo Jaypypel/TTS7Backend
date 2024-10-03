@@ -38,11 +38,7 @@ public class TimeShareController {
     }
 
     @PostMapping("/timeshare/{taskId}/{date}/{startTime}/{endTime}/{timeDifference}/{description}/{createdOn}")
-    ResponseEntity<TimeShare> addTimeShare(@PathVariable Long taskId,@PathVariable LocalDateTime date,
-                                           @PathVariable LocalTime startTime, @PathVariable LocalTime endTime,
-                                           @PathVariable String timeDifference, @PathVariable String description,
-                                           @PathVariable LocalTime createdOn,
-                                           @RequestBody List<TimeShareMeasurables> timeShareMeasurablesList){
+    ResponseEntity<TimeShare> addTimeShare(@RequestBody TimeShare DTO){
         TimeShare timeShare = timeShareService.addTimeShare(taskId,date,startTime,endTime,timeDifference,description,createdOn,timeShareMeasurablesList);
         return ResponseEntity.ok(timeShare);
     }

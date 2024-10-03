@@ -16,4 +16,6 @@ public interface ActivityServiceInterface {
     Activity addActivity(Long userId, String activityName, LocalDate createdOn);
 
     Integer getActivityCount(Long userId, LocalDate startDate, LocalDate endDate);
+
+    Activity getActivity(String name);
 }

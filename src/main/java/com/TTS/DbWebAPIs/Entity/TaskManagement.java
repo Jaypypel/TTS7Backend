@@ -30,13 +30,13 @@ public class TaskManagement {
             name = "taskReceiver", referencedColumnName = "id"
     )
     private   User taskReceivedUserID;//check
-
-    @OneToOne(mappedBy = "FKTaskManagementId")
-    private TimeShare timeShareAssociated;//check
+//
+//    @OneToOne(mappedBy = "FKTaskManagementId")
+//    private TimeShare timeShareAssociated;//check
 
     //private  Long ActivityId;
 
-    private  String ActivityName;
+    private  String activityName;
 
   //  private  Long Task_ID;
 
@@ -54,7 +54,7 @@ public class TaskManagement {
 
     private String description;
 
-    private LocalTime TaskAssignedOn;
+    private LocalTime taskAssignedOn;
 
     private String  actualTotalTime;
 

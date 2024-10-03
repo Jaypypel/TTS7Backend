@@ -24,6 +24,7 @@ public class UserController {
 //        return userService.registerUser(inputUser);
 //    }
 
+    //tested again at 11:24 am on 3rd Oct
     @PostMapping("/register")
     public ResponseEntity<?> Registration(@RequestBody User inputUser) {
 //        boolean isRegistered = userService.registerUser(inputUser);

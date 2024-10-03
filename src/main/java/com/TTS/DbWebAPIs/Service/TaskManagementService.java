@@ -1,10 +1,7 @@
 package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.*;
-import com.TTS.DbWebAPIs.Repository.ActivityRepository;
-import com.TTS.DbWebAPIs.Repository.ProjectRepository;
-import com.TTS.DbWebAPIs.Repository.TaskManagementRepository;
-import com.TTS.DbWebAPIs.Repository.UserRepository;
+import com.TTS.DbWebAPIs.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +20,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     private final UserRepository userRepository;
     private final ActivityRepository activityRepository;
     private  final ProjectRepository projectRepository;
+    private final DelegationMeasurablesRepository delegationMeasurablesRepository;
 
     /*the function is  used in existing tts app for the receivedModfifcationtAskList,*/
     @Override
@@ -49,30 +47,27 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
     //passed name of project as id since id needs to be uniquef
     //need to refactor and ask delegatonMeasurablesAssociated
+    //removed time shareId
     @Override
-    public TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, TimeShare timeShareAssociated, String activityName,
-                                          String taskName, String projectId, String projectName, LocalDateTime expectedDate,
+    public TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, String activityName,
+                                          String taskName, Long projectId, String projectName, LocalDateTime expectedDate,
                                           LocalTime expectedTime, String expectedTotalTime, String description, LocalTime taskAssignedOn,
                                           String actualTotalTime, LocalTime taskSeenOn, LocalTime taskCompletedOn, LocalTime taskAcceptedOn,
                                           String status, List<DelegationMeasurables> delegationMeasurablesAssociated) {
         User iptTskOwner = userRepository.findById(taskOwnerUserID).orElseThrow(()->new RuntimeException("task not assigned"));
         User iptTskReceiver = userRepository.findById(taskReceivedUserID).orElseThrow(()->new RuntimeException("task not received"));
-        Activity iptActivity;
-        Project iptProject;
-        try {
-            iptActivity = activityRepository.findByName(activityName);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("activity not found");
-        }
-        try {
-             iptProject = projectRepository.findByName(projectId);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("project not found");
-        }
+        Activity iptActivity = activityRepository.findByName(activityName);
+        System.out.println(iptActivity);
+        Project iptProject = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("not found"));
+//        try {
+//            iptActivity = activityRepository.findByName(activityName);
+//        } catch (RuntimeException e) {
+//            throw new RuntimeException("activity not found");
+//        }
         TaskManagement assignedTaskManagement = new TaskManagement();
         assignedTaskManagement.setTaskOwnerUserID(iptTskOwner);
         assignedTaskManagement.setTaskReceivedUserID(iptTskReceiver);
-        assignedTaskManagement.setTimeShareAssociated(timeShareAssociated);
+      //  assignedTaskManagement.setTimeShareAssociated(timeShareAssociated);
         assignedTaskManagement.setActivityName(iptActivity.getName());
         assignedTaskManagement.setTaskName(taskName);
         iptProject.setName(projectName);
@@ -90,11 +85,12 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         final TaskManagement saveAssignedTaskManagement = taskManagementRepository.save(assignedTaskManagement);
         delegationMeasurablesAssociated.forEach(delegationMeasurable -> {
             delegationMeasurable.setFkTaskManagementID(saveAssignedTaskManagement);
-            delegationMeasurable.setId(Long.parseLong(delegationMeasurable.getFkMeasurableId().getName().replaceAll("[^0-9]", ""))); // Example: setting value
+            //delegationMeasurable.setId(Long.parseLong(delegationMeasurable.getFkMeasurableId().getName().replaceAll("[^0-9]", ""))); // Example: setting value
             // Set other fields as required
             delegationMeasurable.setActualMeasurableQuantity(delegationMeasurable.getActualMeasurableQuantity());
             delegationMeasurable.setExpectedMeasurableQuantity(delegationMeasurable.getExpectedMeasurableQuantity());
             delegationMeasurable.setMeasurableUnit(delegationMeasurable.getMeasurableUnit());
+            delegationMeasurablesRepository.save(delegationMeasurable);
         });
         return saveAssignedTaskManagement;
     }

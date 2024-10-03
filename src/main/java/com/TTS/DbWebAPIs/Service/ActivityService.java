@@ -49,5 +49,10 @@ public class ActivityService implements ActivityServiceInterface{
         return activityRepository.ActivityCount(userId,startDate,endDate);
     }
 
+    @Override
+    public Activity getActivity(String name) {
+        return activityRepository.findByName(name);
+    }
+
 
 }

@@ -53,4 +53,10 @@ public class ActivityController {
 
         }
 
+        @GetMapping("/activity/{name}")
+        ResponseEntity<Activity>   getActivity(@PathVariable String name){
+            Activity activity = activityService.getActivity(name);
+            return ResponseEntity.ok(activity);
+        }
+
 }

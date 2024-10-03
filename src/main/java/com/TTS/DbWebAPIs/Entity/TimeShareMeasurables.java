@@ -22,7 +22,7 @@ public class TimeShareMeasurables {
     @JoinColumn(name = "timeshareId", referencedColumnName = "id")
     private TimeShare fkTimeShareId;//check
 
-    @OneToOne(mappedBy = "timeShareMeasurable")
+    @OneToOne()
     private DelegationMeasurables fkDelegationMeasurablesId;//check
 
     @OneToOne

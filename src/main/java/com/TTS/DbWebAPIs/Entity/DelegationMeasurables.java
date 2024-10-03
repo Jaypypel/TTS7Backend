@@ -22,9 +22,9 @@ public class DelegationMeasurables {
     @JoinColumn(name = "measurableId", referencedColumnName = "id")
     private Measurables fkMeasurableId;//check
 
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private TimeShareMeasurables timeShareMeasurable;//check
+//    @OneToOne
+//    @JoinColumn(name = "id", referencedColumnName = "id")
+//    private TimeShareMeasurables timeShareMeasurable;//check
 
     private Long expectedMeasurableQuantity;
 

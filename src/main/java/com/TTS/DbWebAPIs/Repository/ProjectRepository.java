@@ -5,6 +5,7 @@ import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectCode;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
             "  AND d.dateOfTimeShare BETWEEN :startDate AND :endDate")
     Integer findByIdAndDateRange(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
+    @Transactional
     Project findByName(String projectname);
 
 
