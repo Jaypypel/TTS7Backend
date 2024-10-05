@@ -15,10 +15,13 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String projectCode;
+
     private String name;
 
-    @OneToMany(mappedBy = "projectAssociated")
-    private List<Activity> activitiesAssociated;//check
+    @ManyToOne
+    @JoinColumn(name= "activity_id", referencedColumnName = "id")
+    private Activity activitiesAssociated;//check
 
     @ManyToMany
     @JoinTable(

@@ -22,16 +22,16 @@ public class TaskManagement {
     private  long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "taskOwner", referencedColumnName = "id")
+    @JoinColumn(name = "taskOwner", referencedColumnName = "username")
     private   User taskOwnerUserID;//check
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
-            name = "taskReceiver", referencedColumnName = "id"
+            name = "taskReceiver", referencedColumnName = "username"
     )
     private   User taskReceivedUserID;//check
-//
-//    @OneToOne(mappedBy = "FKTaskManagementId")
+
+//    @OneToOne(mappedBy = "fkTaskManagementId")
 //    private TimeShare timeShareAssociated;//check
 
     //private  Long ActivityId;
@@ -42,7 +42,7 @@ public class TaskManagement {
 
     private String taskName;
 
-    private Long projectId;
+    private String projectCode;
 
     private  String projectName;
 
@@ -63,6 +63,10 @@ public class TaskManagement {
     private LocalTime taskCompletedOn;
 
     private LocalTime taskAcceptedOn;
+
+    private LocalTime taskProcessedOn;
+
+    private LocalTime tasKApprovedOn;
 
     private String status;
 

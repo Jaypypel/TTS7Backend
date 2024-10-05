@@ -17,6 +17,7 @@ public class DailyTimeShareController {
 
     private final DailyTimeShareServiceInterface dailyTimeShareService;
 
+    //tested at 1:06 pm on 4th oct
     @PostMapping("/dailyTimeShare/")
     ResponseEntity<com.TTS.DbWebAPIs.Entity.DailyTimeShare> addDailyTimeShare(@RequestBody DailyTimeShareDTO dailyTimeShareDTO) {
         com.TTS.DbWebAPIs.Entity.DailyTimeShare dailyTimeShare = dailyTimeShareDTO.getDailyTimeShare();

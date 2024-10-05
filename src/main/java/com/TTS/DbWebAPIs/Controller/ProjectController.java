@@ -24,8 +24,8 @@ public class ProjectController {
     private final ProjectServiceInterface projectService;
 
     @GetMapping("{projectName}/code")
-    ResponseEntity<Integer> getProjectCode(@PathVariable String projectName){
-       Integer prjCod = projectService.getProjectCode(projectName);
+    ResponseEntity<Project> getProjectCode(@PathVariable String projectName){
+       Project prjCod = projectService.getProjectCode(projectName);
        return ResponseEntity.ok(prjCod);
     }
 
@@ -47,10 +47,18 @@ public class ProjectController {
         return ResponseEntity.ok(projectNames);
     }
 
-    @PostMapping("/project/{userId}/{activityId}/{projectCode}/{prjNme}/{crtdOn}")
-    ResponseEntity<Project> addProject(@PathVariable Long userId, @PathVariable Activity activityId, @PathVariable Long projectCode, @PathVariable String prjNme, @PathVariable LocalTime crtdOn){
+    @PostMapping("/project/")
+    ResponseEntity<Project> addProject(@RequestParam("user_id") Long userId, @RequestParam("activity_id")
+    Long activityId, @RequestParam("proj_code") String projectCode, @RequestParam("proj_name") String prjNme, @RequestParam("created_on") LocalTime crtdOn){
       Project project = projectService.addProject(userId,activityId,projectCode,prjNme,crtdOn);
       return ResponseEntity.ok(project);
+    }
+
+    @GetMapping("/projectCode/")
+    ResponseEntity<Project> getProjectViaProjectCode(@RequestParam("pro_code") String projectCode){
+        Project project = projectService.getProjectCode(projectCode);
+        System.out.println(project);
+        return ResponseEntity.ok(project);
     }
 
 

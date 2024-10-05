@@ -22,12 +22,14 @@ public class MeasurablesController {
 
     private  final MeasurablesServiceInterface measurablesService;
 
+    //tested at 2:15 on 4th oct
     @GetMapping("/DTSMeasurablesList/{dtsId}")
     ResponseEntity<List<Measurables>> getDTSMeasurablesList(@PathVariable Long dtsId){
         List<Measurables> measurables = measurablesService.getDTSMeasurablesList(dtsId);
         return ResponseEntity.ok(measurables);
     }
 
+    //tested at 2:30 on 4th oct
     @GetMapping("/list")
     ResponseEntity<List<Measurables>> getMeasurableList(){
         List<Measurables> measurables = measurablesService.getMeasurableList();

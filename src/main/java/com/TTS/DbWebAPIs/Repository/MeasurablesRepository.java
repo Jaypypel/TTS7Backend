@@ -21,11 +21,17 @@ public interface MeasurablesRepository extends JpaRepository<Measurables,Long> {
 //            " FROM DailyTimeShare dts "  +
 //            " LEFT JOIN dts.dailyTimeShareMeasurables dtm " +
 //            " WHERE dts.user.id = :userId AND "  +
-//            " dts.dateOfTimeShare BETWEEN :startDate AND :endDate")
-     @Query(value = "SELECT COUNT(DISTINCT dtm.measurable_id) " +
-        "FROM DAILY_TIME_SHARE dts " +
-        "LEFT JOIN DAILY_TIME_SHARE_MEASURABLE dtm ON dts.id = dtm.fk_time_share_id.id " +
-        "WHERE dts.fk_user_id.id = :userId " +
+////            " dts.dateOfTimeShare BETWEEN :startDate AND :endDate")
+//     @Query(value = "SELECT COUNT(DISTINCT dtm.measurable_id) " +
+//        "FROM DailyTimeShare dts " +
+//        "LEFT JOIN DailyTimeShareMeasurables dtm ON dts.id = dtm.fk_time_share_id.id " +
+//        "WHERE dts.fk_user_id.id = :userId " +
+//        "AND dts.date_of_time_share BETWEEN :startDate AND :endDate",
+//        nativeQuery = true)
+    @Query(value = "SELECT COUNT(DISTINCT measurables_id) " +
+        "FROM daily_time_share dts " + // table name for DailyTimeShare
+        "LEFT JOIN daily_time_share_measurables dtm ON dts.id = dtm.timeshare_id " + // Use the correct column for foreign key
+        "WHERE dts.userid = :userId " + // Directly reference the column for user ID
         "AND dts.date_of_time_share BETWEEN :startDate AND :endDate",
         nativeQuery = true)
     Integer findByUserAndDateRange(  Long userId, LocalDate startDate, LocalDate endDate);

@@ -39,8 +39,8 @@ public class TaskManagementController {
                     taskAssignedDTO.getTaskManagement().getTaskReceivedUserID().getId(),
                     activityName,
                     taskAssignedDTO.getTaskManagement().getTaskName(),
-                    taskAssignedDTO.getTaskManagement().getProjectId()
-                    ,taskAssignedDTO.getTaskManagement().getProjectName(),
+                    taskAssignedDTO.getTaskManagement().getProjectCode(),
+                    taskAssignedDTO.getTaskManagement().getProjectName(),
                     taskAssignedDTO.getTaskManagement().getExpectedDate(),
                     taskAssignedDTO.getTaskManagement().getExpectedTime(),
                     taskAssignedDTO.getTaskManagement().getExpectedTotalTime(),
@@ -50,6 +50,8 @@ public class TaskManagementController {
                     taskAssignedDTO.getTaskManagement().getTaskSeenOn(),
                     taskAssignedDTO.getTaskManagement().getTaskCompletedOn(),
                     taskAssignedDTO.getTaskManagement().getTaskAcceptedOn(),
+                    taskAssignedDTO.getTaskManagement().getTaskProcessedOn(),
+                    taskAssignedDTO.getTaskManagement().getTasKApprovedOn(),
                     taskAssignedDTO.getTaskManagement().getStatus(),taskAssignedDTO.getDelegationMeasurablesLlist());
              return ResponseEntity.ok(taskManagement);
         }catch (RuntimeException e){

@@ -50,15 +50,21 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     //removed time shareId
     @Override
     public TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, String activityName,
-                                          String taskName, Long projectId, String projectName, LocalDateTime expectedDate,
+                                          String taskName, String projectCode, String projectName, LocalDateTime expectedDate,
                                           LocalTime expectedTime, String expectedTotalTime, String description, LocalTime taskAssignedOn,
                                           String actualTotalTime, LocalTime taskSeenOn, LocalTime taskCompletedOn, LocalTime taskAcceptedOn,
+                                          LocalTime taskProcessOn, LocalTime taskApproveOn,
                                           String status, List<DelegationMeasurables> delegationMeasurablesAssociated) {
         User iptTskOwner = userRepository.findById(taskOwnerUserID).orElseThrow(()->new RuntimeException("task not assigned"));
         User iptTskReceiver = userRepository.findById(taskReceivedUserID).orElseThrow(()->new RuntimeException("task not received"));
         Activity iptActivity = activityRepository.findByName(activityName);
         System.out.println(iptActivity);
-        Project iptProject = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("not found"));
+        Project project;
+        try {
+            project = projectRepository.findByProjectCode(projectCode);
+        } catch (Exception e){
+            throw new RuntimeException("project not found");
+        }
 //        try {
 //            iptActivity = activityRepository.findByName(activityName);
 //        } catch (RuntimeException e) {
@@ -70,8 +76,8 @@ public class TaskManagementService implements TaskManagementServiceInterface{
       //  assignedTaskManagement.setTimeShareAssociated(timeShareAssociated);
         assignedTaskManagement.setActivityName(iptActivity.getName());
         assignedTaskManagement.setTaskName(taskName);
-        iptProject.setName(projectName);
-        assignedTaskManagement.setProjectName(iptProject.getName());
+        project.setName(projectName);
+        assignedTaskManagement.setProjectName(project.getName());
         assignedTaskManagement.setExpectedDate(expectedDate);
         assignedTaskManagement.setExpectedTime(expectedTime);
         assignedTaskManagement.setExpectedTotalTime(expectedTotalTime);
@@ -81,6 +87,8 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         assignedTaskManagement.setTaskSeenOn(taskSeenOn);
         assignedTaskManagement.setTaskCompletedOn(taskCompletedOn);
         assignedTaskManagement.setTaskAcceptedOn(taskAcceptedOn);
+        assignedTaskManagement.setTaskProcessedOn(taskProcessOn);
+        assignedTaskManagement.setTasKApprovedOn(taskApproveOn);
         assignedTaskManagement.setStatus(status);
         final TaskManagement saveAssignedTaskManagement = taskManagementRepository.save(assignedTaskManagement);
         delegationMeasurablesAssociated.forEach(delegationMeasurable -> {

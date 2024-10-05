@@ -23,17 +23,17 @@ public class Measurables {
     //added new
 
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "userId", referencedColumnName = "username")
     private User user;
 
-    @OneToOne(mappedBy = "fkMeasurablesID", cascade = CascadeType.MERGE)
-    private DailyTimeShareMeasurables measurablesAssociated;//ccheck
-
-    @OneToOne(mappedBy = "fkMeasurableId")
-    private DelegationMeasurables delegationMeasurablesAssociated;//check
-
-    @OneToOne(mappedBy = "fkMeasurablesID")
-    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
+//    @OneToOne(mappedBy = "fkMeasurablesID", cascade = CascadeType.MERGE)
+//    private DailyTimeShareMeasurables measurablesAssociated;//ccheck
+//
+//    @OneToOne(mappedBy = "fkMeasurableId")
+//    private DelegationMeasurables delegationMeasurablesAssociated;//check
+//
+//    @OneToOne(mappedBy = "fkMeasurablesID")
+//    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
 
     private LocalTime createdOn;
 

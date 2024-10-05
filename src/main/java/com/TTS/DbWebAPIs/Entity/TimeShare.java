@@ -21,7 +21,7 @@ public class TimeShare {
 
     @OneToOne
     @JoinColumn(name = "taskHandler", referencedColumnName="id")
-    private TaskManagement FKTaskManagementId;//check
+    private TaskManagement fkTaskManagementId;//check
 
 
 //    @OneToOne(mappedBy = "fkTimeShareId")

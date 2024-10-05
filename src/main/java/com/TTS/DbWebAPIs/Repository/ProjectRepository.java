@@ -13,8 +13,8 @@ import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project,Long> {
 
-    @Query("SELECT p.id FROM   Project p WHERE p.name =: projectName")
-    Integer findByProjectCode(String projectName);
+//    @Query("SELECT p FROM   Project p WHERE p.projectCode =:projectCode")
+    Project findByProjectCode(String projectCode);
 
     @Query("SELECT p.id AS Id FROM Project p")
     List<ProjectCode> findById();
@@ -31,6 +31,8 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
 
     @Transactional
     Project findByName(String projectname);
+
+
 
 
 

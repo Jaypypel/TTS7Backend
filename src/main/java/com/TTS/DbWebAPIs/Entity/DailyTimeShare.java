@@ -35,6 +35,6 @@ public class DailyTimeShare {
     private LocalTime createdOn;
 
     @ManyToOne
-    @JoinColumn(name="userID", referencedColumnName = "id")
+    @JoinColumn(name="userID", referencedColumnName = "username")
     private User user;
 }

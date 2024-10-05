@@ -19,7 +19,7 @@ public class Task {
     private Activity activityAssociated;//check
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName= "id")
+    @JoinColumn(name = "username", referencedColumnName= "username")
     private User user;//check
     //added
     private LocalTime createdOn;

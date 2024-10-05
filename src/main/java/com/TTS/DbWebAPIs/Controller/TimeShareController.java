@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Controller;
 
+import com.TTS.DbWebAPIs.DTO.TimeShareDTO;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
 import com.TTS.DbWebAPIs.Service.TimeShareServiceInterface;
@@ -37,9 +38,15 @@ public class TimeShareController {
         return ResponseEntity.ok(maxTimeShareId);
     }
 
-    @PostMapping("/timeshare/{taskId}/{date}/{startTime}/{endTime}/{timeDifference}/{description}/{createdOn}")
-    ResponseEntity<TimeShare> addTimeShare(@RequestBody TimeShare DTO){
-        TimeShare timeShare = timeShareService.addTimeShare(taskId,date,startTime,endTime,timeDifference,description,createdOn,timeShareMeasurablesList);
+    //tested at 12:27 pm on 4th oct 2024
+    @PostMapping("/timeshare")
+    ResponseEntity<TimeShare> addTimeShare(@RequestBody TimeShareDTO timeShareDTO){
+        System.out.println(timeShareDTO);
+        TimeShare timeShare = timeShareService.addTimeShare(timeShareDTO.getTimeShare().getFkTaskManagementId().getId()
+                ,timeShareDTO.getTimeShare().getDateOfTimeShare(),timeShareDTO.getTimeShare().getStartTime()
+                ,timeShareDTO.getTimeShare().getEndTime(), timeShareDTO.getTimeShare().getTimeDifference(),
+                timeShareDTO.getTimeShare().getDescription(),timeShareDTO.getTimeShare().getCreatedOn(),
+                timeShareDTO.getTimeShareMeasurablesList());
         return ResponseEntity.ok(timeShare);
     }
 

@@ -13,10 +13,10 @@ import java.util.List;
 
 public interface ProjectServiceInterface {
 
-    Integer getProjectCode(String projectName);
+    Project getProjectCode(String projectName);
     List<ProjectCode> getProjectCodeList();
     List<ProjectName> getProjectNameList();
-    Project addProject(Long userId, Activity activityID, Long projectCode, String projectName, LocalTime createdOn);
+    Project addProject(Long userId, Long activityID, String projectCode, String projectName, LocalTime createdOn);
     Integer getProjectCount(Long userId, LocalDateTime startDate, LocalDateTime endDate);
     Integer getProjectFrequency(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -24,15 +24,15 @@ public class Activity {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name= "user_id", referencedColumnName = "id")
+    @JoinColumn(name= "username", referencedColumnName = "username")
     private User user;//check
 
-    @ManyToOne
-    @JoinColumn(name = "project_id", referencedColumnName = "id")
-    private Project projectAssociated;//check
-
-    @OneToMany(mappedBy = "activityAssociated")
-    private List<Task> taskAssociated;//check
+//    @ManyToOne
+//    @JoinColumn(name = "project_id", referencedColumnName = "id")
+//    private Project projectAssociated;//check
+//
+//    @OneToMany(mappedBy = "activityAssociated")
+//    private List<Task> taskAssociated;//check
 
     private LocalDate createdOn;
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ public class User {
 
     private String fullName;
 
+    @Column(unique = true)
     private String username;
 
     private String password;
@@ -28,10 +30,10 @@ public class User {
 
     private String mobileNo;
 
-    private LocalTime time;
+    private LocalDateTime createdOn;
 
-    @ManyToMany(mappedBy = "usersAssociated",cascade = CascadeType.ALL)
-    private Set<Project> projectId = new HashSet<>();//check
+//    @ManyToMany(mappedBy = "usersAssociated",cascade = CascadeType.ALL)
+//    private Set<Project> projectId = new HashSet<>();//check
 
 //    @OneToMany(mappedBy = "user")
 //    private List<DailyTimeShare> userAssociated;//check

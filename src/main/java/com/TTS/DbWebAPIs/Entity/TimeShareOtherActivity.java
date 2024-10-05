@@ -16,7 +16,7 @@ public class TimeShareOtherActivity {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "userId", referencedColumnName = "username")
     private User userId;//check
 
     private String activity;

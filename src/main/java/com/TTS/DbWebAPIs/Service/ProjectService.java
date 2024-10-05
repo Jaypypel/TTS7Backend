@@ -3,6 +3,7 @@ package com.TTS.DbWebAPIs.Service;
 import com.TTS.DbWebAPIs.Entity.Activity;
 import com.TTS.DbWebAPIs.Entity.Project;
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Repository.ActivityRepository;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectCode;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectName;
 import com.TTS.DbWebAPIs.Repository.ProjectRepository;
@@ -26,8 +27,10 @@ public class ProjectService implements ProjectServiceInterface  {
 
     private final UserRepository userRepository;
 
+    private  final ActivityRepository activityRepository;
+
     @Override
-    public Integer getProjectCode(String projectName) {
+    public Project getProjectCode(String projectName) {
         return projectRepository.findByProjectCode(projectName);
     }
 
@@ -43,13 +46,15 @@ public class ProjectService implements ProjectServiceInterface  {
 
 
     @Override
-    public Project addProject(Long userId, Activity activityID, Long projectCode, String projectName, LocalTime createdOn) {
+    public Project addProject(Long userId, Long activityID, String projectCode, String projectName, LocalTime createdOn) {
         Project newProject = new Project();
         User inputUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("user not exit"));
         Set<User> userAssociatedProject = new HashSet<>();
         userAssociatedProject.add(inputUser);
         newProject.setUsersAssociated(userAssociatedProject);
-        newProject.setId(projectCode);
+        Activity activity = activityRepository.findById(activityID).orElseThrow(()-> new RuntimeException("activity not exist"));
+        newProject.setActivitiesAssociated(activity);
+        newProject.setProjectCode(projectCode);
         newProject.setName(projectName);
         newProject.setCreatedOn(createdOn);
         return projectRepository.save(newProject);
