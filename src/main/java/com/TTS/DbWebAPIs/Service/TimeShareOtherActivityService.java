@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.TimeShareOtherActivity;
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Repository.TimeShareOtherActivityRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,13 @@ import java.time.LocalTime;
 public class TimeShareOtherActivityService implements TimeShareOtherActivityServiceInterface{
 
     private  final UserRepository userRepository;
+    private  final TimeShareOtherActivityRepository timeShareOtherActivityRepository;
     @Override
-    public TimeShareOtherActivity addOtherActivity(Long userId, String activityName, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, LocalTime createdOn) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    public TimeShareOtherActivity addOtherActivity(String username, String activityName, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, LocalTime createdOn) {
+        User user = userRepository.findByUsername(username);
+        if(user.getUsername().isEmpty()){
+            throw new RuntimeException("username not found");
+        }
         TimeShareOtherActivity timeShareOtherActivity = new TimeShareOtherActivity();
         timeShareOtherActivity.setUserId(user);
         timeShareOtherActivity.setActivity(activityName);
@@ -28,6 +33,6 @@ public class TimeShareOtherActivityService implements TimeShareOtherActivityServ
         timeShareOtherActivity.setDescription(description);
         timeShareOtherActivity.setTimeDifference(timeDifference);
         timeShareOtherActivity.setCreatedOn(createdOn);
-        return timeShareOtherActivity;
+        return timeShareOtherActivityRepository.save(timeShareOtherActivity);
     }
 }

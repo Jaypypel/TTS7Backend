@@ -9,5 +9,5 @@ import java.time.LocalTime;
 
 public interface TimeShareOtherActivityServiceInterface {
     //should be name as addtimeshareOtheeractivity
-    TimeShareOtherActivity addOtherActivity(Long userId, String activityName, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, LocalTime createdOn);
+    TimeShareOtherActivity addOtherActivity(String username , String activityName, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, LocalTime createdOn);
 }

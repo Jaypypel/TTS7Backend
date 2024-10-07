@@ -14,9 +14,9 @@ public interface MeasurablesServiceInterface {
 
   //   List<Measurables> getAllocatedMeasurableList(Long taskId);
 
-     Integer getMeasurableCount(Long userId, LocalDate startDate, LocalDate endDate);
+     Integer getMeasurableCount(String username, LocalDate startDate, LocalDate endDate);
      //need to return names of measurables rather object
-     List<Measurables> getMeasurableListForUserID(Long userId);
+     List<Measurables> getMeasurableListForUsername(String username);
 
-     Measurables addMeasurable(Long userId, String measurableName, LocalTime createdOn);
+     Measurables addMeasurable(String username, String measurableName, LocalTime createdOn);
 }

@@ -27,6 +27,7 @@ public class ActivityController {
 
        private final ActivityServiceInterface activityService;
 
+       //tested at 1:45pm on 7 oct
         @GetMapping("/names")
         ResponseEntity<?> getActivtiesNames() throws SQLException {
             List<String> activities = activityService.getActivityNames();
@@ -34,25 +35,29 @@ public class ActivityController {
 
         }
 
-        @GetMapping("/names/{userId}")
-        ResponseEntity<List<Activity>>  getActivityList(@PathVariable Long userId) throws SQLException{
-            List<Activity>  activities = activityService.getActivityList(userId);
+       //tested at 2:45pm on 7 oct
+        @GetMapping("/names/{username}")
+        ResponseEntity<List<Activity>>  getActivityList(@PathVariable String username) throws SQLException{
+            List<Activity>  activities = activityService.getActivityList(username);
             return ResponseEntity.ok(activities);
         }
 
-        @GetMapping("/activityCount/{userId}/{startDate}/{endDate}")
-        ResponseEntity<Integer>  getActivityCount(@PathVariable Long userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate) throws SQLException{
-            Integer activityCount = activityService.getActivityCount(userId, startDate, endDate);
+        //tested already
+        @GetMapping("/activityCount/{username}/{startDate}/{endDate}")
+        ResponseEntity<Integer>  getActivityCount(@PathVariable String username, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate) throws SQLException{
+            Integer activityCount = activityService.getActivityCount(username, startDate, endDate);
             return ResponseEntity.ok(activityCount);
         }
 
-        @PostMapping("/activity/{userId}/{actvtyNme}/{createdOn}")
-        ResponseEntity<Activity>  addActivity(@PathVariable Long userId, @PathVariable String actvtyNme, @PathVariable LocalDate createdOn){
-                Activity activity = activityService.addActivity(userId,actvtyNme,createdOn);
+        //tested already
+        @PostMapping("/activity/{username}/{actvtyNme}/{createdOn}")
+        ResponseEntity<Activity>  addActivity(@PathVariable String username, @PathVariable String actvtyNme, @PathVariable LocalDate createdOn){
+                Activity activity = activityService.addActivity(username,actvtyNme,createdOn);
                 return ResponseEntity.ok(activity);
 
         }
 
+        //tested already
         @GetMapping("/activity/{name}")
         ResponseEntity<Activity>   getActivity(@PathVariable String name){
             Activity activity = activityService.getActivity(name);

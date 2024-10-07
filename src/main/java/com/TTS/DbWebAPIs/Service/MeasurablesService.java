@@ -47,18 +47,21 @@ public class MeasurablesService implements MeasurablesServiceInterface{
 //    }
 
     @Override
-    public Integer getMeasurableCount(Long userId, LocalDate startDate, LocalDate endDate) {
-        return measurablesRepository.findByUserAndDateRange(userId,startDate,endDate);
+    public Integer getMeasurableCount(String username, LocalDate startDate, LocalDate endDate) {
+        return measurablesRepository.findByUserAndDateRange(username,startDate,endDate);
     }
 
     @Override
-    public List<Measurables> getMeasurableListForUserID(Long userId) {
-        return measurablesRepository.findByUserId(userId);
+    public List<Measurables> getMeasurableListForUsername(String username) {
+        return measurablesRepository.findByUsername(username);
     }
 
     @Override
-    public Measurables addMeasurable(Long userId, String measurableName, LocalTime createdOn) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("user not found"));
+    public Measurables addMeasurable(String username, String measurableName, LocalTime createdOn) {
+        User user = userRepository.findByUsername(username);
+        if(user.getUsername().isEmpty() || user.getUsername().isBlank()){
+            throw  new RuntimeException("user not found");
+        }
         Measurables measurables = new Measurables();
         measurables.setUser(user);
         measurables.setName(measurableName);

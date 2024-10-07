@@ -78,6 +78,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         assignedTaskManagement.setTaskName(taskName);
         project.setName(projectName);
         assignedTaskManagement.setProjectName(project.getName());
+        assignedTaskManagement.setProjectCode(project.getProjectCode());
         assignedTaskManagement.setExpectedDate(expectedDate);
         assignedTaskManagement.setExpectedTime(expectedTime);
         assignedTaskManagement.setExpectedTotalTime(expectedTotalTime);

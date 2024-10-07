@@ -4,7 +4,10 @@ package com.TTS.DbWebAPIs.Service;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 
+import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.DailyTimeShareRepository;
+import com.TTS.DbWebAPIs.Repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +21,7 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
 
   private final   DailyTimeShareRepository dailyTimeShareRepository;
   private  final   DailyTimeShareMeasurablesServiceInterface dailyTimeShareMeasurablesServiceInterface;
-
+  private  final  UserRepository userRepository;
     //get a list of Daily TimeShare
     @Override
     public List<DailyTimeShare> getDailyTimeShareList(Long userId, LocalDate dateOfTimeShare){
@@ -33,6 +36,12 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
         for(DailyTimeShareMeasurables dailyTimeShareMeasurable: dailyTimeShareMeasurablesList){
             dailyTimeShareMeasurablesServiceInterface.addDailyTimeShareMeasurables(dailyTimeShareMeasurable.getFkTimeShareId(), dailyTimeShareMeasurable.getFkMeasurablesID(),dailyTimeShareMeasurable.getMeasurableQuantity(),dailyTimeShareMeasurable.getMeasurableUnit());
         }
+        User user = userRepository.findByUsername(dailyTimeShare.getUser().getUsername());
+        if(user==null){
+            throw new RuntimeException("user not found");
+        }
+        dailyTimeShare.setUser(user);
+
         return  dailyTimeShareRepository.save(dailyTimeShare);
     }
 

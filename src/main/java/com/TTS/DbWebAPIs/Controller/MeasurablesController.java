@@ -36,21 +36,24 @@ public class MeasurablesController {
         return ResponseEntity.ok(measurables);
     }
 
-    @GetMapping("/count/{userId}/{startDate}/{endDate}/")
-    ResponseEntity<Integer> getMeasurablesCount(@PathVariable Long userId,@PathVariable LocalDate startDate,@PathVariable LocalDate endDate){
-        Integer measurablesCount = measurablesService.getMeasurableCount(userId,startDate,endDate);
+    @GetMapping("/count/{username}/{startDate}/{endDate}/")
+    ResponseEntity<Integer> getMeasurablesCount(@PathVariable String username,@PathVariable LocalDate startDate,@PathVariable LocalDate endDate){
+        Integer measurablesCount = measurablesService.getMeasurableCount(username,startDate,endDate);
         return ResponseEntity.ok(measurablesCount);
     }
 
-    @GetMapping("/{userId}/list")
-    ResponseEntity<List<Measurables>> getMeasurablesListForUserId(@PathVariable Long userId){
-        List<Measurables> measurables = measurablesService.getMeasurableListForUserID(userId);
+    //tested on 7 oct at 4:41 pm
+    @GetMapping("/{username}/list")
+    ResponseEntity<List<Measurables>> getMeasurablesListForUserId(@PathVariable String username){
+        List<Measurables> measurables = measurablesService.getMeasurableListForUsername(username);
+        System.out.println(measurables);
         return ResponseEntity.ok(measurables);
     }
 
-    @PostMapping("/measurable/{userId}/{measurableName}/{createdOn}")
-    ResponseEntity<Measurables> addMeasurable(@PathVariable Long userId, @PathVariable String measurableName, @PathVariable LocalTime createdOn){
-        Measurables measurables = measurablesService.addMeasurable(userId,measurableName,createdOn);
+    //tested on 7 oct at 4:15pm
+    @PostMapping("/measurable/{username}/{measurableName}/{createdOn}")
+    ResponseEntity<Measurables> addMeasurable(@PathVariable String username, @PathVariable String measurableName, @PathVariable LocalTime createdOn){
+        Measurables measurables = measurablesService.addMeasurable(username,measurableName,createdOn);
         return ResponseEntity.ok(measurables);
     }
 

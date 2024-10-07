@@ -31,13 +31,13 @@ public interface MeasurablesRepository extends JpaRepository<Measurables,Long> {
     @Query(value = "SELECT COUNT(DISTINCT measurables_id) " +
         "FROM daily_time_share dts " + // table name for DailyTimeShare
         "LEFT JOIN daily_time_share_measurables dtm ON dts.id = dtm.timeshare_id " + // Use the correct column for foreign key
-        "WHERE dts.userid = :userId " + // Directly reference the column for user ID
+        "WHERE dts.user.username = :username " + // Directly reference the column for user ID
         "AND dts.date_of_time_share BETWEEN :startDate AND :endDate",
         nativeQuery = true)
-    Integer findByUserAndDateRange(  Long userId, LocalDate startDate, LocalDate endDate);
+    Integer findByUserAndDateRange(String username, LocalDate startDate, LocalDate endDate);
     //need to check
-    @Query("SELECT  m FROM Measurables m WHERE m.user.id = :userId")
-    List<Measurables> findByUserId(Long userId);
+    @Query("SELECT  m FROM Measurables m WHERE m.user.username = :username")
+    List<Measurables> findByUsername(String username);
 
     @Query("SELECT m.id,m.name FROM Measurables m WHERE m.id IN " +
             "(SELECT dm.fkMeasurableId.id FROM DelegationMeasurables dm WHERE dm.fkTaskManagementID.id = :taskId)")

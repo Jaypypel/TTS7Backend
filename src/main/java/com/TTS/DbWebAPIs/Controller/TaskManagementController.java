@@ -24,15 +24,16 @@ public class TaskManagementController {
 
     //tested at the 4:41 pm on 3rd of oct
     @PostMapping("/taskm")
-    ResponseEntity<?> addAssignedTask(@RequestBody TaskAssignedDTO taskAssignedDTO){
+    ResponseEntity<?> addAssignedTask(@RequestBody TaskAssignedDTO taskAssignedDTO) {
         System.out.println("Received taskAssignedDTO: " + taskAssignedDTO);
         try {
             String activityName = taskAssignedDTO.getTaskManagement().getActivityName();
+            System.out.println(activityName);
 
-            // Check if ActivityName is not null or empty
-            if (activityName == null || activityName.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity name cannot be null or empty");
-            }
+//            // Check if ActivityName is not null or empty
+//            if (activityName == null || activityName.isEmpty()) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity name cannot be null or empty");
+//            }
 
             TaskManagement taskManagement = taskManagementService.addAssignedTask(
                     taskAssignedDTO.getTaskManagement().getTaskOwnerUserID().getId(),
@@ -52,11 +53,11 @@ public class TaskManagementController {
                     taskAssignedDTO.getTaskManagement().getTaskAcceptedOn(),
                     taskAssignedDTO.getTaskManagement().getTaskProcessedOn(),
                     taskAssignedDTO.getTaskManagement().getTasKApprovedOn(),
-                    taskAssignedDTO.getTaskManagement().getStatus(),taskAssignedDTO.getDelegationMeasurablesLlist());
-             return ResponseEntity.ok(taskManagement);
-        }catch (RuntimeException e){
+                    taskAssignedDTO.getTaskManagement().getStatus(), taskAssignedDTO.getDelegationMeasurablesLlist());
+            return ResponseEntity.ok(taskManagement);
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }

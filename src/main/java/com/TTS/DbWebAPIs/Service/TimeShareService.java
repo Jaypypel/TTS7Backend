@@ -54,6 +54,7 @@ public class TimeShareService implements TimeShareServiceInterface{
         TimeShare saveTimeShare = timeShareRepository.save(timeShare);
         TimeShareMeasurablesService timeShareMeasurablesService = new TimeShareMeasurablesService(timeShareRepository);
         timeShareMeasurablesList.forEach(timeShareMeasurables -> {
+            timeShareMeasurables.setFkTimeShareId(saveTimeShare);
             timeShareMeasurablesService.addTimeShareMeasurables(saveTimeShare.getId(), timeShareMeasurables.getFkMeasurablesID(),timeShareMeasurables.getMeasurableQuantity(),timeShareMeasurables.getMeasurableUnit());
             timeShareMeasurablesRepository.save(timeShareMeasurables);
         });

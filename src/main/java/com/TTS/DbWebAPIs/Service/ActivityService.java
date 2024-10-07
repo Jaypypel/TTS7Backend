@@ -18,23 +18,28 @@ public class ActivityService implements ActivityServiceInterface{
     private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
 
+
     //get a list of names of activity
     @Override
     public List<String> getActivityNames() {
         return activityRepository.getActivityNames();
     }
 
+
     //get a list of activity via userId
     @Override
-    public List<Activity> getActivityList(Long userId) {
-        return activityRepository.getActivityList(userId);
+    public List<Activity> getActivityList(String username) {
+        return activityRepository.getActivityList(username);
     }
 
     //add an activity
     @Override
-    public Activity addActivity(Long userId, String activityName, LocalDate createdOn) {
+    public Activity addActivity(String username, String activityName, LocalDate createdOn) {
         Activity inputActivity = new Activity();
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByUsername(username);
+        if(user.getUsername().isEmpty() || user.getUsername().isBlank()){
+            throw new RuntimeException("username not found");
+        }
         inputActivity.setUser(user);
         inputActivity.setName(activityName);
    //     LocalDate activityCreatedOn = LocalDate.now();
@@ -44,9 +49,13 @@ public class ActivityService implements ActivityServiceInterface{
 
     //getActivityCount
     @Override
-    public Integer getActivityCount(Long userId, LocalDate startDate, LocalDate endDate) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        return activityRepository.ActivityCount(userId,startDate,endDate);
+    public Integer getActivityCount(String username, LocalDate startDate, LocalDate endDate) {
+        User user = userRepository.findByUsername(username);
+        if(user.getUsername().isBlank() || user.getUsername().isEmpty()){
+            throw new RuntimeException("User not found");
+        }
+
+        return activityRepository.ActivityCount(username,startDate,endDate);
     }
 
     @Override
