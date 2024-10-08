@@ -27,6 +27,6 @@ public class OtherActivityService implements OtherActivityServiceInterface {
         OtherActivity otherActivity = new OtherActivity();
         otherActivity.setName(otherActiName);
         otherActivity.setCreatedOn(createdOn);
-        return  otherActivity;
+        return  otherActivityRepository.save(otherActivity) ;
     }
 }

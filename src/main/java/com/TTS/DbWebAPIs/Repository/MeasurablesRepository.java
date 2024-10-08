@@ -39,7 +39,7 @@ public interface MeasurablesRepository extends JpaRepository<Measurables,Long> {
     @Query("SELECT  m FROM Measurables m WHERE m.user.username = :username")
     List<Measurables> findByUsername(String username);
 
-    @Query("SELECT m.id,m.name FROM Measurables m WHERE m.id IN " +
+    @Query("SELECT m FROM Measurables m WHERE m.id IN " +
             "(SELECT dm.fkMeasurableId.id FROM DelegationMeasurables dm WHERE dm.fkTaskManagementID.id = :taskId)")
     List<Measurables> findAllocatedMeasurablesByTaskId( Long taskId);
 }

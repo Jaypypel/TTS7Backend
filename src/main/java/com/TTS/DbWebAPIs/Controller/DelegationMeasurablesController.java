@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("delegationMeasurables")
 public class DelegationMeasurablesController {
 
     private final DelegationMeasurablesServiceInterface delegationMeasurablesService;
@@ -20,6 +20,7 @@ public class DelegationMeasurablesController {
     @GetMapping("/allocatedMeasurabeslist/{taskId}")
     ResponseEntity<List<DelegationMeasurables>> getAllocatedMeasurableList(Long taskId){
        List<DelegationMeasurables> delegationMeasurables = delegationMeasurablesService.getAllocatedMeasurableList(taskId);
+       System.out.println(delegationMeasurables);
        return ResponseEntity.ok(delegationMeasurables);
     }
 

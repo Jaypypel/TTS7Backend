@@ -14,8 +14,8 @@ import java.util.List;
 public interface ProjectServiceInterface {
 
     Project getProjectCode(String projectName);
-    List<ProjectCode> getProjectCodeList();
-    List<ProjectName> getProjectNameList();
+    List<String> getProjectCodeList();
+    List<String> getProjectNameList();
     Project addProject(Long userId, Long activityID, String projectCode, String projectName, LocalTime createdOn);
     Integer getProjectCount(Long userId, LocalDateTime startDate, LocalDateTime endDate);
     Integer getProjectFrequency(Long userId, LocalDateTime startDate, LocalDateTime endDate);

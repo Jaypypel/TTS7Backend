@@ -27,7 +27,7 @@ public class Project {
     @ManyToMany
     @JoinTable(
             name = "projectBelongsToUser",
-        joinColumns = @JoinColumn(name = "project_id"),
+            joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> usersAssociated = new HashSet<>();//check

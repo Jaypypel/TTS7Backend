@@ -35,7 +35,7 @@ public class TaskController {
         Integer count = taskService.getTaskFreqeuncyCount(userId,startDate,endDate);
         return ResponseEntity.ok(count);
     }
-    //tested at 11:13 am on 3O october
+    //tested at 11:13 am on 3O sep
     @PostMapping("/task/{userId}/{activityId}/{taskName}/{createdOn}")
     ResponseEntity<Task> addTask(@PathVariable Long userId,@PathVariable Long activityId,@PathVariable String taskName,@PathVariable LocalTime createdOn){
         Task task = taskService.addTask(userId,activityId,taskName,createdOn);

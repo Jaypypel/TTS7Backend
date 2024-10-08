@@ -14,28 +14,37 @@ public class DailyTimeShare {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "date_of_time_share")
     private LocalDate dateOfTimeShare;
 
-
+    @Column(name = "project_code")
     private String projectCode;
 
+    @Column(name = "project_name")
     private String projectName;
 
+    @Column(name = "activity_name")
     private String activityName;
 
+    @Column(name = "task_name")
     private String taskName;
 
+    @Column(name = "start_time")
     private LocalTime startTime;
 
+    @Column(name = "end_time")
     private LocalTime endTime;
 
+    @Column(name = "time_difference")
     private String timeDifference;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "created_on")
     private LocalTime createdOn;
 
     @ManyToOne
-    @JoinColumn(name="userID", referencedColumnName = "username")
+    @JoinColumn(name="userid", referencedColumnName = "username")
     private User user;
 }

@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface DailyTimeShareServiceInterface {
 
-    List<DailyTimeShare> getDailyTimeShareList(Long userId, LocalDate dateOfTimeShare);
+    List<DailyTimeShare> getDailyTimeShareList(String  username, LocalDate dateOfTimeShare);
 
     DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare, List<DailyTimeShareMeasurables> dailyTimeShareMeasurablesList);
     //can be moved to user controller
-    List<DailyTimeShare> getUserDTSReportDetails(Long userId, LocalDate startDate, LocalDate endDate);
+    List<DailyTimeShare> getUserDTSReportDetails(String userId, LocalDate startDate, LocalDate endDate);
     //can be moved to project controller
-    List<String> getProjectConsumedTime(Long userID, LocalDate startDate, LocalDate endDate);
+    List<String> getProjectConsumedTime(String username, LocalDate startDate, LocalDate endDate);
 
-    Integer getMaxDailyTimeShareId();
+    Long getMaxDailyTimeShareId();
 }

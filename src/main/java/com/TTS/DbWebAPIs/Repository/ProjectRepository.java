@@ -13,17 +13,17 @@ import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project,Long> {
 
-//    @Query("SELECT p FROM   Project p WHERE p.projectCode =:projectCode")
+
     Project findByProjectCode(String projectCode);
 
-    @Query("SELECT p.id AS Id FROM Project p")
-    List<ProjectCode> findById();
+    @Query("SELECT p.projectCode FROM Project p")
+    List<String> findByProjectCodeList();
 
     @Query("SELECT COUNT(DISTINCT(dts.projectName)) FROM DailyTimeShare dts WHERE dts.user.id = :userId AND dts.dateOfTimeShare BETWEEN  :startDate AND :endDate")
     Integer findByUserIdAndDateRange(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query("SELECT p.name AS Name FROM Project p")
-    List<ProjectName> findByName();
+    @Query("SELECT p.name FROM Project p")
+    List<String> findByName();
 
     @Query("SELECT COUNT(d.projectName) FROM DailyTimeShare d WHERE d.user.id =:userId" +
             "  AND d.dateOfTimeShare BETWEEN :startDate AND :endDate")

@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;;
-import java.util.Collections;
+
 import java.util.List;
 
-
+//tested all the endpoints
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/activities")

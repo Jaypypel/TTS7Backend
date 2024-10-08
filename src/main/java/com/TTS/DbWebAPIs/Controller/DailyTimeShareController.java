@@ -26,29 +26,36 @@ public class DailyTimeShareController {
         return ResponseEntity.ok(adddailyTimeShare);
     }
 
-    @GetMapping("/dailyTimeShareList/{userId}/{dateOfTimeShare}")
-    ResponseEntity<List<com.TTS.DbWebAPIs.Entity.DailyTimeShare>> getDailyTimeShareList(@PathVariable Long userId, @PathVariable LocalDate dateOfTimeShare){
-        List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(userId,dateOfTimeShare);
+    //tested at 11:17 am on 8th Oct
+    @GetMapping("/dailyTimeShareList/{username}/{dateOfTimeShare}")
+    ResponseEntity<List<com.TTS.DbWebAPIs.Entity.DailyTimeShare>> getDailyTimeShareList(@PathVariable String username, @PathVariable LocalDate dateOfTimeShare){
+        List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateOfTimeShare);
         return ResponseEntity.ok(dailyTimeShares);
     }
 
+    //tested at 12:21 pm on 8th Oct
     @GetMapping("/User/{userId}/{startDate}/{endDate}/DTSReport")
-    ResponseEntity<List<com.TTS.DbWebAPIs.Entity.DailyTimeShare>> getUserDTSReportDetails(@PathVariable Long userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
+    ResponseEntity<List<com.TTS.DbWebAPIs.Entity.DailyTimeShare>> getUserDTSReportDetails(@PathVariable String userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
         List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getUserDTSReportDetails(userId,startDate,endDate);
         return ResponseEntity.ok(dailyTimeShares);
     }
 
+    //tested at 12:49 pm on 8th Oct
     @GetMapping("/id/maximum")
-    ResponseEntity<Integer> getDailyTimeShareMaxId(){
-        Integer maxId = dailyTimeShareService.getMaxDailyTimeShareId();
+    ResponseEntity<Long> getDailyTimeShareMaxId(){
+        Long maxId = dailyTimeShareService.getMaxDailyTimeShareId();
+        System.out.println(maxId);
         return ResponseEntity.ok(maxId);
     }
 
-    @GetMapping("/Project/ConsumedTime/{userId}/{startDate}/{endDate}")
-    ResponseEntity<List<String>> getProjectConsumedTime(@PathVariable Long userId, @PathVariable LocalDate startDate,@PathVariable LocalDate endDate){
-        List<String> projectConsumedTime = dailyTimeShareService.getProjectConsumedTime(userId,startDate,endDate);
-        return ResponseEntity.ok(projectConsumedTime);
-    }
-
+    //tested at 2:35 pm on 8th Oct
+    @GetMapping("/Project/ConsumedTime/{username}/{startDate}/{endDate}")
+    ResponseEntity<List<String>> getProjectConsumedTime(@PathVariable String username, @PathVariable LocalDate startDate,@PathVariable LocalDate endDate){
+        System.out.println("username : "+username);
+        System.out.println("startdate : "+startDate);
+        System.out.println("enddate : "+endDate);
+        List<String> projectConsumedTime = dailyTimeShareService.getProjectConsumedTime(username,startDate,endDate);
+        System.out.println(projectConsumedTime);
+        return ResponseEntity.ok(projectConsumedTime);}
 
 }

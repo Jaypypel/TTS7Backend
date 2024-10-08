@@ -35,12 +35,12 @@ public class ProjectService implements ProjectServiceInterface  {
     }
 
     @Override
-    public List<ProjectCode> getProjectCodeList() {
-        return projectRepository.findById();
+    public List<String> getProjectCodeList() {
+        return projectRepository.findByProjectCodeList();
     }
 
     @Override
-    public List<ProjectName> getProjectNameList() {
+    public List<String> getProjectNameList() {
         return projectRepository.findByName();
     }
 
