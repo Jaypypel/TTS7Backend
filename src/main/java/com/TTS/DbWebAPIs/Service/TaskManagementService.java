@@ -24,8 +24,8 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
     /*the function is  used in existing tts app for the receivedModfifcationtAskList,*/
     @Override
-    public List<TaskManagement> getAcceptedTaskList(Long truId, String status) {
-        return taskManagementRepository.findByIdAndStatus(truId,status);
+    public List<String> getAcceptedTaskList(String taskReceivedUsername, String status) {
+        return taskManagementRepository.findByUserUsernameAndStatus(taskReceivedUsername,status);
     }
 
     @Override
@@ -49,14 +49,16 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     //need to refactor and ask delegatonMeasurablesAssociated
     //removed time shareId
     @Override
-    public TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, String activityName,
+    public TaskManagement addAssignedTask(String taskOwnerUsername, String taskReceivedUsername, String activityName,
                                           String taskName, String projectCode, String projectName, LocalDateTime expectedDate,
                                           LocalTime expectedTime, String expectedTotalTime, String description, LocalTime taskAssignedOn,
                                           String actualTotalTime, LocalTime taskSeenOn, LocalTime taskCompletedOn, LocalTime taskAcceptedOn,
                                           LocalTime taskProcessOn, LocalTime taskApproveOn,
                                           String status, List<DelegationMeasurables> delegationMeasurablesAssociated) {
-        User iptTskOwner = userRepository.findById(taskOwnerUserID).orElseThrow(()->new RuntimeException("task not assigned"));
-        User iptTskReceiver = userRepository.findById(taskReceivedUserID).orElseThrow(()->new RuntimeException("task not received"));
+        User iptTskOwner = userRepository.findByUsername(taskOwnerUsername);
+        if(iptTskOwner.getUsername().isEmpty() || iptTskOwner.getEmail().isBlank()) new RuntimeException("task not assigned");
+        User iptTskReceiver = userRepository.findByUsername(taskReceivedUsername);
+        if(iptTskReceiver.getUsername().isBlank() || iptTskReceiver.getUsername().isEmpty()) throw new RuntimeException("task not received");
         Activity iptActivity = activityRepository.findByName(activityName);
         System.out.println(iptActivity);
         Project project;
@@ -125,7 +127,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
         LocalTime taskCompletedTime = LocalTime.now();
         existingTaskManagement.setStatus("In-Process");
-        existingTaskManagement.setTaskCompletedOn(taskCompletedTime);
+        existingTaskManagement.setTaskProcessedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
     }
 
@@ -134,7 +136,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
         LocalTime taskCompletedTime = LocalTime.now();
         existingTaskManagement.setStatus("approved");
-        existingTaskManagement.setTaskCompletedOn(taskCompletedTime);
+        existingTaskManagement.setTasKApprovedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
     }
 
@@ -143,45 +145,46 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
         LocalTime taskCompletedTime = LocalTime.now();
         existingTaskManagement.setStatus("Accepted");
-        existingTaskManagement.setTaskCompletedOn(taskCompletedTime);
+        existingTaskManagement.setTaskAcceptedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
     }
 
 
     @Override
-    public List<TaskManagement> getSendModificationTaskList(Long touId, String status) {
-        return taskManagementRepository.findByTaskOwnerUserIdAndStatus(touId,status);
+public List<TaskManagement> getSendModificationTaskList(String  taskOwnerUserID, String status) {
+        return taskManagementRepository.findByTaskOwnerUserIdAndStatus(taskOwnerUserID,status);
     }
 
     @Override
-    public List<TaskManagement> getTaskList(Long truId) {
-        return taskManagementRepository.findByTaskReceivedUserId(truId);
+    public List<TaskManagement> getTaskList(String taskReceivedUsername) {
+        return taskManagementRepository.findByTaskReceivedUserId(taskReceivedUsername);
     }
 
     @Override
-    public List<TaskManagement> getDelegatedTaskList(Long touId) {
-        return taskManagementRepository.findByTaskOwnerUserId(touId);
+    public List<TaskManagement> getDelegatedTaskList(String taskOwnerUsername) {
+        return taskManagementRepository.findByTaskOwnerUserId(taskOwnerUsername);
     }
 
     @Override
-    public Integer getPendingTaskCount(Long userId){
-        return taskManagementRepository.findByIdAndStatus(
-                userId,"pending").size();
+    public Integer getPendingTaskCount(String username){
+        return taskManagementRepository.CountByUserUsernameAndStatus(
+                 username,"pending");
     }
 
     @Override
-    public Integer getAcceptedTaskCount(Long userId) {
-        return taskManagementRepository.findByIdAndStatus(userId, "In-Process").size();
+    public Integer getAcceptedTaskCount(String username) {
+        return taskManagementRepository.CountByUserUsernameAndStatus( username, "accepted");
+
     }
 
     @Override
-    public Integer getApprovedTaskCount(Long userId) {
-        return taskManagementRepository.findByIdAndStatus(userId, "approved").size();
+    public Integer getApprovedTaskCount(String username) {
+        return taskManagementRepository.CountByUserUsernameAndStatus( username, "approved");
     }
 
     @Override
-    public Integer getCompletedTaskCount(Long userId) {
-        return taskManagementRepository.findByIdAndStatus(userId, "completed").size();
+    public Integer getCompletedTaskCount(String username) {
+        return taskManagementRepository.CountByUserUsernameAndStatus( username, "completed");
     }
 
     @Override

@@ -23,9 +23,10 @@ public class TimeShareService implements TimeShareServiceInterface{
     private final TimeShareMeasurablesRepository timeShareMeasurablesRepository;
 
     @Override
-    public List<TimeShare> getTimeShareList(Long userId, LocalDate startDate, LocalDate endDate) {
-     User user   = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("user not found"));
-      return timeShareRepository.findTimeSharesByUserIdAndDateRange(user,startDate,endDate );
+    public List<TimeShare> getTimeShareList(String username, LocalDateTime startDate, LocalDateTime endDate) {
+        User user   = userRepository.findByUsername(username);
+        if(user == null || user.getUsername().isEmpty() || user.getUsername().isBlank()) throw new RuntimeException("user not found");
+      return timeShareRepository.findTimeSharesByUserIdAndDateRange(username,startDate,endDate );
     }
 
     @Override

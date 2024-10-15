@@ -36,39 +36,52 @@ public class TaskManagement {
 
     //private  Long ActivityId;
 
+    @Column(name = "activity_name")
     private  String activityName;
 
   //  private  Long Task_ID;
-
+  @Column(name = "task_name")
     private String taskName;
 
-
+    @Column(name = "project_code")
     private String projectCode;
 
+    @Column(name = "project_name")
     private  String projectName;
 
+    @Column(name = "expected_date")
     private LocalDateTime expectedDate;
     //added new expectedTime
+    @Column(name = "expected_time")
     private LocalTime expectedTime;
 
+    @Column(name = "expected_total_time")
     private String expectedTotalTime;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "task_assigned_on")
     private LocalTime taskAssignedOn;
 
+    @Column(name = "actual_total_time")
     private String  actualTotalTime;
 
     private LocalTime taskSeenOn;
 
+    @Column(name = "task_completed_on")
     private LocalTime taskCompletedOn;
 
+    @Column(name = "task_accepted_on")
     private LocalTime taskAcceptedOn;
 
+    @Column(name = "task_processed_on")
     private LocalTime taskProcessedOn;
 
+    @Column(name = "taskapproved_on")
     private LocalTime tasKApprovedOn;
 
+    @Column(name = "status")
     private String status;
 
 

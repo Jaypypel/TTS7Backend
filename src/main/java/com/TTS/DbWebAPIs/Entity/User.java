@@ -54,5 +54,16 @@ public class User {
 //    private List<Activity> userActivity;//check
 
 
-    
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", createdOn=" + createdOn +
+                '}';
+    }
 }

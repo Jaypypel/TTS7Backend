@@ -5,9 +5,11 @@ import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectCode;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectName;
 import com.TTS.DbWebAPIs.Service.ProjectServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -19,16 +21,18 @@ public class ProjectController {
 
     private final ProjectServiceInterface projectService;
 
-
+    //tested at 10:14am on 9th Oct
     @GetMapping("/list/code")
     ResponseEntity<List<String>> getProjectCodeList(){
         List<String> projectCodes = projectService.getProjectCodeList();
         return ResponseEntity.ok(projectCodes);
     }
 
-    @GetMapping("/project/count")
-    ResponseEntity<Integer> getProjectCount(@PathVariable Long userId, @PathVariable LocalDateTime startDate, @PathVariable LocalDateTime endDate){
-        Integer prjCnt = projectService.getProjectCount(userId, startDate, endDate);
+    //tested at 11:09 am on 9th Oct
+    @GetMapping("/project/count/{username}/{startDate}/{endDate}")
+    ResponseEntity<Integer> getProjectCount(@PathVariable String username, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate startDate ,@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate endDate){
+        System.out.println("Username: " + username + ", StartDate: " + startDate + ", EndDate: " + endDate);
+        Integer prjCnt = projectService.getProjectCount(username, startDate, endDate);
         return ResponseEntity.ok(prjCnt);
     }
 
@@ -39,7 +43,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectNames);
     }
 
-    //
+    //tested
     @PostMapping("/project/")
     ResponseEntity<Project> addProject(@RequestParam("user_id") Long userId, @RequestParam("activity_id")
     Long activityId, @RequestParam("proj_code") String projectCode, @RequestParam("proj_name") String prjNme, @RequestParam("created_on") LocalTime crtdOn){
@@ -47,6 +51,7 @@ public class ProjectController {
         return ResponseEntity.ok(project);
     }
 
+    //tested at 10:00am on 9th Oct
     @GetMapping("/projectCode/")
     ResponseEntity<Project> getProjectViaProjectCode(@RequestParam("pro_code") String projectCode){
         Project project = projectService.getProjectCode(projectCode);

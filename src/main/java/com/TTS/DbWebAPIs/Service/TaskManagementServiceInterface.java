@@ -12,7 +12,7 @@ import java.util.List;
 public interface TaskManagementServiceInterface {
 
     /* it is  used in the existing TTS to get a list of modified task list & a list of processing task list and competed task list though same logic is repeated*/
-    List<TaskManagement> getAcceptedTaskList(Long truId, String status);
+    List<String> getAcceptedTaskList(String username, String status);
 
 
     TaskManagement updateTaskManagementSeenOnTime(Long taskId);
@@ -28,7 +28,7 @@ public interface TaskManagementServiceInterface {
     TaskManagement addActualTotalTime(Long assignedTaskId,String actualTotalTime);
 
     //remove TimeShare timeShareAssociated
-    TaskManagement addAssignedTask(Long taskOwnerUserID, Long taskReceivedUserID, String activityName,
+    TaskManagement addAssignedTask(String taskOwnerUsername, String taskReceivedUsername, String activityName,
                                    String taskName, String projectId, String projectName, LocalDateTime expectedDate,
                                    LocalTime expectedTime, String expectedTotalTime, String description, LocalTime taskAssignedOn,
                                    String actualTotalTime, LocalTime taskSeenOn, LocalTime taskCompletedOn, LocalTime taskAcceptedOn,
@@ -37,23 +37,23 @@ public interface TaskManagementServiceInterface {
 
     TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId);
 
-    List<TaskManagement> getSendModificationTaskList(Long touId, String status);
+    List<TaskManagement> getSendModificationTaskList(String taskOwnerUsername, String status);
 
     /*it should be named recivedTaskList*/
-    List<TaskManagement> getTaskList(Long truId);
+    List<TaskManagement> getTaskList(String  taskReceivedUsername);
 
 
-    List<TaskManagement> getDelegatedTaskList(Long touId);
+    List<TaskManagement> getDelegatedTaskList(String taskOwnerUsername);
 
 
 
-    Integer getPendingTaskCount(Long userId);
+    Integer getPendingTaskCount(String username);
 
-    Integer getAcceptedTaskCount(Long userId);
+    Integer getAcceptedTaskCount(String username);
 
-    Integer getApprovedTaskCount(Long userId);
+    Integer getApprovedTaskCount(String username);
 
-    Integer getCompletedTaskCount(Long userId);
+    Integer getCompletedTaskCount(String username);
 
     Long getMaxDelegationTaskId();
 

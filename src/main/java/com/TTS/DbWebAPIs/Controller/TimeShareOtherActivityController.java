@@ -51,6 +51,7 @@ public class TimeShareOtherActivityController {
 //
 //    return ResponseEntity.ok(timeShareOtherActivity);
 //}
+ //tested on 9 oct
 @PostMapping("/add/timeshareactivity/{username}/{activityName}/{dateTime}/{startTime}/{endTime}/{timeDifference}/{description}/{createdOn}")
 public ResponseEntity<TimeShareOtherActivity> addOtherActivity(
         @PathVariable String username,

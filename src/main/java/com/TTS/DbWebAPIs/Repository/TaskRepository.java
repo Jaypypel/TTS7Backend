@@ -11,14 +11,14 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task,Long> {
 
-    @Query("SELECT DISTINCT(t.name) as Name FROM Task t WHERE t.user.id =:userId")
-    List<TaskName> findById(String userId);
+    @Query("SELECT DISTINCT(t.name) as Name FROM Task t WHERE t.user.username =:userId")
+    List<String> findById(String userId);
 
-    @Query("SELECT COUNT(DISTINCT(d.taskName)) FROM DailyTimeShare d WHERE d.user.id =:userId" +
-            " AND d.dateOfTimeShare BETWEEN :startDate AND :endDate")
-    Integer findByUserIdAndStartDateAndEndDate(Long userId, LocalDate startDate, LocalDate endDate);
+//    @Query("SELECT COUNT(DISTINCT(d.taskName)) FROM DailyTimeShare d WHERE d.user.username =:username" +
+//            " AND d.dateOfTimeShare BETWEEN :startDate AND :endDate")
+    @Query(value = "SELECT COUNT(DISTINCT(dts.task_name)) FROM daily_time_share dts WHERE LOWER(dts.userid) = LOWER(:username) AND dts.date_of_time_share BETWEEN :startDate AND :endDate", nativeQuery = true)
+    Integer findByUserIdAndStartDateAndEndDate(String username, LocalDate startDate, LocalDate endDate);
 
-    @Query("SELECT COUNT(d.taskName) FROM DailyTimeShare d WHERE d.user.id =:userId" +
-            " AND d.dateOfTimeShare BETWEEN :startDate AND :endDate")
-    Integer findByIdAndStartDateAndEndDate(Long userId, LocalDate startDate, LocalDate endDate);
+    @Query(value = "SELECT COUNT(dts.task_name) FROM daily_time_share dts WHERE LOWER(dts.userid) = LOWER(:username) AND dts.date_of_time_share BETWEEN :startDate AND :endDate", nativeQuery = true)
+    Integer findByIdAndStartDateAndEndDate(String username, LocalDate startDate, LocalDate endDate);
 }

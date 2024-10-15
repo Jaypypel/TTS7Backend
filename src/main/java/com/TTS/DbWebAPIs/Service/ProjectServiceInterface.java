@@ -17,6 +17,6 @@ public interface ProjectServiceInterface {
     List<String> getProjectCodeList();
     List<String> getProjectNameList();
     Project addProject(Long userId, Long activityID, String projectCode, String projectName, LocalTime createdOn);
-    Integer getProjectCount(Long userId, LocalDateTime startDate, LocalDateTime endDate);
+    Integer getProjectCount(String username, LocalDate startDate, LocalDate endDate);
     Integer getProjectFrequency(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -63,8 +63,8 @@ public class ProjectService implements ProjectServiceInterface  {
 
 
     @Override
-    public Integer getProjectCount(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
-        return projectRepository.findByUserIdAndDateRange(userId,startDate,endDate);
+    public Integer getProjectCount(String username, LocalDate startDate, LocalDate endDate) {
+        return projectRepository.findByUserIdAndDateRange(username,startDate,endDate);
     }
 
     @Override

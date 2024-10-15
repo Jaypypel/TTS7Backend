@@ -20,18 +20,21 @@ public class TimeShareController {
 
     private  final TimeShareServiceInterface timeShareService;
 
-    @GetMapping("/list/{userId}/{startDate}/{endDate}")
-    ResponseEntity<List<TimeShare>> getTimeShareList(@PathVariable Long userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
-        List<TimeShare> timeShareList = timeShareService.getTimeShareList(userId,startDate,endDate);
+    //tested at 12:54 pm on 10 oct
+    @GetMapping("/list/{username}/{startDate}/{endDate}")
+    ResponseEntity<List<TimeShare>> getTimeShareList(@PathVariable String username, @PathVariable LocalDateTime startDate, @PathVariable LocalDateTime endDate){
+        List<TimeShare> timeShareList = timeShareService.getTimeShareList(username,startDate,endDate);
         return ResponseEntity.ok(timeShareList);
     }
 
+    //tested at 12:58 pm on 10 oct
     @GetMapping("/list/{taskId}")
     ResponseEntity<List<TimeShare>> getTimeShareLists(@PathVariable Long taskId){
         List<TimeShare> timeShareList = timeShareService.getTimeShareLists(taskId);
         return ResponseEntity.ok(timeShareList);
     }
 
+    //tested at 1:35 on 10 oct
     @GetMapping("/timeshare/maxId")
     ResponseEntity<Long> getMaxTimeShareId(){
         Long maxTimeShareId = timeShareService.getMaxTimeShareId();

@@ -11,7 +11,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface TimeShareServiceInterface {
-    List<TimeShare> getTimeShareList(Long userId, LocalDate startDate, LocalDate endDate);
+    List<TimeShare> getTimeShareList(String username, LocalDateTime startDate, LocalDateTime endDate);
 
     List<TimeShare> getTimeShareLists(Long taskId);
 

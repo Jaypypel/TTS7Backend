@@ -25,23 +25,26 @@ public class TaskService implements TaskServiceInterface{
 
 
     @Override
-    public List<TaskName> getTaskNameList(String userId) {
+    public List<String> getTaskNameList(String userId) {
         return taskRepository.findById(userId);
     }
 
     @Override
-    public Integer getTaskCount(Long userId, LocalDate startDate, LocalDate endDate) {
-        return taskRepository.findByUserIdAndStartDateAndEndDate(userId,startDate,endDate);
+    public Integer getTaskCount(String username, LocalDate startDate, LocalDate endDate) {
+        return taskRepository.findByUserIdAndStartDateAndEndDate(username,startDate,endDate);
     }
 
     @Override
-    public Integer getTaskFreqeuncyCount(Long userId, LocalDate startDate, LocalDate endDate) {
-        return taskRepository.findByIdAndStartDateAndEndDate(userId,startDate,endDate);
+    public Integer getTaskFreqeuncyCount(String username, LocalDate startDate, LocalDate endDate) {
+        return taskRepository.findByIdAndStartDateAndEndDate(username,startDate,endDate);
     }
 
     @Override
-    public Task addTask(Long userId, Long activtyId, String taskName, LocalTime createdOn) {
-        User inputUser = userRepository.findById(userId).orElseThrow(()-> new RuntimeException("user not found "));
+    public Task addTask(String username, Long activtyId, String taskName, LocalTime createdOn) {
+        User inputUser = userRepository.findByUsername(username);
+        if(inputUser.getUsername().isBlank() || inputUser.getEmail().isEmpty()){
+                throw  new RuntimeException("user not found ");
+        }
         Activity inputActivity = activityRepository.findById(activtyId).orElseThrow(() -> new RuntimeException("activity not found"));
         Task task = new Task();
         task.setUser(inputUser);

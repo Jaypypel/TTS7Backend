@@ -18,27 +18,30 @@ public class TaskController {
 
     private final TaskServiceInterface  taskService;
 
-    @GetMapping("/list/name")
-    ResponseEntity<List<TaskName>> getTaskNameList(String userId){
-        List<TaskName> taskNameList = taskService.getTaskNameList(userId);
+    //tested at 11:36 am on 9th oct
+    @GetMapping("/list/name/{userId}")
+    ResponseEntity<List<String>> getTaskNameList(@PathVariable String userId){
+        List<String> taskNameList = taskService.getTaskNameList(userId);
         return ResponseEntity.ok(taskNameList);
     }
 
-    @GetMapping("/task/count/{userId}/{startDate}/{endDate}")
-    ResponseEntity<Integer> getTaskCount(@PathVariable Long userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
-        Integer tskCount = taskService.getTaskCount(userId,startDate,endDate);
+    //tested at 11:53 am on 9th oct
+    @GetMapping("/task/count/{username}/{startDate}/{endDate}")
+    ResponseEntity<Integer> getTaskCount(@PathVariable String username, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
+        Integer tskCount = taskService.getTaskCount(username,startDate,endDate);
         return ResponseEntity.ok(tskCount);
     }
 
-    @GetMapping("/task/frequency/count/{userId}/{startDate}/{endDate}")
-    ResponseEntity<Integer> getTaskFreqeuncyCount(@PathVariable Long userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
-        Integer count = taskService.getTaskFreqeuncyCount(userId,startDate,endDate);
+    //tested at 1:04 pm on 9th oct
+    @GetMapping("/task/frequency/count/{username}/{startDate}/{endDate}")
+    ResponseEntity<Integer> getTaskFreqeuncyCount(@PathVariable String username, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
+        Integer count = taskService.getTaskFreqeuncyCount(username,startDate,endDate);
         return ResponseEntity.ok(count);
     }
     //tested at 11:13 am on 3O sep
-    @PostMapping("/task/{userId}/{activityId}/{taskName}/{createdOn}")
-    ResponseEntity<Task> addTask(@PathVariable Long userId,@PathVariable Long activityId,@PathVariable String taskName,@PathVariable LocalTime createdOn){
-        Task task = taskService.addTask(userId,activityId,taskName,createdOn);
+    @PostMapping("/task/{username}/{activityId}/{taskName}/{createdOn}")
+    ResponseEntity<Task> addTask(@PathVariable String username,@PathVariable Long activityId,@PathVariable String taskName,@PathVariable LocalTime createdOn){
+        Task task = taskService.addTask(username,activityId,taskName,createdOn);
         return ResponseEntity.ok(task);
     }
 
