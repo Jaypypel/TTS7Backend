@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface ProjectServiceInterface {
 
-    Project getProjectCode(String projectName);
+    String getProjectCode(String projectName);
     List<String> getProjectCodeList();
     List<String> getProjectNameList();
     Project addProject(Long userId, Long activityID, String projectCode, String projectName, LocalTime createdOn);

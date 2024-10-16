@@ -30,7 +30,7 @@ public class ProjectService implements ProjectServiceInterface  {
     private  final ActivityRepository activityRepository;
 
     @Override
-    public Project getProjectCode(String projectName) {
+    public String getProjectCode(String projectName) {
         return projectRepository.findByProjectCode(projectName);
     }
 

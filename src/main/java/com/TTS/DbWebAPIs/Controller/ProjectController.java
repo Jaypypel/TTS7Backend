@@ -53,8 +53,8 @@ public class ProjectController {
 
     //tested at 10:00am on 9th Oct
     @GetMapping("/projectCode/")
-    ResponseEntity<Project> getProjectViaProjectCode(@RequestParam("pro_code") String projectCode){
-        Project project = projectService.getProjectCode(projectCode);
+    ResponseEntity<String> getProjectViaProjectCode(@RequestParam("pro_code") String projectCode){
+        String project = projectService.getProjectCode(projectCode);
         System.out.println(project);
         return ResponseEntity.ok(project);
     }

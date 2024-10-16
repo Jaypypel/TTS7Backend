@@ -13,10 +13,16 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("tasks")
+@RequestMapping("/tasks")
 public class TaskController {
 
     private final TaskServiceInterface  taskService;
+
+    @GetMapping("/list/name")
+    ResponseEntity<List<String>> getTaskNames() {
+        List<String> taskNameList = taskService.getTaskNames();
+        return ResponseEntity.ok(taskNameList);
+    }
 
     //tested at 11:36 am on 9th oct
     @GetMapping("/list/name/{userId}")

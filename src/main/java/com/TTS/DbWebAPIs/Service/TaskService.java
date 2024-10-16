@@ -55,5 +55,10 @@ public class TaskService implements TaskServiceInterface{
 
     }
 
+    @Override
+    public List<String> getTaskNames() {
+        return taskRepository.findAllDistinctName();
+    }
+
 
 }
