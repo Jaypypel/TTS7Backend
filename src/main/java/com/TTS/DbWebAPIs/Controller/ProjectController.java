@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("Projects")
+@RequestMapping("/Projects")
 public class ProjectController {
 
     private final ProjectServiceInterface projectService;
@@ -52,11 +52,18 @@ public class ProjectController {
     }
 
     //tested at 10:00am on 9th Oct
-    @GetMapping("/projectCode/")
-    ResponseEntity<String> getProjectViaProjectCode(@RequestParam("pro_code") String projectCode){
-        String project = projectService.getProjectCode(projectCode);
+    @GetMapping("/project/projectCode")
+    ResponseEntity<Project> getProjectViaProjectCode(@RequestParam("pro_code") String projectCode){
+        Project project = projectService.getProjectViaProjectCode(projectCode);
         System.out.println(project);
         return ResponseEntity.ok(project);
+    }
+
+    @GetMapping("/project/projectName")
+    ResponseEntity<String> getProjectCodeViaProjectName(@RequestParam("proj_name") String projectName ){
+        String Name = projectService.getProjectCodeViaProjectName(projectName);
+        System.out.println(Name);
+        return ResponseEntity.ok(Name);
     }
 
 

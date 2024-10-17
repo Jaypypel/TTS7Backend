@@ -61,17 +61,17 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         if(iptTskReceiver.getUsername().isBlank() || iptTskReceiver.getUsername().isEmpty()) throw new RuntimeException("task not received");
         Activity iptActivity = activityRepository.findByName(activityName);
         System.out.println(iptActivity);
-//        Project project;
-//        try {
-//            project = projectRepository.findByProjectCode(projectCode);
-//        } catch (Exception e){
-//            throw new RuntimeException("project not found");
-//        }
-//        try {
-//            iptActivity = activityRepository.findByName(activityName);
-//        } catch (RuntimeException e) {
-//            throw new RuntimeException("activity not found");
-//        }
+        Project project;
+        try {
+            project = projectRepository.findByProjectCode(projectCode);
+        } catch (Exception e){
+            throw new RuntimeException("project not found");
+        }
+        try {
+            iptActivity = activityRepository.findByName(activityName);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("activity not found");
+        }
         TaskManagement assignedTaskManagement = new TaskManagement();
         assignedTaskManagement.setTaskOwnerUserID(iptTskOwner);
         assignedTaskManagement.setTaskReceivedUserID(iptTskReceiver);

@@ -29,9 +29,15 @@ public class ProjectService implements ProjectServiceInterface  {
 
     private  final ActivityRepository activityRepository;
 
+
     @Override
-    public String getProjectCode(String projectName) {
-        return projectRepository.findByProjectCode(projectName);
+    public Project getProjectViaProjectCode(String projectCode) {
+        return projectRepository.findByProjectCode(projectCode);
+    }
+
+    @Override
+    public String getProjectCodeViaProjectName(String projectName) {
+        return projectRepository.findByProjectName(projectName);
     }
 
     @Override
