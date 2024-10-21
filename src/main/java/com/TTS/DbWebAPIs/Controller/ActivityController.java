@@ -28,7 +28,7 @@ public class ActivityController {
 
        //tested at 1:45pm on 7 oct
         @GetMapping("/names")
-        ResponseEntity<?> getActivtiesNames() throws SQLException {
+        ResponseEntity<List<String>> getActivtiesNames() throws SQLException {
             List<String> activities = activityService.getActivityNames();
             return ResponseEntity.ok(activities);
 

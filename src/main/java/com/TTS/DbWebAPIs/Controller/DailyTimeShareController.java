@@ -1,6 +1,7 @@
 package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.DTO.DailyTimeShareDTO;
+import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 import com.TTS.DbWebAPIs.Service.DailyTimeShareServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -19,23 +20,27 @@ public class DailyTimeShareController {
 
     //tested at 1:06 pm on 4th oct
     @PostMapping("/dailyTimeShare/")
-    ResponseEntity<com.TTS.DbWebAPIs.Entity.DailyTimeShare> addDailyTimeShare(@RequestBody DailyTimeShareDTO dailyTimeShareDTO) {
-        com.TTS.DbWebAPIs.Entity.DailyTimeShare dailyTimeShare = dailyTimeShareDTO.getDailyTimeShare();
+    ResponseEntity<DailyTimeShare> addDailyTimeShare(@RequestBody DailyTimeShareDTO dailyTimeShareDTO) {
+        System.out.println(dailyTimeShareDTO);
+        DailyTimeShare dailyTimeShare = dailyTimeShareDTO.getDailyTimeShare();
+        System.out.println(dailyTimeShare);
         List<DailyTimeShareMeasurables> dailyTimeShareMeasurables = dailyTimeShareDTO.getDailyTimeShareMeasurables();
-        com.TTS.DbWebAPIs.Entity.DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare,dailyTimeShareMeasurables);
+        System.out.println(dailyTimeShareMeasurables);
+        DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare,dailyTimeShareMeasurables);
+        System.out.println(adddailyTimeShare);
         return ResponseEntity.ok(adddailyTimeShare);
     }
 
     //tested at 11:17 am on 8th Oct
     @GetMapping("/dailyTimeShareList/{username}/{dateOfTimeShare}")
-    ResponseEntity<List<com.TTS.DbWebAPIs.Entity.DailyTimeShare>> getDailyTimeShareList(@PathVariable String username, @PathVariable LocalDate dateOfTimeShare){
+    ResponseEntity<List<DailyTimeShare>> getDailyTimeShareList(@PathVariable String username, @PathVariable LocalDate dateOfTimeShare){
         List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateOfTimeShare);
         return ResponseEntity.ok(dailyTimeShares);
     }
 
     //tested at 12:21 pm on 8th Oct
     @GetMapping("/User/{userId}/{startDate}/{endDate}/DTSReport")
-    ResponseEntity<List<com.TTS.DbWebAPIs.Entity.DailyTimeShare>> getUserDTSReportDetails(@PathVariable String userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
+    ResponseEntity<List<DailyTimeShare>> getUserDTSReportDetails(@PathVariable String userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
         List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getUserDTSReportDetails(userId,startDate,endDate);
         return ResponseEntity.ok(dailyTimeShares);
     }

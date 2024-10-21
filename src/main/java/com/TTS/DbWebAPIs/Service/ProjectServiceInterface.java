@@ -1,10 +1,6 @@
 package com.TTS.DbWebAPIs.Service;
 
-import com.TTS.DbWebAPIs.Entity.Activity;
 import com.TTS.DbWebAPIs.Entity.Project;
-import com.TTS.DbWebAPIs.Entity.User;
-import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectCode;
-import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectName;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

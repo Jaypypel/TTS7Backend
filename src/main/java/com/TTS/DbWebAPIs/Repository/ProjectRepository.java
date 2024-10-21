@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project,Long> {
 
-    @Query("SELECT DISTINCT p.projectCode FROM Project p WHERE p.name = name")
+    @Query("SELECT DISTINCT(p.projectCode) FROM Project p WHERE p.name = :name")
     String findByProjectName(String name);
 
     Project findByProjectCode(String projectCode);

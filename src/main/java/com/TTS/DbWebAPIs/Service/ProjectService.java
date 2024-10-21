@@ -4,8 +4,6 @@ import com.TTS.DbWebAPIs.Entity.Activity;
 import com.TTS.DbWebAPIs.Entity.Project;
 import com.TTS.DbWebAPIs.Entity.User;
 import com.TTS.DbWebAPIs.Repository.ActivityRepository;
-import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectCode;
-import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectName;
 import com.TTS.DbWebAPIs.Repository.ProjectRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;

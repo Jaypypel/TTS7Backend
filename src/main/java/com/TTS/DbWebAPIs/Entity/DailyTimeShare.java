@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class DailyTimeShare {
     private Long id;
 
     @Column(name = "date_of_time_share")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateOfTimeShare;
 
     @Column(name = "project_code")
@@ -30,6 +32,7 @@ public class DailyTimeShare {
     private String taskName;
 
     @Column(name = "start_time")
+
     private LocalTime startTime;
 
     @Column(name = "end_time")
@@ -41,8 +44,10 @@ public class DailyTimeShare {
     @Column(name = "description")
     private String description;
 
+
     @Column(name = "created_on")
-    private LocalTime createdOn;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    private LocalDateTime createdOn;
 
     @ManyToOne
     @JoinColumn(name="userid", referencedColumnName = "username")

@@ -6,6 +6,8 @@ import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectName;
 import com.TTS.DbWebAPIs.Service.ProjectServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,10 +62,18 @@ public class ProjectController {
     }
 
     @GetMapping("/project/projectName")
-    ResponseEntity<String> getProjectCodeViaProjectName(@RequestParam("proj_name") String projectName ){
-        String Name = projectService.getProjectCodeViaProjectName(projectName);
-        System.out.println(Name);
-        return ResponseEntity.ok(Name);
+    ResponseEntity<?> getProjectCodeViaProjectName(@RequestParam("proj_name") String projectName ){
+        System.out.println(projectName);
+
+
+        try {
+            String Name = projectService.getProjectCodeViaProjectName(projectName);
+            System.out.println(Name);
+            return ResponseEntity.ok(Name);
+        } catch (Exception e) {
+            //System.out.println("Error retrieving project code: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error retreving project Code" + e.getMessage());
+        }
     }
 
 
