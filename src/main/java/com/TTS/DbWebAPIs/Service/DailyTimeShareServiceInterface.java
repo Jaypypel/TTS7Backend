@@ -10,7 +10,8 @@ public interface DailyTimeShareServiceInterface {
 
     List<DailyTimeShare> getDailyTimeShareList(String  username, LocalDate dateOfTimeShare);
 
-    DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare, List<DailyTimeShareMeasurables> dailyTimeShareMeasurablesList);
+   // DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare, List<DailyTimeShareMeasurables> dailyTimeShareMeasurablesList);
+    DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare);
     //can be moved to user controller
     List<DailyTimeShare> getUserDTSReportDetails(String userId, LocalDate startDate, LocalDate endDate);
     //can be moved to project controller

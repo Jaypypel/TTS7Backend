@@ -32,10 +32,10 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
     /*here need to check how can we pass dailyTimeshare Id to addDailyTimeShareMeasurables function*/
     @Transactional
     @Override
-    public DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare, List<DailyTimeShareMeasurables> dailyTimeShareMeasurablesList){
-        for(DailyTimeShareMeasurables dailyTimeShareMeasurable: dailyTimeShareMeasurablesList){
-            dailyTimeShareMeasurablesServiceInterface.addDailyTimeShareMeasurables(dailyTimeShareMeasurable.getFkTimeShareId(), dailyTimeShareMeasurable.getFkMeasurablesID(),dailyTimeShareMeasurable.getMeasurableQuantity(),dailyTimeShareMeasurable.getMeasurableUnit());
-        }
+    public DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare){
+//        for(DailyTimeShareMeasurables dailyTimeShareMeasurable: dailyTimeShareMeasurablesList){
+//            dailyTimeShareMeasurablesServiceInterface.addDailyTimeShareMeasurables(dailyTimeShareMeasurable.getFkTimeShareId(), dailyTimeShareMeasurable.getFkMeasurablesID(),dailyTimeShareMeasurable.getMeasurableQuantity(),dailyTimeShareMeasurable.getMeasurableUnit());
+//        }
         User user = userRepository.findByUsername(dailyTimeShare.getUser().getUsername());
         if(user==null){
             throw new RuntimeException("user not found");

@@ -26,7 +26,7 @@ public class DailyTimeShareController {
         System.out.println(dailyTimeShare);
         List<DailyTimeShareMeasurables> dailyTimeShareMeasurables = dailyTimeShareDTO.getDailyTimeShareMeasurables();
         System.out.println(dailyTimeShareMeasurables);
-        DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare,dailyTimeShareMeasurables);
+        DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare);
         System.out.println(adddailyTimeShare);
         return ResponseEntity.ok(adddailyTimeShare);
     }

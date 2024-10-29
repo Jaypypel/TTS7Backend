@@ -1,8 +1,10 @@
 package com.TTS.DbWebAPIs.Controller;
 
+import com.TTS.DbWebAPIs.DTO.MeasurablesDTO;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
+import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.MeasurablesService;
 import com.TTS.DbWebAPIs.Service.MeasurablesServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,9 +34,16 @@ public class MeasurablesController {
 
     //tested at 2:30 on 4th oct
     @GetMapping("/list")
-    ResponseEntity<List<Measurables>> getMeasurableList(){
+    ResponseEntity<APIResponse> getMeasurableList(){
         List<Measurables> measurables = measurablesService.getMeasurableList();
-        return ResponseEntity.ok(measurables);
+        ArrayList<MeasurablesDTO> measurable = new ArrayList<>();
+        for(Measurables m: measurables){
+            MeasurablesDTO measurablesDTO = new MeasurablesDTO(m.getName(),m.getId());
+            measurable.add(measurablesDTO);
+
+        }
+
+        return ResponseEntity.ok(new APIResponse("measurable list",measurable));
     }
 
     @GetMapping("/count/{username}/{startDate}/{endDate}/")

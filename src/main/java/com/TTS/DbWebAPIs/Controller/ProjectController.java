@@ -3,11 +3,13 @@ package com.TTS.DbWebAPIs.Controller;
 import com.TTS.DbWebAPIs.Entity.Project;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectCode;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.ProjectName;
+import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.ProjectServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,17 +64,19 @@ public class ProjectController {
     }
 
     @GetMapping("/project/projectName")
-    ResponseEntity<?> getProjectCodeViaProjectName(@RequestParam("proj_name") String projectName ){
+    ResponseEntity<APIResponse> getProjectCodeViaProjectName(@RequestParam("proj_name") String projectName ){
         System.out.println(projectName);
 
 
         try {
             String Name = projectService.getProjectCodeViaProjectName(projectName);
             System.out.println(Name);
-            return ResponseEntity.ok(Name);
+            return ResponseEntity.ok(new APIResponse("project code",Name));
+        //    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("application/json")).body("{ name: "+Name+"}");
+
         } catch (Exception e) {
             //System.out.println("Error retrieving project code: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error retreving project Code" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("error ", e.fillInStackTrace()));
         }
     }
 
