@@ -6,6 +6,7 @@ import com.TTS.DbWebAPIs.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +30,7 @@ public class UserService implements UserServiceInterface {
         newUser.setPassword(inputUser.getPassword());
         newUser.setEmail(inputUser.getEmail());
         newUser.setMobileNo(inputUser.getMobileNo());
+        newUser.setCreatedOn(LocalDateTime.now());
         return userRepository.save(newUser);
     }
 

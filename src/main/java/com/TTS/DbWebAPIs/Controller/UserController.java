@@ -33,8 +33,8 @@ public class UserController {
     //tested again at 11:24 am on 3rd Oct
     @PostMapping("/register")
     public ResponseEntity<APIResponse> Registration(@RequestBody User inputUser) {
-            if(inputUser.getUsername() != null || inputUser.getFullName() !=null || inputUser.getPassword() !=null || inputUser.getMobileNo() !=null || inputUser.getCreatedOn() == null){
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new APIResponse("check User attributes can't be empty or null",null));
+            if(inputUser.getUsername() == null || inputUser.getFullName() ==null || inputUser.getPassword() ==null || inputUser.getMobileNo() ==null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new APIResponse("check User attributes can't be empty or null",null));
             }
 //        boolean isRegistered = userService.registerUser(inputUser);
 //          Us
@@ -46,8 +46,11 @@ public class UserController {
 //            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
 //        }
         User user = userService.registerUser(inputUser);
-        System.out.println(user);
-        return ResponseEntity.ok(new APIResponse("User registered successfully",null));
+            System.out.println(user);
+            if(user != null)  return ResponseEntity.ok(new APIResponse("User registered successfully",null));
+            else return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("User already exists",null));
+
+
 
     }
 
