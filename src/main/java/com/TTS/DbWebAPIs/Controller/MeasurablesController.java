@@ -36,10 +36,10 @@ public class MeasurablesController {
     @GetMapping("/list")
     ResponseEntity<APIResponse> getMeasurableList(){
         List<Measurables> measurables = measurablesService.getMeasurableList();
-        ArrayList<MeasurablesDTO> measurable = new ArrayList<>();
+        ArrayList<String> measurable = new ArrayList<>();
         for(Measurables m: measurables){
-            MeasurablesDTO measurablesDTO = new MeasurablesDTO(m.getName(),m.getId());
-            measurable.add(measurablesDTO);
+
+            measurable.add(m.getName());
 
         }
 

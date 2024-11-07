@@ -6,11 +6,12 @@ public class MeasurablesDTO {
     private String measurableQty;
     private String MeasurableUnit;
 
-    public MeasurablesDTO(String measurableName,Long id) {
+    public MeasurablesDTO(Long id,String measurableName) {
+        this.id = id;
         this.measurableName = measurableName;
         this.measurableQty = "";
         this.MeasurableUnit = "";
-        this.id = id;
+
     }
 
     public Long getId() {
