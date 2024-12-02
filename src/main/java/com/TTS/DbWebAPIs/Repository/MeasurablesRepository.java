@@ -36,8 +36,8 @@ public interface MeasurablesRepository extends JpaRepository<Measurables,Long> {
         nativeQuery = true)
     Integer findByUserAndDateRange(String username, LocalDate startDate, LocalDate endDate);
     //need to check
-    @Query("SELECT  m FROM Measurables m WHERE m.user.username = :username")
-    List<Measurables> findByUsername(String username);
+    @Query("SELECT  m.name FROM Measurables m WHERE m.user.username = :username")
+    List<String> findByUsername(String username);
 
     @Query("SELECT m FROM Measurables m WHERE m.id IN " +
             "(SELECT dm.fkMeasurableId.id FROM DelegationMeasurables dm WHERE dm.fkTaskManagementID.id = :taskId)")

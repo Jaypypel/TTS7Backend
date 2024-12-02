@@ -13,9 +13,11 @@ public interface ActivityServiceInterface {
     //need to return only id and name as an object
     List<Activity> getActivityList(String userId);
 
-    Activity addActivity(String username, String activityName, LocalDate createdOn);
+    Activity addActivity(String username, String activityName, String createdOn);
 
     Integer getActivityCount(String username, LocalDate startDate, LocalDate endDate);
 
     Activity getActivity(String name);
+
+    List<String> getActivityNamesByUsername(String name);
 }

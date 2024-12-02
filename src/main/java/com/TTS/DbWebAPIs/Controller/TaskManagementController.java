@@ -1,8 +1,11 @@
 package com.TTS.DbWebAPIs.Controller;
 
-import com.TTS.DbWebAPIs.DTO.TaskAssignedDTO;
+
+import com.TTS.DbWebAPIs.DTO.TaskManagementDTO;
 import com.TTS.DbWebAPIs.Entity.DelegationMeasurables;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
+import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.TaskManagementServiceInterface;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +14,13 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,49 +31,70 @@ public class TaskManagementController {
 
     //tested at the 4:41 pm on 3rd of oct
     @PostMapping("/taskm")
-    ResponseEntity<?> addAssignedTask(@RequestBody TaskAssignedDTO taskAssignedDTO) {
-        System.out.println("Received taskAssignedDTO: " + taskAssignedDTO);
+    ResponseEntity<APIResponse> addAssignedTask(@RequestBody TaskManagementDTO taskAssigned) {
+       System.out.println(taskAssigned.getTaskAssignedOn());
+
+
+        System.out.println("Received taskAssignedDTO: " + taskAssigned);
         try {
-            String activityName = taskAssignedDTO.getTaskManagement().getActivityName();
+            String activityName = taskAssigned.getActivityName();
             System.out.println(activityName);
 
 //            // Check if ActivityName is not null or empty
 //            if (activityName == null || activityName.isEmpty()) {
 //                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity name cannot be null or empty");
 //            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+            LocalDate localDate = LocalDate.parse(taskAssigned.getExpectedDate(),formatter);
+            System.out.println("localDate : "+localDate);
+
+            DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HH:mm");
+            LocalTime localTime = LocalTime.parse(taskAssigned.getExpectedTime(), timeformatter);
+
+            System.out.println("localTime : "+localTime);
+
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a", Locale.ENGLISH);
+            System.out.println(dateTimeFormatter);
+            LocalDateTime taskAssignedOn = LocalDateTime.parse(taskAssigned.getTaskAssignedOn().trim(),dateTimeFormatter);
+            LocalDateTime updatedAssignedOn = taskAssignedOn.truncatedTo(ChronoUnit.MINUTES);
+
+            System.out.println("before printing tasking assigned");
+            System.out.println("taskAssignedOn : "+taskAssignedOn);
+            System.out.println("after printing tasking assigned");
             TaskManagement taskManagement = taskManagementService.addAssignedTask(
-                    taskAssignedDTO.getTaskManagement().getTaskOwnerUserID().getUsername(),
-                    taskAssignedDTO.getTaskManagement().getTaskReceivedUserID().getUsername(),
+                    taskAssigned.getTaskOwnerUserID(),
+                    taskAssigned.getTaskReceivedUserID(),
                     activityName,
-                    taskAssignedDTO.getTaskManagement().getTaskName(),
-                    taskAssignedDTO.getTaskManagement().getProjectCode(),
-                    taskAssignedDTO.getTaskManagement().getProjectName(),
-                    taskAssignedDTO.getTaskManagement().getExpectedDate(),
-                    taskAssignedDTO.getTaskManagement().getExpectedTime(),
-                    taskAssignedDTO.getTaskManagement().getExpectedTotalTime(),
-                    taskAssignedDTO.getTaskManagement().getDescription(),
-                    taskAssignedDTO.getTaskManagement().getTaskAssignedOn(),
-                    taskAssignedDTO.getTaskManagement().getActualTotalTime(),
-                    taskAssignedDTO.getTaskManagement().getTaskSeenOn(),
-                    taskAssignedDTO.getTaskManagement().getTaskCompletedOn(),
-                    taskAssignedDTO.getTaskManagement().getTaskAcceptedOn(),
-                    taskAssignedDTO.getTaskManagement().getTaskProcessedOn(),
-                    taskAssignedDTO.getTaskManagement().getTasKApprovedOn(),
-                    taskAssignedDTO.getTaskManagement().getStatus(), taskAssignedDTO.getDelegationMeasurablesLlist());
-            return ResponseEntity.ok(taskManagement);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+                    taskAssigned.getTaskName(),
+                    taskAssigned.getProjectCode(),
+                    taskAssigned.getProjectName(),
+                    localDate,
+                    localTime,
+                    taskAssigned.getExpectedTotalTime(),
+                    taskAssigned.getDescription(),
+                    taskAssigned.getTaskAssignedOn(),
+                    taskAssigned.getActualTotalTime(),
+                    taskAssigned.getTaskSeenOn(),
+                    taskAssigned.getTaskCompletedOn().toString(),
+                    taskAssigned.getTaskAcceptedOn(),
+                    taskAssigned.getTaskProcessedOn(),
+                    taskAssigned.getTasKApprovedOn(),
+                    taskAssigned.getStatus());
+
+            System.out.println("taskManagement : " + taskManagement);
+            return ResponseEntity.ok(new APIResponse("Successful",taskManagement));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            System.out.println("getting Exception");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("Error",e.getMessage())  );
         }
     }
 
     //tested at 3:04pm on 9th oct
     @GetMapping("/list/accepted/{truId}/{status}")
-    ResponseEntity<List<String>> getAcceptedTaskList(@PathVariable String truId, @PathVariable String status){
-        List<String> taskManagements = taskManagementService.getAcceptedTaskList(truId,status);
-        return ResponseEntity.ok(taskManagements);
+    ResponseEntity<APIResponse> getTasksByTaskReceiveUsernameAndStatus(@PathVariable String truId, @PathVariable String status){
+        List<TaskManagement> taskManagements = taskManagementService.getAcceptedTaskList(truId,status);
+        return ResponseEntity.ok(new APIResponse("Successful",taskManagements));
     }
 
     //tested at 4:00pm on 9th oct
@@ -99,69 +127,74 @@ public class TaskManagementController {
     }
 
     //tested at 5:00 pm on 9th oct
-    @PutMapping("task/{taskID}/status/update/")
-    ResponseEntity<TaskManagement> updateTaskManagementCompletedStatus(@PathVariable Long  taskID){
-        TaskManagement taskManagement = taskManagementService.updateTaskManagementCompletedStatus(taskID);
-        return ResponseEntity.ok(taskManagement);
+    @PutMapping("task/{taskID}/{status}/update/")
+    ResponseEntity<?> updateTaskManagementStatus(@PathVariable Long  taskID, @PathVariable String status){
+       try {
+           TaskManagement taskManagement = taskManagementService.updateTaskManagementStatus(taskID, status);
+           return ResponseEntity.ok(new APIResponse("updated",null));
+       }catch (NotFoundException e){
+          return ResponseEntity.status(HttpStatus.CONFLICT).body("task not found" + e.getMessage());
+       }
     }
 
     //tested at 11:35 am on 10 oct
-    @PutMapping("task/{taskId}/{description}/status/update/")
-    ResponseEntity<TaskManagement>   updateModifiedTaskStatusAndDescription(@PathVariable String description,
-                                                                            @PathVariable Long taskId){
+    @PutMapping("task/description-status/update")
+    ResponseEntity<?>   updateModifiedTaskStatusAndDescription(@RequestParam String description,
+                                                                             @RequestParam Long taskId){
         TaskManagement taskManagement = taskManagementService.updateModifiedTaskStatusAndDescription(description,taskId);
-        return ResponseEntity.ok(taskManagement);
+        return ResponseEntity.ok(new APIResponse("updated","_"));
     }
 
     //tested at 3:15 pm on 9th oct
     @GetMapping("/{touId}/{status}/modified/list")
-    ResponseEntity<List<TaskManagement>> getSendModificationTaskList(@PathVariable String touId,
+    ResponseEntity<APIResponse> getTasksByTaskOwnerUsernameAndStatus(@PathVariable String touId,
                                                                      @PathVariable String status){
         List<TaskManagement> taskManagements = taskManagementService.getSendModificationTaskList(touId,status);
-        return ResponseEntity.ok(taskManagements);
+        return ResponseEntity.ok(new APIResponse("successful",taskManagements));
     }
 
     //tested at 3:20pm on 9th Oct
     @GetMapping("/{truId}/list")
-    ResponseEntity<List<TaskManagement>> getTaskList(@PathVariable String truId){
+    ResponseEntity<APIResponse> getTaskList(@PathVariable String truId){
         List<TaskManagement> taskManagements = taskManagementService.getTaskList(truId);
-        return ResponseEntity.ok(taskManagements);
+        return ResponseEntity.ok(new APIResponse("successful",taskManagements)  );
     }
 
     //tested at 3:30 pm on 9th Oct
     @GetMapping("delegated/{touId}/list")
-    ResponseEntity<List<TaskManagement>> getDelegatedTaskList(@PathVariable String touId){
+    ResponseEntity<APIResponse> getDelegatedTaskList(@PathVariable String touId){
         List<TaskManagement> taskManagements = taskManagementService.getDelegatedTaskList(touId);
-        return ResponseEntity.ok(taskManagements);
+        return ResponseEntity.ok(new APIResponse("successful", taskManagements));
+
     }
 
     //tested at 11:24 am on 10 oct
     @GetMapping("/pending/count/{userId}")
-    ResponseEntity<Integer> getPendingTaskCount(@PathVariable String userId){
+    ResponseEntity<APIResponse> getPendingTaskCount(@PathVariable String userId){
         Integer pndTskCnt = taskManagementService.getPendingTaskCount(userId);
-        return ResponseEntity.ok(pndTskCnt);
+        return ResponseEntity.ok(new APIResponse("successful",pndTskCnt));
     }
 
     //tested at 11:07 am on 10 oct
     @GetMapping("/accepted/count/{userId}")
-    ResponseEntity<Integer> getAcceptedTaskCount(@PathVariable String userId){
+    ResponseEntity<APIResponse> getAcceptedTaskCount(@PathVariable String userId){
         Integer aptTskCnt = taskManagementService.getAcceptedTaskCount(userId);
-        return ResponseEntity.ok(aptTskCnt);
+        return ResponseEntity.ok(new APIResponse("successful",aptTskCnt));
     }
 
     //tested at 11:07 am on 10 oct
     @GetMapping("/approved/count/{userId}")
-    ResponseEntity<Integer> getApprovedTaskCount(@PathVariable String userId){
+    ResponseEntity<APIResponse> getApprovedTaskCount(@PathVariable String userId){
         System.out.println("Username: " + userId);
         Integer apvTskCnt = taskManagementService.getApprovedTaskCount(userId);
-        return ResponseEntity.ok(apvTskCnt);
+        return ResponseEntity.ok(new APIResponse("successful",apvTskCnt));
     }
 
     //tested at 11:07 am on 10 oct
     @GetMapping("/completed/count/{userId}")
-    ResponseEntity<Integer> getCompletedTaskCount(@PathVariable String  userId){
+    ResponseEntity<APIResponse> getCompletedTaskCount(@PathVariable String  userId){
         Integer cmpTskCnt = taskManagementService.getCompletedTaskCount(userId);
-        return ResponseEntity.ok(cmpTskCnt);
+        return ResponseEntity.ok(new APIResponse("successful",cmpTskCnt));
     }
 
     //tested at 3:40 pm on 9th Oct
@@ -173,9 +206,15 @@ public class TaskManagementController {
 
     //tested at 3:50 pm on 9th Oct
     @GetMapping("/time/assigned/{assignedTaskId}")
-    ResponseEntity<String> getActualTotalTime(@PathVariable Long assignedTaskId){
+    ResponseEntity<?> getActualTotalTime(@PathVariable Long assignedTaskId){
         String atlTime = taskManagementService.getActualTotalTime(assignedTaskId);
-        return ResponseEntity.ok(atlTime);
+        return ResponseEntity.ok(new APIResponse("successful",atlTime));
+    }
+
+    @PutMapping("/new-actual-time")
+    ResponseEntity<?> updateActualTotalTime(@RequestParam Long assignedTaskId, @RequestParam String newActualTotalTime){
+        taskManagementService.addActualTotalTime(assignedTaskId,newActualTotalTime);
+        return ResponseEntity.ok(new APIResponse("successful","-"));
     }
 
 

@@ -35,7 +35,8 @@ public class Measurables {
 //    @OneToOne(mappedBy = "fkMeasurablesID")
 //    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
 
-    private LocalTime createdOn;
+    private String createdOn;
+
 
 
 }

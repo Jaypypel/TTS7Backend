@@ -4,6 +4,7 @@ package com.TTS.DbWebAPIs.Controller;
 import com.TTS.DbWebAPIs.Entity.Activity;
 import com.TTS.DbWebAPIs.Exceptions.AlreadyExistException;
 import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
+import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.ActivityServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,17 +29,33 @@ public class ActivityController {
 
        //tested at 1:45pm on 7 oct
         @GetMapping("/names")
-        ResponseEntity<List<String>> getActivtiesNames() throws SQLException {
+        ResponseEntity<?> getActivtiesNames() throws SQLException {
             List<String> activities = activityService.getActivityNames();
-            return ResponseEntity.ok(activities);
+            return ResponseEntity.ok(new APIResponse("successful",activities));
 
         }
 
-       //tested at 2:45pm on 7 oct
-        @GetMapping("/names/{username}")
-        ResponseEntity<List<Activity>>  getActivityList(@PathVariable String username) throws SQLException{
+    @GetMapping("/activityNames")
+    ResponseEntity<?> getActivtiesNamesByUserName(@RequestParam(name = "username" , required = true) String username) throws SQLException {
+       try {
+           List<String> activities = activityService.getActivityNamesByUsername(username);
+           return ResponseEntity.ok(new APIResponse("successful",activities));
+       }catch (RuntimeException e){
+           return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+       }
+
+    }
+
+    //tested at 2:45pm on 7 oct
+    @GetMapping("/names/{username}")
+    ResponseEntity<?>  getActivityList(@PathVariable String username) throws SQLException{
+        try {
             List<Activity>  activities = activityService.getActivityList(username);
-            return ResponseEntity.ok(activities);
+            return ResponseEntity.ok(new APIResponse("successful",activities));
+
+        }catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
         }
 
         //tested already
@@ -49,10 +66,14 @@ public class ActivityController {
         }
 
         //tested already
-        @PostMapping("/activity/{username}/{actvtyNme}/{createdOn}")
-        ResponseEntity<Activity>  addActivity(@PathVariable String username, @PathVariable String actvtyNme, @PathVariable LocalDate createdOn){
-                Activity activity = activityService.addActivity(username,actvtyNme,createdOn);
-                return ResponseEntity.ok(activity);
+        @PostMapping("/activity")
+        ResponseEntity<?>  addActivity(@RequestParam String username, @RequestParam String actvtyNme, @RequestParam String createdOn){
+               try {
+                   Activity activity = activityService.addActivity(username,actvtyNme,createdOn);
+                   return ResponseEntity.ok(new APIResponse("successful","-"));
+               } catch (RuntimeException e) {
+                   return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+               }
 
         }
 

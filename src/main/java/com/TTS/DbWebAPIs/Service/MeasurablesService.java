@@ -52,12 +52,12 @@ public class MeasurablesService implements MeasurablesServiceInterface{
     }
 
     @Override
-    public List<Measurables> getMeasurableListForUsername(String username) {
+    public List<String> getMeasurableListForUsername(String username) {
         return measurablesRepository.findByUsername(username);
     }
 
     @Override
-    public Measurables addMeasurable(String username, String measurableName, LocalTime createdOn) {
+    public Measurables addMeasurable(String username, String measurableName, String createdOn) {
         User user = userRepository.findByUsername(username);
         if(user.getUsername().isEmpty() || user.getUsername().isBlank()){
             throw  new RuntimeException("user not found");

@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
@@ -49,8 +51,10 @@ public class TaskManagement {
     @Column(name = "project_name")
     private  String projectName;
 
+
+
     @Column(name = "expected_date")
-    private LocalDateTime expectedDate;
+    private LocalDate expectedDate;
     //added new expectedTime
     @Column(name = "expected_time")
     private LocalTime expectedTime;
@@ -62,29 +66,30 @@ public class TaskManagement {
     private String description;
 
     @Column(name = "task_assigned_on")
-    private LocalTime taskAssignedOn;
+//    @JsonFormat(pattern = "dd-MM-yyyy hh:mm a")
+    private String taskAssignedOn;
 
     @Column(name = "actual_total_time")
     private String  actualTotalTime;
 
-    private LocalTime taskSeenOn;
+    private String taskSeenOn;
 
     @Column(name = "task_completed_on")
-    private LocalTime taskCompletedOn;
+    private String taskCompletedOn;
 
     @Column(name = "task_accepted_on")
-    private LocalTime taskAcceptedOn;
+    private String taskAcceptedOn;
 
     @Column(name = "task_processed_on")
-    private LocalTime taskProcessedOn;
+    private String taskProcessedOn;
 
     @Column(name = "taskapproved_on")
-    private LocalTime tasKApprovedOn;
+    private String tasKApprovedOn;
 
     @Column(name = "status")
     private String status;
 
-
+//
     @OneToOne(mappedBy = "fkTaskManagementID")
     private DelegationMeasurables delegationMeasurablesAssociated;//check
 

@@ -33,10 +33,10 @@ public class DailyTimeShare {
 
     @Column(name = "start_time")
 
-    private LocalTime startTime;
+    private String startTime;
 
     @Column(name = "end_time")
-    private LocalTime endTime;
+    private String endTime;
 
     @Column(name = "time_difference")
     private String timeDifference;
@@ -46,8 +46,8 @@ public class DailyTimeShare {
 
 
     @Column(name = "created_on")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private LocalDateTime createdOn;
+
+    private String createdOn;
 
     @ManyToOne
     @JoinColumn(name="userid", referencedColumnName = "username")

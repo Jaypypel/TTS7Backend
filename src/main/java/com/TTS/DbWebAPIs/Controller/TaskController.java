@@ -2,8 +2,11 @@ package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.Task;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.TaskName;
+import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.TaskServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +22,20 @@ public class TaskController {
     private final TaskServiceInterface  taskService;
 
     @GetMapping("/list/name")
-    ResponseEntity<List<String>> getTaskNames() {
+    ResponseEntity<?> getTaskNames() {
         List<String> taskNameList = taskService.getTaskNames();
-        return ResponseEntity.ok(taskNameList);
+        return ResponseEntity.ok(new APIResponse("successful",taskNameList) );
     }
 
     //tested at 11:36 am on 9th oct
-    @GetMapping("/list/name/{userId}")
-    ResponseEntity<List<String>> getTaskNameList(@PathVariable String userId){
-        List<String> taskNameList = taskService.getTaskNameList(userId);
-        return ResponseEntity.ok(taskNameList);
+    @GetMapping("/name")
+    ResponseEntity<?> getTaskNamesByUsername(@RequestParam String userId){
+       try{
+           List<String> taskNameList = taskService.getTaskNameList(userId);
+           return ResponseEntity.ok(new APIResponse("successful",taskNameList));
+       } catch (RuntimeException e){
+           return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+       }
     }
 
     //tested at 11:53 am on 9th oct
@@ -45,10 +52,10 @@ public class TaskController {
         return ResponseEntity.ok(count);
     }
     //tested at 11:13 am on 3O sep
-    @PostMapping("/task/{username}/{activityId}/{taskName}/{createdOn}")
-    ResponseEntity<Task> addTask(@PathVariable String username,@PathVariable Long activityId,@PathVariable String taskName,@PathVariable LocalTime createdOn){
+    @PostMapping("/task")
+    ResponseEntity<?> addTask(@RequestParam String username,@RequestParam Long activityId,@RequestParam String taskName,@RequestParam String createdOn){
         Task task = taskService.addTask(username,activityId,taskName,createdOn);
-        return ResponseEntity.ok(task);
+        return ResponseEntity.ok(new APIResponse("successful","-"));
     }
 
 

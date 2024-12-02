@@ -48,11 +48,6 @@ public class MeasurablesDTO {
 
     @Override
     public String toString() {
-        return "MeasurablesDTO{" +
-                "id=" + id +
-                ", measurableName='" + measurableName + '\'' +
-                ", measurableQty='" + measurableQty + '\'' +
-                ", MeasurableUnit='" + MeasurableUnit + '\'' +
-                '}';
+        return  this.id + "-" + this.measurableName;
     }
 }

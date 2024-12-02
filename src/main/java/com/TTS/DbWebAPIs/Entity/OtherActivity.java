@@ -18,6 +18,6 @@ public class OtherActivity {
 
     private String name;
 
-    private LocalTime createdOn;
+    private String createdOn;
 
 }

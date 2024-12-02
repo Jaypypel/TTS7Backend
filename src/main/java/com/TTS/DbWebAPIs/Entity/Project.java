@@ -33,5 +33,5 @@ public class Project {
     private Set<User> usersAssociated = new HashSet<>();//check
 
     //added new
-    private LocalTime createdOn;
+    private String createdOn;
 }

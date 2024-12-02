@@ -3,12 +3,16 @@ package com.TTS.DbWebAPIs.Controller;
 import com.TTS.DbWebAPIs.DTO.DailyTimeShareDTO;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
+import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.DailyTimeShareServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -20,22 +24,32 @@ public class DailyTimeShareController {
 
     //tested at 1:06 pm on 4th oct
     @PostMapping("/dailyTimeShare/")
-    ResponseEntity<DailyTimeShare> addDailyTimeShare(@RequestBody DailyTimeShareDTO dailyTimeShareDTO) {
-        System.out.println(dailyTimeShareDTO);
-        DailyTimeShare dailyTimeShare = dailyTimeShareDTO.getDailyTimeShare();
-        System.out.println(dailyTimeShare);
-        List<DailyTimeShareMeasurables> dailyTimeShareMeasurables = dailyTimeShareDTO.getDailyTimeShareMeasurables();
-        System.out.println(dailyTimeShareMeasurables);
+    ResponseEntity<APIResponse> addDailyTimeShare(@RequestBody DailyTimeShare dailyTimeShare) {
+//        System.out.println(dailyTimeShareDTO);
+//        DailyTimeShare dailyTimeShare = dailyTimeShareDTO.getDailyTimeShare();
+//        System.out.println(dailyTimeShare);
+//        List<DailyTimeShareMeasurables> dailyTimeShareMeasurables = dailyTimeShareDTO.getDailyTimeShareMeasurables();
+//        System.out.println(dailyTimeShareMeasurables);
+        if(dailyTimeShare ==null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("getting dailytimeshare nul", null));
+        }
+        System.out.println("User from front end : "+dailyTimeShare.getUser());
+        System.out.println("dailyTime from frontend: " + dailyTimeShare);
         DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare);
         System.out.println(adddailyTimeShare);
-        return ResponseEntity.ok(adddailyTimeShare);
+        return ResponseEntity.ok(new APIResponse("successful",adddailyTimeShare));
     }
 
     //tested at 11:17 am on 8th Oct
     @GetMapping("/dailyTimeShareList/{username}/{dateOfTimeShare}")
-    ResponseEntity<List<DailyTimeShare>> getDailyTimeShareList(@PathVariable String username, @PathVariable LocalDate dateOfTimeShare){
-        List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateOfTimeShare);
-        return ResponseEntity.ok(dailyTimeShares);
+    ResponseEntity<APIResponse> getDailyTimeShareList(@PathVariable String username, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String dateOfTimeShare){
+        if( username == null || dateOfTimeShare == null ){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("failed",null));
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate TimeShareDate = LocalDate.parse(dateOfTimeShare,formatter)    ;
+        List<DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,TimeShareDate);
+        return ResponseEntity.ok(new APIResponse("successful",dailyTimeShares));
     }
 
     //tested at 12:21 pm on 8th Oct

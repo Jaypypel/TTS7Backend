@@ -27,9 +27,13 @@ public class ProjectController {
 
     //tested at 10:14am on 9th Oct
     @GetMapping("/list/code")
-    ResponseEntity<List<String>> getProjectCodeList(){
-        List<String> projectCodes = projectService.getProjectCodeList();
-        return ResponseEntity.ok(projectCodes);
+    ResponseEntity<?> getProjectCodeList(){
+        try {
+            List<String> projectCodes = projectService.getProjectCodeList();
+            return ResponseEntity.ok(new APIResponse("successful",projectCodes));
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
     //tested at 11:09 am on 9th Oct
@@ -42,17 +46,22 @@ public class ProjectController {
 
     //tested at 4:30pm on 8th Oct
     @GetMapping("/name/list")
-    ResponseEntity<List<String>> getProjectNameList() {
+    ResponseEntity<?> getProjectNameList() {
         List<String>  projectNames = projectService.getProjectNameList();
-        return ResponseEntity.ok(projectNames);
+        return ResponseEntity.ok(new APIResponse("successful",projectNames));
     }
 
     //tested
     @PostMapping("/project/")
-    ResponseEntity<Project> addProject(@RequestParam("user_id") Long userId, @RequestParam("activity_id")
-    Long activityId, @RequestParam("proj_code") String projectCode, @RequestParam("proj_name") String prjNme, @RequestParam("created_on") LocalTime crtdOn){
-        Project project = projectService.addProject(userId,activityId,projectCode,prjNme,crtdOn);
-        return ResponseEntity.ok(project);
+    ResponseEntity<?> addProject(@RequestParam("user_id") String username, @RequestParam("activity_id")
+    Long activityId, @RequestParam("proj_code") String projectCode, @RequestParam("proj_name") String prjNme
+            , @RequestParam("created_on") String createdOn){
+        try {
+            Project project = projectService.addProject(username,activityId,projectCode,prjNme,createdOn);
+            return ResponseEntity.ok(new APIResponse("successful","-"));
+        } catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
     //tested at 10:00am on 9th Oct

@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,8 +15,9 @@ public class DelegationMeasurables {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
     @JoinColumn(name = "taskHandler", referencedColumnName = "id")
+    @JsonIgnore
     private TaskManagement fkTaskManagementID;//check
 
     @OneToOne

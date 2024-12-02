@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
+import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.TimeShareMeasurablesServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,16 @@ public class TimeShareMeasurablesController {
 
     private final TimeShareMeasurablesServiceInterface timeShareMeasurablesService;
 
-    @PostMapping("/add/timeharemeasurable/{timeShareId}/{measurableQuantity}/{measurableUnit}")
-    ResponseEntity<TimeShareMeasurables> addTimeShareMeasurables(@PathVariable Long timeShareId,
-                                                                 @RequestBody  Measurables measuableId,
-                                                                 @PathVariable Long measurableQuantity,
-                                                                 @PathVariable String measurableUnit){
+    @PostMapping("/add/timeharemeasurable")
+    ResponseEntity<?> addTimeShareMeasurables(@RequestParam Long timeShareId,
+                                                                 @RequestParam  Measurables measuableId,
+                                                                 @RequestParam Long measurableQuantity,
+                                                                 @RequestParam String measurableUnit){
         TimeShareMeasurables timeShareMeasurables = timeShareMeasurablesService.addTimeShareMeasurables(
                 timeShareId,measuableId,measurableQuantity,measurableUnit);
-        return ResponseEntity.ok(timeShareMeasurables);
+        return ResponseEntity.ok(new APIResponse("successful",timeShareMeasurables));
     }
+
+
+
 }

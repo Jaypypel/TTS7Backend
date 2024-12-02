@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
@@ -31,17 +32,18 @@ public class TimeShare {
 //    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
 
 
-    private LocalDateTime dateOfTimeShare;
+    private String dateOfTimeShare;
 
-    private LocalTime startTime;
+    private String startTime;
 
-    private LocalTime endTime;
+    private String endTime;
 
     private String TimeDifference;
 
     private String description;
 
-    private LocalTime createdOn;
+    private String createdOn;
+
 
 }
 /**/

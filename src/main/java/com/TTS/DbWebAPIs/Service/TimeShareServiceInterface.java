@@ -17,6 +17,7 @@ public interface TimeShareServiceInterface {
 
     Long getMaxTimeShareId();
 
-    TimeShare addTimeShare(Long taskId, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, LocalTime createdOn, List<TimeShareMeasurables> timeShareMeasurablesList);
-
+//    TimeShare addTimeShare(Long taskId, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, LocalTime createdOn, List<TimeShareMeasurables> timeShareMeasurablesList);
+    TimeShare addTimeShare(TimeShare timeShare);
+//
 }

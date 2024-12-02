@@ -34,6 +34,6 @@ public class Activity {
 //    @OneToMany(mappedBy = "activityAssociated")
 //    private List<Task> taskAssociated;//check
 
-    private LocalDate createdOn;
+    private String createdOn;
 
 }

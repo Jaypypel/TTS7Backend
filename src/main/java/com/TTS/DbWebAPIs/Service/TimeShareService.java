@@ -42,23 +42,16 @@ public class TimeShareService implements TimeShareServiceInterface{
     }
 
     @Override
-    public TimeShare addTimeShare(Long taskId, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, LocalTime createdOn, List<TimeShareMeasurables> timeShareMeasurablesList) {
-        TaskManagement taskManagement = taskManagementRepository.findById(taskId).orElseThrow(()->new RuntimeException("task not found"));
-        TimeShare timeShare = new TimeShare();
-        timeShare.setFkTaskManagementId(taskManagement);
-        timeShare.setDateOfTimeShare(date);
-        timeShare.setStartTime(startTime);
-        timeShare.setEndTime(endTime);
-        timeShare.setTimeDifference(timeDifference);
-        timeShare.setDescription(description);
-        timeShare.setCreatedOn(createdOn);
-        TimeShare saveTimeShare = timeShareRepository.save(timeShare);
-        TimeShareMeasurablesService timeShareMeasurablesService = new TimeShareMeasurablesService(timeShareRepository);
-        timeShareMeasurablesList.forEach(timeShareMeasurables -> {
-            timeShareMeasurables.setFkTimeShareId(saveTimeShare);
-            timeShareMeasurablesService.addTimeShareMeasurables(saveTimeShare.getId(), timeShareMeasurables.getFkMeasurablesID(),timeShareMeasurables.getMeasurableQuantity(),timeShareMeasurables.getMeasurableUnit());
-            timeShareMeasurablesRepository.save(timeShareMeasurables);
-        });
-        return saveTimeShare;
+    public TimeShare addTimeShare(TimeShare timeShare) {
+        TaskManagement taskManagement = taskManagementRepository.findById(timeShare.getFkTaskManagementId().getId()).orElseThrow(()->new RuntimeException("task not found"));
+        return timeShareRepository.save(timeShare);
+//        TimeShare saveTimeShare = timeShareRepository.save(timeShare);
+//        TimeShareMeasurablesService timeShareMeasurablesService = new TimeShareMeasurablesService(timeShareRepository);
+//        timeShareMeasurablesList.forEach(timeShareMeasurables -> {
+//            timeShareMeasurables.setFkTimeShareId(saveTimeShare);
+//            timeShareMeasurablesService.addTimeShareMeasurables(saveTimeShare.getId(), timeShareMeasurables.getFkMeasurablesID(),timeShareMeasurables.getMeasurableQuantity(),timeShareMeasurables.getMeasurableUnit());
+//            timeShareMeasurablesRepository.save(timeShareMeasurables);
+//        });
+
     }
 }

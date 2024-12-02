@@ -16,7 +16,7 @@ public interface MeasurablesServiceInterface {
 
      Integer getMeasurableCount(String username, LocalDate startDate, LocalDate endDate);
      //need to return names of measurables rather object
-     List<Measurables> getMeasurableListForUsername(String username);
+     List<String> getMeasurableListForUsername(String username);
 
-     Measurables addMeasurable(String username, String measurableName, LocalTime createdOn);
+     Measurables addMeasurable(String username, String measurableName, String createdOn);
 }

@@ -12,6 +12,9 @@ public interface ActivityRepository extends JpaRepository<Activity,Long> {
 
     @Query("Select DISTINCT a.name from Activity a")
     List<String> getActivityNames();
+    
+    @Query("Select DISTINCT a.name from Activity a where a.user.username =:username")
+    List<String> getActivityNamesbyUserName(String username);
 
     @Query("Select DISTINCT a from Activity a where a.user.username =:username")
     List<Activity> getActivityList(String username);

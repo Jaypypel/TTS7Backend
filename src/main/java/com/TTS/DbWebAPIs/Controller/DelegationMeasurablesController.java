@@ -1,12 +1,11 @@
 package com.TTS.DbWebAPIs.Controller;
 
-import com.TTS.DbWebAPIs.Entity.DelegationMeasurables;
+import com.TTS.DbWebAPIs.Entity.*;
+import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.DelegationMeasurablesServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,10 +17,31 @@ public class DelegationMeasurablesController {
     private final DelegationMeasurablesServiceInterface delegationMeasurablesService;
 
     @GetMapping("/allocatedMeasurabeslist/{taskId}")
-    ResponseEntity<List<DelegationMeasurables>> getAllocatedMeasurableList(Long taskId){
+    ResponseEntity<APIResponse> getAllocatedMeasurableList(Long taskId){
        List<DelegationMeasurables> delegationMeasurables = delegationMeasurablesService.getAllocatedMeasurableList(taskId);
        System.out.println(delegationMeasurables);
-       return ResponseEntity.ok(delegationMeasurables);
+       return ResponseEntity.ok(new APIResponse("successful",delegationMeasurables));
+    }
+
+    @PostMapping("/add-delegationMeasurable")
+    ResponseEntity<APIResponse> addDailyTimeShareMeasurable(@RequestParam Long taskHandlerId, @RequestParam Long measurablesId,
+                                                            @RequestParam Long mesrbQunty, @RequestParam String mesrbUnit){
+        System.out.println("ts_id  :"+taskHandlerId );
+        System.out.println("m_id  :"+measurablesId );
+        System.out.println("mesrbQunty  :"+mesrbQunty );
+        System.out.println("mesrbUnit  :"+mesrbUnit );
+
+        if(taskHandlerId == null || measurablesId == null || mesrbQunty == null  || mesrbUnit==null){
+            System.out.println("Any of field like measurId, timesharId is not null");
+        }
+        TaskManagement taskManagement = new TaskManagement();
+        taskManagement.setId(taskHandlerId);
+
+        Measurables measurables = new Measurables();
+        measurables.setId(measurablesId);
+        DelegationMeasurables delegationMeasurable = delegationMeasurablesService.addDelegationMeasurables(taskManagement,measurables,mesrbQunty,mesrbUnit);
+        System.out.println(delegationMeasurable);
+        return ResponseEntity.ok(new APIResponse("successful",delegationMeasurable));
     }
 
 }

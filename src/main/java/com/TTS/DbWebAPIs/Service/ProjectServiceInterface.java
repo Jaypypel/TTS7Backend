@@ -13,7 +13,7 @@ public interface ProjectServiceInterface {
     String getProjectCodeViaProjectName(String projectName);
     List<String> getProjectCodeList();
     List<String> getProjectNameList();
-    Project addProject(Long userId, Long activityID, String projectCode, String projectName, LocalTime createdOn);
+    Project addProject(String userId, Long activityID, String projectCode, String projectName, String createdOn);
     Integer getProjectCount(String username, LocalDate startDate, LocalDate endDate);
     Integer getProjectFrequency(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 }

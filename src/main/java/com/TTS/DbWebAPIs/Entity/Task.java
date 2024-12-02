@@ -22,6 +22,6 @@ public class Task {
     @JoinColumn(name = "username", referencedColumnName= "username")
     private User user;//check
     //added
-    private LocalTime createdOn;
+    private String createdOn;
 
 }

@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface OtherActivityServiceInterface {
     //need to return only name from otheractivity object rather object itself
-    List<OtherActivity> getOtherActivityList();
+    List<String> getOtherActivityList();
 
-    OtherActivity addOtherActivity(String otherActiName, LocalTime createdOn);
+    OtherActivity addOtherActivity(String otherActiName, String createdOn);
 
 }

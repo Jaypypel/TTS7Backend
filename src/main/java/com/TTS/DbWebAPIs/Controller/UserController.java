@@ -11,24 +11,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/app/user")
 @RequiredArgsConstructor
 
 
 
-
-@CrossOrigin(origins = "*")
 public class UserController {
 
-    @Autowired
-    UserService userService;
+
+    private final UserService userService;
 
 
 //    @PostMapping("/register")
 //    public boolean Registration(@RequestBody User inputUser){
 //        return userService.registerUser(inputUser);
 //    }
+
+    @GetMapping("/list")
+    public ResponseEntity<APIResponse> getUsernameList(){
+        List<String> usernames = userService.getUsernameList();
+        return ResponseEntity.ok(new APIResponse("successful",usernames));
+    }
 
     //tested again at 11:24 am on 3rd Oct
     @PostMapping("/register")

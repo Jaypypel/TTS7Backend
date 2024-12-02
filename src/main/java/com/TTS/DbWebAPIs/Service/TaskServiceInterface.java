@@ -14,7 +14,7 @@ public interface TaskServiceInterface {
 
     Integer getTaskFreqeuncyCount(String username, LocalDate startDate, LocalDate endDate);
 
-    Task addTask(String username, Long activtyId, String taskName, LocalTime createdOn);
+    Task addTask(String username, Long activtyId, String taskName, String createdOn);
 
     List<String> getTaskNames();
 }

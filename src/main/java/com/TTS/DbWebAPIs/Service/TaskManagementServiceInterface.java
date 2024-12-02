@@ -5,6 +5,7 @@ import com.TTS.DbWebAPIs.Entity.Task;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface TaskManagementServiceInterface {
 
     /* it is  used in the existing TTS to get a list of modified task list & a list of processing task list and competed task list though same logic is repeated*/
-    List<String> getAcceptedTaskList(String username, String status);
+    List<TaskManagement> getAcceptedTaskList(String username, String status);
 
 
     TaskManagement updateTaskManagementSeenOnTime(Long taskId);
@@ -23,17 +24,24 @@ public interface TaskManagementServiceInterface {
 
     TaskManagement updateTaskManagementAcceptTime(Long taskId);
 
-    TaskManagement updateTaskManagementCompletedStatus(Long taskId);
+    TaskManagement updateTaskManagementStatus(Long taskId,String status);
 
     TaskManagement addActualTotalTime(Long assignedTaskId,String actualTotalTime);
 
     //remove TimeShare timeShareAssociated
+    //remove  List<DelegationMeasurables> delegationMeasurablesAssociated
+//    TaskManagement addAssignedTask(String taskOwnerUsername, String taskReceivedUsername, String activityName,
+//                                   String taskName, String projectId, String projectName, LocalDate expectedDate,
+//                                   LocalTime expectedTime, String expectedTotalTime, String description, LocalDateTime taskAssignedOn,
+//                                   String actualTotalTime, LocalTime taskSeenOn, String taskCompletedOn, LocalTime taskAcceptedOn,
+//                                   LocalTime taskProcessOn, LocalTime taskApproveOn,
+//                                   String status);
     TaskManagement addAssignedTask(String taskOwnerUsername, String taskReceivedUsername, String activityName,
-                                   String taskName, String projectId, String projectName, LocalDateTime expectedDate,
-                                   LocalTime expectedTime, String expectedTotalTime, String description, LocalTime taskAssignedOn,
-                                   String actualTotalTime, LocalTime taskSeenOn, LocalTime taskCompletedOn, LocalTime taskAcceptedOn,
-                                   LocalTime taskProcessOn, LocalTime taskApproveOn,
-                                   String status, List<DelegationMeasurables> delegationMeasurablesAssociated);
+                                   String taskName, String projectCode, String projectName, LocalDate expectedDate,
+                                   LocalTime expectedTime, String expectedTotalTime, String description, String taskAssignedOn,
+                                   String actualTotalTime, String taskSeenOn, String taskCompletedOn, String taskAcceptedOn,
+                                   String taskProcessOn, String taskApproveOn,
+                                   String status);
 
     TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId);
 

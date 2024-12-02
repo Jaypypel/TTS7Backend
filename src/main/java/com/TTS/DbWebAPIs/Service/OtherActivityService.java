@@ -18,12 +18,12 @@ public class OtherActivityService implements OtherActivityServiceInterface {
     private  final OtherActivityRepository otherActivityRepository;
 
     @Override
-    public List<OtherActivity> getOtherActivityList() {
-        return otherActivityRepository.findAll();
+    public List<String> getOtherActivityList() {
+        return otherActivityRepository.findOtherActivityNames();
     }
 
     @Override
-    public OtherActivity addOtherActivity(String otherActiName, LocalTime createdOn) {
+    public OtherActivity addOtherActivity(String otherActiName, String createdOn) {
         OtherActivity otherActivity = new OtherActivity();
         otherActivity.setName(otherActiName);
         otherActivity.setCreatedOn(createdOn);

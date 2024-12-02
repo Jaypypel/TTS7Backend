@@ -2,13 +2,16 @@ package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.*;
 import com.TTS.DbWebAPIs.Repository.*;
+import com.TTS.DbWebAPIs.Util.DateAndTimeConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
+
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.List;
 
@@ -24,15 +27,15 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
     /*the function is  used in existing tts app for the receivedModfifcationtAskList,*/
     @Override
-    public List<String> getAcceptedTaskList(String taskReceivedUsername, String status) {
+    public List<TaskManagement> getAcceptedTaskList(String taskReceivedUsername, String status) {
         return taskManagementRepository.findByUserUsernameAndStatus(taskReceivedUsername,status);
     }
 
     @Override
-    public TaskManagement updateTaskManagementCompletedStatus(Long taskId) {
+    public TaskManagement updateTaskManagementStatus(Long taskId, String status) {
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
-        LocalTime taskCompletedTime = LocalTime.now();
-        existingTaskManagement.setStatus("Completed");
+        String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
+        existingTaskManagement.setStatus(status);
         existingTaskManagement.setTaskCompletedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
     }
@@ -41,7 +44,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     public TaskManagement addActualTotalTime(Long assignedTaskId, String actualTotalTime) {
         TaskManagement existingTaskManagement = taskManagementRepository.findById(assignedTaskId).orElseThrow(()-> new RuntimeException("task not found"));
         existingTaskManagement.setActualTotalTime(actualTotalTime);
-        return existingTaskManagement;
+        return taskManagementRepository.save(existingTaskManagement);
 
     }
 
@@ -50,11 +53,12 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     //removed time shareId
     @Override
     public TaskManagement addAssignedTask(String taskOwnerUsername, String taskReceivedUsername, String activityName,
-                                          String taskName, String projectCode, String projectName, LocalDateTime expectedDate,
-                                          LocalTime expectedTime, String expectedTotalTime, String description, LocalTime taskAssignedOn,
-                                          String actualTotalTime, LocalTime taskSeenOn, LocalTime taskCompletedOn, LocalTime taskAcceptedOn,
-                                          LocalTime taskProcessOn, LocalTime taskApproveOn,
-                                          String status, List<DelegationMeasurables> delegationMeasurablesAssociated) {
+                                          String taskName, String projectCode, String projectName, LocalDate expectedDate,
+                                          LocalTime expectedTime, String expectedTotalTime, String description, String taskAssignedOn,
+                                          String actualTotalTime, String taskSeenOn, String taskCompletedOn, String taskAcceptedOn,
+                                          String taskProcessOn, String taskApproveOn,
+                                          String status) {
+//        , List<DelegationMeasurables> delegationMeasurablesAssociated
         User iptTskOwner = userRepository.findByUsername(taskOwnerUsername);
         if(iptTskOwner.getUsername().isEmpty() || iptTskOwner.getEmail().isBlank()) new RuntimeException("task not assigned");
         User iptTskReceiver = userRepository.findByUsername(taskReceivedUsername);
@@ -67,16 +71,16 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         } catch (Exception e){
             throw new RuntimeException("project not found");
         }
-        try {
-            iptActivity = activityRepository.findByName(activityName);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("activity not found");
-        }
+//        try {
+//            iptActivity = activityRepository.findByName(activityName);
+//        } catch (RuntimeException e) {
+//            throw new RuntimeException("activity not found");
+//        }
         TaskManagement assignedTaskManagement = new TaskManagement();
         assignedTaskManagement.setTaskOwnerUserID(iptTskOwner);
         assignedTaskManagement.setTaskReceivedUserID(iptTskReceiver);
       //  assignedTaskManagement.setTimeShareAssociated(timeShareAssociated);
-        assignedTaskManagement.setActivityName(iptActivity.getName());
+        assignedTaskManagement.setActivityName(activityName);
         assignedTaskManagement.setTaskName(taskName);
         project.setName(projectName);
         assignedTaskManagement.setProjectName(project.getName());
@@ -93,18 +97,20 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         assignedTaskManagement.setTaskProcessedOn(taskProcessOn);
         assignedTaskManagement.setTasKApprovedOn(taskApproveOn);
         assignedTaskManagement.setStatus(status);
-        final TaskManagement saveAssignedTaskManagement = taskManagementRepository.save(assignedTaskManagement);
-        delegationMeasurablesAssociated.forEach(delegationMeasurable -> {
-            delegationMeasurable.setFkTaskManagementID(saveAssignedTaskManagement);
-            //delegationMeasurable.setId(Long.parseLong(delegationMeasurable.getFkMeasurableId().getName().replaceAll("[^0-9]", ""))); // Example: setting value
-            // Set other fields as required
-            delegationMeasurable.setActualMeasurableQuantity(delegationMeasurable.getActualMeasurableQuantity());
-            delegationMeasurable.setExpectedMeasurableQuantity(delegationMeasurable.getExpectedMeasurableQuantity());
-            delegationMeasurable.setMeasurableUnit(delegationMeasurable.getMeasurableUnit());
-            delegationMeasurablesRepository.save(delegationMeasurable);
-        });
-        return saveAssignedTaskManagement;
+//        final TaskManagement saveAssignedTaskManagement = taskManagementRepository.save(assignedTaskManagement);
+//        delegationMeasurablesAssociated.forEach(delegationMeasurable -> {
+//
+//            //delegationMeasurable.setId(Long.parseLong(delegationMeasurable.getFkMeasurableId().getName().replaceAll("[^0-9]", ""))); // Example: setting value
+//            // Set other fields as required
+//            delegationMeasurable.setActualMeasurableQuantity(delegationMeasurable.getActualMeasurableQuantity());
+//            delegationMeasurable.setExpectedMeasurableQuantity(delegationMeasurable.getExpectedMeasurableQuantity());
+//            delegationMeasurable.setMeasurableUnit(delegationMeasurable.getMeasurableUnit());
+//            delegationMeasurablesRepository.save(delegationMeasurable);
+//        });
+        return taskManagementRepository.save(assignedTaskManagement);
     }
+
+
 
     @Override
     public TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId) {
@@ -117,7 +123,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     @Override
     public TaskManagement updateTaskManagementSeenOnTime(Long taskId) {
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
-        LocalTime taskSeenOnTime = LocalTime.now();
+        String taskSeenOnTime = DateAndTimeConfig.getCurrentDateAndTime();
         existingTaskManagement.setTaskSeenOn(taskSeenOnTime);
         return taskManagementRepository.save(existingTaskManagement);
     }
@@ -125,7 +131,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     @Override
     public TaskManagement updateTaskManagementProcessedOnTime(Long taskId) {
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
-        LocalTime taskCompletedTime = LocalTime.now();
+        String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
         existingTaskManagement.setStatus("In-Process");
         existingTaskManagement.setTaskProcessedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
@@ -134,7 +140,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     @Override
     public TaskManagement updateTaskManagementApprovedOnTime(Long taskId) {
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
-        LocalTime taskCompletedTime = LocalTime.now();
+        String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
         existingTaskManagement.setStatus("approved");
         existingTaskManagement.setTasKApprovedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
@@ -143,7 +149,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     @Override
     public TaskManagement updateTaskManagementAcceptTime(Long taskId) {
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
-        LocalTime taskCompletedTime = LocalTime.now();
+        String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
         existingTaskManagement.setStatus("Accepted");
         existingTaskManagement.setTaskAcceptedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
@@ -151,7 +157,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
 
     @Override
-public List<TaskManagement> getSendModificationTaskList(String  taskOwnerUserID, String status) {
+     public List<TaskManagement> getSendModificationTaskList(String  taskOwnerUserID, String status) {
         return taskManagementRepository.findByTaskOwnerUserIdAndStatus(taskOwnerUserID,status);
     }
 
@@ -164,6 +170,12 @@ public List<TaskManagement> getSendModificationTaskList(String  taskOwnerUserID,
     public List<TaskManagement> getDelegatedTaskList(String taskOwnerUsername) {
         return taskManagementRepository.findByTaskOwnerUserId(taskOwnerUsername);
     }
+
+//    @Override
+//    public Integer getTaskCountBasedOnUsernameAndStatus(String username){
+//        return taskManagementRepository.CountByUserUsernameAndStatus(
+//                username,"pending");
+//    }
 
     @Override
     public Integer getPendingTaskCount(String username){

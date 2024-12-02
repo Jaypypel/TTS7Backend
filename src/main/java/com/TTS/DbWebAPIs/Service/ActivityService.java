@@ -34,7 +34,7 @@ public class ActivityService implements ActivityServiceInterface{
 
     //add an activity
     @Override
-    public Activity addActivity(String username, String activityName, LocalDate createdOn) {
+    public Activity addActivity(String username, String activityName, String createdOn) {
         Activity inputActivity = new Activity();
         User user = userRepository.findByUsername(username);
         if(user.getUsername().isEmpty() || user.getUsername().isBlank()){
@@ -61,6 +61,15 @@ public class ActivityService implements ActivityServiceInterface{
     @Override
     public Activity getActivity(String name) {
         return activityRepository.findByName(name);
+    }
+
+    @Override
+    public List<String> getActivityNamesByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if(user.getUsername().isBlank() || user.getUsername().isEmpty()){
+            throw new RuntimeException("User not found");
+        }
+      return   activityRepository.getActivityNamesbyUserName(username);
     }
 
 

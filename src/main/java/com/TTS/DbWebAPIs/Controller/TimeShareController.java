@@ -3,8 +3,10 @@ package com.TTS.DbWebAPIs.Controller;
 import com.TTS.DbWebAPIs.DTO.TimeShareDTO;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
+import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.TimeShareServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +31,14 @@ public class TimeShareController {
 
     //tested at 12:58 pm on 10 oct
     @GetMapping("/list/{taskId}")
-    ResponseEntity<List<TimeShare>> getTimeShareLists(@PathVariable Long taskId){
-        List<TimeShare> timeShareList = timeShareService.getTimeShareLists(taskId);
-        return ResponseEntity.ok(timeShareList);
+    ResponseEntity<?> getTimeShareLists(@PathVariable Long taskId){
+        try{
+            List<TimeShare> timeShareList = timeShareService.getTimeShareLists(taskId);
+            return ResponseEntity.ok(new APIResponse("successful",timeShareList));
+        }catch (RuntimeException e){
+
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
     //tested at 1:35 on 10 oct
@@ -43,13 +50,9 @@ public class TimeShareController {
 
     //tested at 12:27 pm on 4th oct 2024
     @PostMapping("/timeshare")
-    ResponseEntity<TimeShare> addTimeShare(@RequestBody TimeShareDTO timeShareDTO){
+    ResponseEntity<?> addTimeShare(@RequestBody TimeShare timeShareDTO){
         System.out.println(timeShareDTO);
-        TimeShare timeShare = timeShareService.addTimeShare(timeShareDTO.getTimeShare().getFkTaskManagementId().getId()
-                ,timeShareDTO.getTimeShare().getDateOfTimeShare(),timeShareDTO.getTimeShare().getStartTime()
-                ,timeShareDTO.getTimeShare().getEndTime(), timeShareDTO.getTimeShare().getTimeDifference(),
-                timeShareDTO.getTimeShare().getDescription(),timeShareDTO.getTimeShare().getCreatedOn(),
-                timeShareDTO.getTimeShareMeasurablesList());
+        TimeShare timeShare = timeShareService.addTimeShare(timeShareDTO);
         return ResponseEntity.ok(timeShare);
     }
 

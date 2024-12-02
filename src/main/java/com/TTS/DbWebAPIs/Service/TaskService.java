@@ -40,7 +40,7 @@ public class TaskService implements TaskServiceInterface{
     }
 
     @Override
-    public Task addTask(String username, Long activtyId, String taskName, LocalTime createdOn) {
+    public Task addTask(String username, Long activtyId, String taskName, String createdOn) {
         User inputUser = userRepository.findByUsername(username);
         if(inputUser.getUsername().isBlank() || inputUser.getEmail().isEmpty()){
                 throw  new RuntimeException("user not found ");

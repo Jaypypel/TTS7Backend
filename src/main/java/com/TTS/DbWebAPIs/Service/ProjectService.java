@@ -3,6 +3,7 @@ package com.TTS.DbWebAPIs.Service;
 import com.TTS.DbWebAPIs.Entity.Activity;
 import com.TTS.DbWebAPIs.Entity.Project;
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.ActivityRepository;
 import com.TTS.DbWebAPIs.Repository.ProjectRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
@@ -50,9 +51,11 @@ public class ProjectService implements ProjectServiceInterface  {
 
 
     @Override
-    public Project addProject(Long userId, Long activityID, String projectCode, String projectName, LocalTime createdOn) {
+    public Project addProject(String userId, Long activityID, String projectCode, String projectName, String createdOn) {
         Project newProject = new Project();
-        User inputUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("user not exit"));
+        User inputUser = userRepository.findByUsername(userId) != null ? userRepository.findByUsername(userId): null;
+        if (inputUser == null) throw new NotFoundException("Username not found");
+
         Set<User> userAssociatedProject = new HashSet<>();
         userAssociatedProject.add(inputUser);
         newProject.setUsersAssociated(userAssociatedProject);
