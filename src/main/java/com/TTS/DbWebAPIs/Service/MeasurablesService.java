@@ -26,14 +26,7 @@ public class MeasurablesService implements MeasurablesServiceInterface{
     * same*/
     @Override
     public List<Measurables> getDTSMeasurablesList(Long dtsId) {
-        List<Measurables>  dailyTimeShareMeasurables = measurablesRepository.findMeasurablesById(dtsId);
-
-//        MeasurablesIdAndName dailyTimeShareMeasurable;
-//        while(measurablesRepository.getMeasurables(dtsId)!=null){
-//            dailyTimeShareMeasurable = measurablesRepository.getMeasurables(dtsId);
-//            dailyTimeShareMeasurables.add(dailyTimeShareMeasurable);
-//        }
-        return dailyTimeShareMeasurables;
+        return measurablesRepository.findMeasurablesById(dtsId);
     }
 
     @Override
@@ -41,10 +34,6 @@ public class MeasurablesService implements MeasurablesServiceInterface{
         return measurablesRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
-//    @Override
-//    public List<Measurables> getAllocatedMeasurableList(Long taskId) {
-//        return measurablesRepository.findAllocatedMeasurablesByTaskId(taskId);
-//    }
 
     @Override
     public Integer getMeasurableCount(String username, LocalDate startDate, LocalDate endDate) {

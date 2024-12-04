@@ -79,8 +79,7 @@ public ResponseEntity<TimeShareOtherActivity> addOtherActivity(
             parsedStartTime,
             parsedEndTime,
             timeDifference,
-            description,
-            parsedCreatedOn);
+            description, createdOn);
 
     return ResponseEntity.ok(timeShareOtherActivity);
 }

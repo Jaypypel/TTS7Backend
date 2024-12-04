@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Controller;
 
+import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
@@ -19,6 +20,8 @@ public class DailyTimeShareMeasurablesController {
 
     private final DailyTimeShareMeasurablesServiceInterface dailyTimeShareMeasurablesService;
 
+
+
     @PostMapping("/dailyTimeShareMeasurable")
     ResponseEntity<APIResponse> addDailyTimeShareMeasurable(@RequestParam Long timeShareId, @RequestParam Long measurablesId,
                                                             @RequestParam Long mesrbQunty, @RequestParam String mesrbUnit){
@@ -30,11 +33,10 @@ public class DailyTimeShareMeasurablesController {
         if(timeShareId == null || measurablesId == null || mesrbQunty == null  || mesrbUnit==null){
             System.out.println("Any of field like measurId, timesharId is not null");
         }
-        TimeShare timeShare = new TimeShare();
-        timeShare.setId(timeShareId);
+
         Measurables measurables = new Measurables();
         measurables.setId(measurablesId);
-        DailyTimeShareMeasurables dailyTimeShareMeasurables = dailyTimeShareMeasurablesService.addDailyTimeShareMeasurables(timeShare,measurables,mesrbQunty,mesrbUnit);
+        DailyTimeShareMeasurables dailyTimeShareMeasurables = dailyTimeShareMeasurablesService.addDailyTimeShareMeasurables(timeShareId,measurables,mesrbQunty,mesrbUnit);
         System.out.println(dailyTimeShareMeasurables);
         return ResponseEntity.ok(new APIResponse("successful",dailyTimeShareMeasurables));
     }

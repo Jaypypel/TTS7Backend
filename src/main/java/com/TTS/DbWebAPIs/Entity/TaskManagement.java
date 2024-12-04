@@ -57,7 +57,7 @@ public class TaskManagement {
     private LocalDate expectedDate;
     //added new expectedTime
     @Column(name = "expected_time")
-    private LocalTime expectedTime;
+    private String expectedTime;
 
     @Column(name = "expected_total_time")
     private String expectedTotalTime;

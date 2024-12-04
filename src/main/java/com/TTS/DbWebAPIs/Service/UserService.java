@@ -3,6 +3,7 @@ package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.User;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
+import com.TTS.DbWebAPIs.Util.DateAndTimeConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class UserService implements UserServiceInterface {
         newUser.setPassword(inputUser.getPassword());
         newUser.setEmail(inputUser.getEmail());
         newUser.setMobileNo(inputUser.getMobileNo());
-        newUser.setCreatedOn(LocalDateTime.now());
+        newUser.setCreatedOn(DateAndTimeConfig.getCurrentDateAndTime());
         return userRepository.save(newUser);
     }
 

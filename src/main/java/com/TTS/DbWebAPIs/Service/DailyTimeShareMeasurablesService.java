@@ -4,7 +4,9 @@ import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.DailyTimeShareMeasurblesRepository;
+import com.TTS.DbWebAPIs.Repository.DailyTimeShareRepository;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +22,13 @@ public class DailyTimeShareMeasurablesService implements DailyTimeShareMeasurabl
 
    private final DailyTimeShareMeasurblesRepository dailyTimeShareMeasurblesRepository;
    private final MeasurablesRepository measurablesRepository;
+   private final DailyTimeShareRepository dailyTimeShareRepository;
 
     @Override
-    public DailyTimeShareMeasurables addDailyTimeShareMeasurables(TimeShare timeShareId, Measurables mesrblId, Long mesrbQuantity, String mesrbUnit) {
+    public DailyTimeShareMeasurables addDailyTimeShareMeasurables(Long timeShareId, Measurables mesrblId, Long mesrbQuantity, String mesrbUnit) {
         DailyTimeShareMeasurables dailyTimeShareMeasurables = new DailyTimeShareMeasurables();
-        dailyTimeShareMeasurables.setFkTimeShareId(timeShareId);
+        DailyTimeShare dailyTimeShare = dailyTimeShareRepository.findById(timeShareId).orElseThrow(() -> new NotFoundException("task not found"));
+        dailyTimeShareMeasurables.setDailyTimeShare(dailyTimeShare);
         dailyTimeShareMeasurables.setFkMeasurablesID(mesrblId);
         dailyTimeShareMeasurables.setMeasurableQuantity(mesrbQuantity);
         dailyTimeShareMeasurables.setMeasurableUnit(mesrbUnit);
@@ -45,12 +49,6 @@ public class DailyTimeShareMeasurablesService implements DailyTimeShareMeasurabl
     /*need to check whether getting list of dtsMeasurables or measurables since in the TTSDailyShareFragment Measurable model is different from than the db measurable model*/
     @Override
     public List<Measurables> getDailyTimeShareMeasurablesList(Long dtsId) {
-        List<Measurables>  dailyTimeShareMeasurables = measurablesRepository.findMeasurablesById(dtsId);
-//        MeasurablesIdAndName dailyTimeShareMeasurable;
-//        while(measurablesRepository.getMeasurables(dtsId)!=null){
-//            dailyTimeShareMeasurable = measurablesRepository.getMeasurables(dtsId);
-//            dailyTimeShareMeasurables.add(dailyTimeShareMeasurable);
-//        }
-        return dailyTimeShareMeasurables;
+        return measurablesRepository.findMeasurablesById(dtsId);
     }
 }

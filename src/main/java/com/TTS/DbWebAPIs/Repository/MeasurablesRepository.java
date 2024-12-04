@@ -14,7 +14,7 @@ public interface MeasurablesRepository extends JpaRepository<Measurables,Long> {
 
 
     @Query("SELECT m FROM Measurables m WHERE id " +
-            "IN (SELECT dtsm.fkMeasurablesID.id FROM DailyTimeShareMeasurables dtsm WHERE dtsm.fkTimeShareId.id = :dtsId )")
+            "IN (SELECT dtsm.fkMeasurablesID.id FROM DailyTimeShareMeasurables dtsm WHERE dtsm.dailyTimeShare.id = :dtsId )")
     List<Measurables> findMeasurablesById(Long dtsId);
 
 //    @Query("SELECT COUNT(DISTINCT dtm.measurableId) "  +
@@ -30,7 +30,7 @@ public interface MeasurablesRepository extends JpaRepository<Measurables,Long> {
 //        nativeQuery = true)
     @Query(value = "SELECT COUNT(DISTINCT measurables_id) " +
         "FROM daily_time_share dts " + // table name for DailyTimeShare
-        "LEFT JOIN daily_time_share_measurables dtm ON dts.id = dtm.timeshare_id " + // Use the correct column for foreign key
+        "LEFT JOIN daily_time_share_measurables dtm ON dts.id = dtm.daily_timeshare_id " + // Use the correct column for foreign key
         "WHERE dts.user.username = :username " + // Directly reference the column for user ID
         "AND dts.date_of_time_share BETWEEN :startDate AND :endDate",
         nativeQuery = true)

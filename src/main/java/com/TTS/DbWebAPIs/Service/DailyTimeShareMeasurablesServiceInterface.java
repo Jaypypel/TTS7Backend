@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Service;
 
+import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 public interface DailyTimeShareMeasurablesServiceInterface {
 
-    DailyTimeShareMeasurables addDailyTimeShareMeasurables(TimeShare timeShareId, Measurables mesrblId, Long mesrbQuantity, String mesrbUnit);
+    DailyTimeShareMeasurables addDailyTimeShareMeasurables(Long dailyTimeShareId, Measurables mesrblId, Long mesrbQuantity, String mesrbUnit);
 
     List<Measurables> getDailyTimeShareMeasurablesList(Long dtsId);
 

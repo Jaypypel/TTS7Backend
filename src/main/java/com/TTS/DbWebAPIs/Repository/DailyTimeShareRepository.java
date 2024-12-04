@@ -28,7 +28,7 @@ public interface DailyTimeShareRepository extends JpaRepository<DailyTimeShare,L
            daily_time_share_measurables.measurable_unit 
     FROM daily_time_share
     LEFT JOIN daily_time_share_measurables 
-           ON daily_time_share.id = daily_time_share_measurables.timeshare_id
+           ON daily_time_share.id = daily_time_share_measurables.daily_timeshare_id
     LEFT JOIN measurables 
            ON daily_time_share_measurables.measurables_id = measurables.id
     WHERE daily_time_share.userid = ?1 

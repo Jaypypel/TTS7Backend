@@ -20,7 +20,7 @@ public class DelegationMeasurables {
     @JsonIgnore
     private TaskManagement fkTaskManagementID;//check
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "measurableId", referencedColumnName = "id")
     private Measurables fkMeasurableId;//check
 

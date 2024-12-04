@@ -32,7 +32,7 @@ public class TimeShareOtherActivity {
 
     private String Description;
 
-    private LocalTime createdOn;
+    private String createdOn;
 
 
 

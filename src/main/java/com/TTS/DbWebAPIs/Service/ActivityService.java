@@ -42,7 +42,6 @@ public class ActivityService implements ActivityServiceInterface{
         }
         inputActivity.setUser(user);
         inputActivity.setName(activityName);
-   //     LocalDate activityCreatedOn = LocalDate.now();
         inputActivity.setCreatedOn(createdOn);
         return activityRepository .save(inputActivity);
     }
@@ -54,7 +53,6 @@ public class ActivityService implements ActivityServiceInterface{
         if(user.getUsername().isBlank() || user.getUsername().isEmpty()){
             throw new RuntimeException("User not found");
         }
-
         return activityRepository.ActivityCount(username,startDate,endDate);
     }
 

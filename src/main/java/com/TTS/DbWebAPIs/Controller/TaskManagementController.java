@@ -46,22 +46,22 @@ public class TaskManagementController {
 //            }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-            LocalDate localDate = LocalDate.parse(taskAssigned.getExpectedDate(),formatter);
-            System.out.println("localDate : "+localDate);
+            LocalDate expectDate = LocalDate.parse(taskAssigned.getExpectedDate(),formatter);
+//            System.out.println("localDate : "+localDate);
+//
+//            DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HH:mm");
+//            LocalTime localTime = LocalTime.parse(taskAssigned.getExpectedTime(), timeformatter);
+//
+//            System.out.println("localTime : "+localTime);
+//
+//            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a", Locale.ENGLISH);
+//            System.out.println(dateTimeFormatter);
+//            LocalDateTime taskAssignedOn = LocalDateTime.parse(taskAssigned.getTaskAssignedOn().trim(),dateTimeFormatter);
+//            LocalDateTime updatedAssignedOn = taskAssignedOn.truncatedTo(ChronoUnit.MINUTES);
 
-            DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HH:mm");
-            LocalTime localTime = LocalTime.parse(taskAssigned.getExpectedTime(), timeformatter);
-
-            System.out.println("localTime : "+localTime);
-
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a", Locale.ENGLISH);
-            System.out.println(dateTimeFormatter);
-            LocalDateTime taskAssignedOn = LocalDateTime.parse(taskAssigned.getTaskAssignedOn().trim(),dateTimeFormatter);
-            LocalDateTime updatedAssignedOn = taskAssignedOn.truncatedTo(ChronoUnit.MINUTES);
-
-            System.out.println("before printing tasking assigned");
-            System.out.println("taskAssignedOn : "+taskAssignedOn);
-            System.out.println("after printing tasking assigned");
+//            System.out.println("before printing tasking assigned");
+//            System.out.println("taskAssignedOn : "+taskAssignedOn);
+//            System.out.println("after printing tasking assigned");
             TaskManagement taskManagement = taskManagementService.addAssignedTask(
                     taskAssigned.getTaskOwnerUserID(),
                     taskAssigned.getTaskReceivedUserID(),
@@ -69,14 +69,14 @@ public class TaskManagementController {
                     taskAssigned.getTaskName(),
                     taskAssigned.getProjectCode(),
                     taskAssigned.getProjectName(),
-                    localDate,
-                    localTime,
+                    expectDate,
+                    taskAssigned.getExpectedTime(),
                     taskAssigned.getExpectedTotalTime(),
                     taskAssigned.getDescription(),
                     taskAssigned.getTaskAssignedOn(),
                     taskAssigned.getActualTotalTime(),
                     taskAssigned.getTaskSeenOn(),
-                    taskAssigned.getTaskCompletedOn().toString(),
+                    taskAssigned.getTaskCompletedOn(),
                     taskAssigned.getTaskAcceptedOn(),
                     taskAssigned.getTaskProcessedOn(),
                     taskAssigned.getTasKApprovedOn(),
@@ -99,9 +99,9 @@ public class TaskManagementController {
 
     //tested at 4:00pm on 9th oct
     @PutMapping("/task/{taskID}/seentime/update/")
-    ResponseEntity<TaskManagement> updateTaskManagementSeenOnTime(@PathVariable Long  taskID){
+    ResponseEntity<?> updateTaskManagementSeenOnTime(@PathVariable Long  taskID){
         TaskManagement taskManagement = taskManagementService.updateTaskManagementSeenOnTime(taskID);
-        return ResponseEntity.ok(taskManagement);
+        return ResponseEntity.ok(new APIResponse("successful","-"));
     }
 
     //tested at 4:37 pm on 9th oct

@@ -7,16 +7,17 @@ import lombok.Data;
 //new class created
 @Data
 @Entity
+
 public class DailyTimeShareMeasurables {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "timeshareId", referencedColumnName = "id")
-    private TimeShare fkTimeShareId;//check
+    @JoinColumn(name = "dailyTimeshareId", referencedColumnName = "id")
+    private DailyTimeShare dailyTimeShare;//check
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "measurablesId", referencedColumnName = "id")
     private Measurables fkMeasurablesID;//check
 

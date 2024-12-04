@@ -38,7 +38,7 @@ public interface TaskManagementServiceInterface {
 //                                   String status);
     TaskManagement addAssignedTask(String taskOwnerUsername, String taskReceivedUsername, String activityName,
                                    String taskName, String projectCode, String projectName, LocalDate expectedDate,
-                                   LocalTime expectedTime, String expectedTotalTime, String description, String taskAssignedOn,
+                                   String expectedTime, String expectedTotalTime, String description, String taskAssignedOn,
                                    String actualTotalTime, String taskSeenOn, String taskCompletedOn, String taskAcceptedOn,
                                    String taskProcessOn, String taskApproveOn,
                                    String status);

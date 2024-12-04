@@ -19,7 +19,7 @@ public class TimeShareOtherActivityService implements TimeShareOtherActivityServ
     private  final UserRepository userRepository;
     private  final TimeShareOtherActivityRepository timeShareOtherActivityRepository;
     @Override
-    public TimeShareOtherActivity addOtherActivity(String username, String activityName, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, LocalTime createdOn) {
+    public TimeShareOtherActivity addOtherActivity(String username, String activityName, LocalDateTime date, LocalTime startTime, LocalTime endTime, String timeDifference, String description, String createdOn) {
         User user = userRepository.findByUsername(username);
         if(user.getUsername().isEmpty()){
             throw new RuntimeException("username not found");

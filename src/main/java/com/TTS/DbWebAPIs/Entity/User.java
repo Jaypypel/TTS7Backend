@@ -30,7 +30,7 @@ public class User {
 
     private String mobileNo;
 
-    private LocalDateTime createdOn;
+    private String createdOn;
 
 //    @ManyToMany(mappedBy = "usersAssociated",cascade = CascadeType.ALL)
 //    private Set<Project> projectId = new HashSet<>();//check

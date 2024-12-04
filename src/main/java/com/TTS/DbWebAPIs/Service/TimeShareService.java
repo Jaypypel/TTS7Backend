@@ -45,13 +45,5 @@ public class TimeShareService implements TimeShareServiceInterface{
     public TimeShare addTimeShare(TimeShare timeShare) {
         TaskManagement taskManagement = taskManagementRepository.findById(timeShare.getFkTaskManagementId().getId()).orElseThrow(()->new RuntimeException("task not found"));
         return timeShareRepository.save(timeShare);
-//        TimeShare saveTimeShare = timeShareRepository.save(timeShare);
-//        TimeShareMeasurablesService timeShareMeasurablesService = new TimeShareMeasurablesService(timeShareRepository);
-//        timeShareMeasurablesList.forEach(timeShareMeasurables -> {
-//            timeShareMeasurables.setFkTimeShareId(saveTimeShare);
-//            timeShareMeasurablesService.addTimeShareMeasurables(saveTimeShare.getId(), timeShareMeasurables.getFkMeasurablesID(),timeShareMeasurables.getMeasurableQuantity(),timeShareMeasurables.getMeasurableUnit());
-//            timeShareMeasurablesRepository.save(timeShareMeasurables);
-//        });
-
     }
 }

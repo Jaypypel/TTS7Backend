@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +35,56 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     @Override
     public TaskManagement updateTaskManagementStatus(Long taskId, String status) {
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
-        String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
+       // String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
         existingTaskManagement.setStatus(status);
-        existingTaskManagement.setTaskCompletedOn(taskCompletedTime);
-        return taskManagementRepository.save(existingTaskManagement);
+        if(isStatusApproved(existingTaskManagement,status)){
+            return taskManagementRepository.save(existingTaskManagement);
+        }
+        if (isStatusAccepted(existingTaskManagement,status)){
+            return taskManagementRepository.save(existingTaskManagement);
+        }
+        if (isStatusCompleted(existingTaskManagement,status)){
+            return taskManagementRepository.save(existingTaskManagement);
+        }
+        if (isStatusInProcess(existingTaskManagement,status)){
+            return taskManagementRepository.save(existingTaskManagement);
+        }
+        if (isStatusNotSeen(existingTaskManagement,status)){
+            return taskManagementRepository.save(existingTaskManagement);
+        }
+        return existingTaskManagement;
+       // existingTaskManagement.setTaskCompletedOn(taskCompletedTime);
+       // return taskManagementRepository.save(existingTaskManagement);
+    }
+
+    private boolean isStatusNotSeen(TaskManagement existingTaskManagement , String status) {
+        if(!status.equals("Accepted")) return  false;
+        existingTaskManagement.setTaskAcceptedOn(DateAndTimeConfig.getCurrentDateAndTime());
+        return true;
+    }
+
+    private boolean isStatusAccepted(TaskManagement taskManagement, String status){
+        if(!status.equals("Accepted")) return  false;
+        taskManagement.setTaskAcceptedOn(DateAndTimeConfig.getCurrentDateAndTime());
+        return true;
+    }
+
+    private boolean isStatusApproved(TaskManagement taskManagement, String status){
+        if(!status.equals("Approved")) return  false;
+        taskManagement.setTasKApprovedOn(DateAndTimeConfig.getCurrentDateAndTime());
+        return true;
+    }
+
+    private boolean isStatusCompleted(TaskManagement taskManagement, String status){
+        if(!status.equals("Completed")) return  false;
+        taskManagement.setTaskCompletedOn(DateAndTimeConfig.getCurrentDateAndTime());
+        return true;
+    }
+
+    private boolean isStatusInProcess(TaskManagement taskManagement, String status){
+        if(!status.equals("InProcess")) return  false;
+        taskManagement.setTaskCompletedOn(DateAndTimeConfig.getCurrentDateAndTime());
+        return true;
     }
 
     @Override
@@ -54,7 +101,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     @Override
     public TaskManagement addAssignedTask(String taskOwnerUsername, String taskReceivedUsername, String activityName,
                                           String taskName, String projectCode, String projectName, LocalDate expectedDate,
-                                          LocalTime expectedTime, String expectedTotalTime, String description, String taskAssignedOn,
+                                          String expectedTime, String expectedTotalTime, String description, String taskAssignedOn,
                                           String actualTotalTime, String taskSeenOn, String taskCompletedOn, String taskAcceptedOn,
                                           String taskProcessOn, String taskApproveOn,
                                           String status) {
@@ -117,7 +164,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         TaskManagement existingTask = taskManagementRepository.findById(taskId).orElseThrow(()-> new RuntimeException("task not found"));
         existingTask.setDescription(description);
         existingTask.setStatus("revised");
-        return existingTask;
+        return taskManagementRepository.save(existingTask);
     }
 
     @Override
