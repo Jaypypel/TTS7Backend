@@ -15,7 +15,7 @@ public class DelegationMeasurables {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "taskHandler", referencedColumnName = "id")
     @JsonIgnore
     private TaskManagement fkTaskManagementID;//check

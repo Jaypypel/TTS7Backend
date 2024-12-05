@@ -13,7 +13,7 @@ public class DailyTimeShareMeasurables {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "dailyTimeshareId", referencedColumnName = "id")
     private DailyTimeShare dailyTimeShare;//check
 

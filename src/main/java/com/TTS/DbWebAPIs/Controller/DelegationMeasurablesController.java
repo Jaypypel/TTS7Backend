@@ -17,8 +17,8 @@ public class DelegationMeasurablesController {
     private final DelegationMeasurablesServiceInterface delegationMeasurablesService;
 
     @GetMapping("/allocatedMeasurabeslist/{taskId}")
-    ResponseEntity<APIResponse> getAllocatedMeasurableList(Long taskId){
-       List<DelegationMeasurables> delegationMeasurables = delegationMeasurablesService.getAllocatedMeasurableList(taskId);
+    ResponseEntity<APIResponse> getAllocatedMeasurableList(@PathVariable Long taskId){
+       List<Measurables> delegationMeasurables = delegationMeasurablesService.getAllocatedMeasurableList(taskId);
        System.out.println(delegationMeasurables);
        return ResponseEntity.ok(new APIResponse("successful",delegationMeasurables));
     }

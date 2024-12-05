@@ -20,17 +20,17 @@ public class DelegationMeasurablesService implements DelegationMeasurablesServic
 
     //"it is used in the existing tts app to get a list of approvedTaskMeasurables , ProcessingTaskMeasurable and CompletedMeasurable , ModifiedTaskMeasurable, DelegatedMeasurable
     @Override
-    public List<DelegationMeasurables> getAllocatedMeasurableList(Long taskId) {
+    public List<Measurables> getAllocatedMeasurableList(Long taskId) {
         List<Measurables>  measurables = measurablesRepository.findAllocatedMeasurablesByTaskId(taskId);
-        List<DelegationMeasurables> delegationMeasurables = new ArrayList<>();
-        DelegationMeasurables delegationMeasurable;
-        for (Measurables measurable: measurables){
-            delegationMeasurable = new DelegationMeasurables();
-            delegationMeasurable.setId(measurable.getId());
-            delegationMeasurable.setFkMeasurableId(measurable);
-            delegationMeasurables.add(delegationMeasurable);
-        }
-        return delegationMeasurables;
+//        List<DelegationMeasurables> delegationMeasurables = new ArrayList<>();
+//        DelegationMeasurables delegationMeasurable;
+//        for (Measurables measurable: measurables){
+//            delegationMeasurable = new DelegationMeasurables();
+//            delegationMeasurable.setId(measurable.getId());
+//            delegationMeasurable.setFkMeasurableId(measurable);
+//            delegationMeasurables.add(delegationMeasurable);
+//        }
+        return measurables;
     }
 
     @Override
