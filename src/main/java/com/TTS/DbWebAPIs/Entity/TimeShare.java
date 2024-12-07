@@ -38,7 +38,7 @@ public class TimeShare {
 
     private String endTime;
 
-    private String TimeDifference;
+    private String timeDifference;
 
     private String description;
 

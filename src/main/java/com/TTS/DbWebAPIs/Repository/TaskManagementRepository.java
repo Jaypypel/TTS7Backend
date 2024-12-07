@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface TaskManagementRepository  extends JpaRepository<TaskManagement,Long> {
 
-    @Query("SELECT tm.taskName from TaskManagement tm WHERE tm.taskReceivedUserID.username =:username AND tm.status =:status")
+    @Query("SELECT tm from TaskManagement tm WHERE tm.taskReceivedUserID.username =:username AND tm.status =:status")
     List<TaskManagement> findByUserUsernameAndStatus(@Param("username") String username,@Param("status") String status);
 
     @Query(value = "SELECT COUNT(*) FROM  tts7.task_management  WHERE task_owner =:username AND status  =:status",nativeQuery = true)

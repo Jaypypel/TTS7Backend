@@ -44,7 +44,7 @@ public class TaskManagementController {
 //            if (activityName == null || activityName.isEmpty()) {
 //                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity name cannot be null or empty");
 //            }
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             LocalDate expectDate = LocalDate.parse(taskAssigned.getExpectedDate(),formatter);
 //            System.out.println("localDate : "+localDate);

@@ -41,12 +41,12 @@ public class DailyTimeShareController {
     }
 
     //tested at 11:17 am on 8th Oct
-    @GetMapping("/dailyTimeShareList/{username}/{dateOfTimeShare}")
-    ResponseEntity<APIResponse> getDailyTimeShareList(@PathVariable String username, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String dateOfTimeShare){
+    @GetMapping("/dailyTimeShareList/{username}")
+    ResponseEntity<APIResponse> getDailyTimeShareList(@PathVariable String username, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String dateOfTimeShare){
         if( username == null || dateOfTimeShare == null ){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("failed",null));
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate TimeShareDate = LocalDate.parse(dateOfTimeShare,formatter)    ;
         List<DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,TimeShareDate);
         return ResponseEntity.ok(new APIResponse("successful",dailyTimeShares));

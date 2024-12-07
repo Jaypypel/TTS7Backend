@@ -50,10 +50,10 @@ public class TimeShareController {
 
     //tested at 12:27 pm on 4th oct 2024
     @PostMapping("/timeshare")
-    ResponseEntity<?> addTimeShare(@RequestBody TimeShare timeShareDTO){
-        System.out.println(timeShareDTO);
-        TimeShare timeShare = timeShareService.addTimeShare(timeShareDTO);
-        return ResponseEntity.ok(timeShare);
+    ResponseEntity<?> addTimeShare(@RequestBody TimeShareDTO timeShareDTO){
+
+        TimeShare timeShare = timeShareService.addTimeShare(TimeShareDTO.convertToTimeShare(timeShareDTO));
+        return ResponseEntity.ok(new APIResponse("successful",timeShare));
     }
 
 

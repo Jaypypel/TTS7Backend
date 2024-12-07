@@ -1,6 +1,7 @@
 package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.*;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.*;
 import com.TTS.DbWebAPIs.Util.DateAndTimeConfig;
 import lombok.RequiredArgsConstructor;
@@ -34,27 +35,21 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
     @Override
     public TaskManagement updateTaskManagementStatus(Long taskId, String status) {
-        TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
-       // String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
+        TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new NotFoundException("task not found"));
         existingTaskManagement.setStatus(status);
-        if(isStatusApproved(existingTaskManagement,status)){
-            return taskManagementRepository.save(existingTaskManagement);
-        }
-        if (isStatusAccepted(existingTaskManagement,status)){
-            return taskManagementRepository.save(existingTaskManagement);
-        }
-        if (isStatusCompleted(existingTaskManagement,status)){
-            return taskManagementRepository.save(existingTaskManagement);
-        }
-        if (isStatusInProcess(existingTaskManagement,status)){
-            return taskManagementRepository.save(existingTaskManagement);
-        }
-        if (isStatusNotSeen(existingTaskManagement,status)){
-            return taskManagementRepository.save(existingTaskManagement);
-        }
+        if(isStatusApproved(existingTaskManagement,status)) return taskManagementRepository
+                .save(existingTaskManagement);
+        if (isStatusAccepted(existingTaskManagement,status)) return taskManagementRepository
+                .save(existingTaskManagement);
+        if (isStatusCompleted(existingTaskManagement,status)) return taskManagementRepository
+                .save(existingTaskManagement);
+        if (isStatusInProcess(existingTaskManagement,status)) return taskManagementRepository
+                .save(existingTaskManagement);
+        if (isStatusNotSeen(existingTaskManagement,status)) return taskManagementRepository
+                .save(existingTaskManagement);
+        if (isStatusUnApproved(existingTaskManagement,status)) return taskManagementRepository
+                .save(existingTaskManagement);
         return existingTaskManagement;
-       // existingTaskManagement.setTaskCompletedOn(taskCompletedTime);
-       // return taskManagementRepository.save(existingTaskManagement);
     }
 
     private boolean isStatusNotSeen(TaskManagement existingTaskManagement , String status) {
@@ -66,6 +61,12 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     private boolean isStatusAccepted(TaskManagement taskManagement, String status){
         if(!status.equals("Accepted")) return  false;
         taskManagement.setTaskAcceptedOn(DateAndTimeConfig.getCurrentDateAndTime());
+        return true;
+    }
+
+    private boolean isStatusUnApproved(TaskManagement taskManagement, String status){
+        if(!status.equals("Unapproved")) return  false;
+        taskManagement.setTasKApprovedOn(DateAndTimeConfig.getCurrentDateAndTime());
         return true;
     }
 
@@ -82,7 +83,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     }
 
     private boolean isStatusInProcess(TaskManagement taskManagement, String status){
-        if(!status.equals("InProcess")) return  false;
+        if(!status.equals("In_Process")) return  false;
         taskManagement.setTaskCompletedOn(DateAndTimeConfig.getCurrentDateAndTime());
         return true;
     }

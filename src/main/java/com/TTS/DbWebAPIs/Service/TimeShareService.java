@@ -43,7 +43,7 @@ public class TimeShareService implements TimeShareServiceInterface{
 
     @Override
     public TimeShare addTimeShare(TimeShare timeShare) {
-        TaskManagement taskManagement = taskManagementRepository.findById(timeShare.getFkTaskManagementId().getId()).orElseThrow(()->new RuntimeException("task not found"));
+       // TaskManagement taskManagement = taskManagementRepository.findById(timeShare.getFkTaskManagementId().getId()).orElseThrow(()->new RuntimeException("task not found"));
         return timeShareRepository.save(timeShare);
     }
 }
