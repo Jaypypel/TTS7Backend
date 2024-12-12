@@ -36,7 +36,10 @@ public class ProjectService implements ProjectServiceInterface  {
 
     @Override
     public String getProjectCodeViaProjectName(String projectName) {
-        return projectRepository.findByProjectName(projectName);
+        String projectCode =  projectRepository.findByProjectName(projectName);
+        if(projectCode == null) throw new NotFoundException("project code not found by the name");
+        return projectCode;
+
     }
 
     @Override
