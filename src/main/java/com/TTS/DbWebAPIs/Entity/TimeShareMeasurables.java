@@ -25,7 +25,7 @@ public class TimeShareMeasurables {
     @OneToOne()
     private DelegationMeasurables fkDelegationMeasurablesId;//check
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "measurablesId", referencedColumnName = "id")
     private Measurables fkMeasurablesID;
 

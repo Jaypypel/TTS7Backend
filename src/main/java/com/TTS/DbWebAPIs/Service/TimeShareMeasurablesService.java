@@ -3,6 +3,7 @@ package com.TTS.DbWebAPIs.Service;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
+import com.TTS.DbWebAPIs.Repository.TimeShareMeasurablesRepository;
 import com.TTS.DbWebAPIs.Repository.TimeShareRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class TimeShareMeasurablesService implements TimeShareMeasurablesServiceI
 
 
     private  final TimeShareRepository  timeShareRepository;
+    private final TimeShareMeasurablesRepository timeShareMeasurablesRepository;
 
     @Override
     public TimeShareMeasurables addTimeShareMeasurables(Long timeShareId, Measurables measuableId, Long measurableQuantity, String measurableUnit) {
@@ -22,6 +24,6 @@ public class TimeShareMeasurablesService implements TimeShareMeasurablesServiceI
         timeShareMeasurables.setFkMeasurablesID(measuableId);
         timeShareMeasurables.setMeasurableQuantity(measurableQuantity);
         timeShareMeasurables.setMeasurableUnit(measurableUnit);
-        return timeShareMeasurables;
+        return timeShareMeasurablesRepository.save(timeShareMeasurables);
     }
 }
