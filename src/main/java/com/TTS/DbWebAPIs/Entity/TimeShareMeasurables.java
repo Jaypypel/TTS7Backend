@@ -17,14 +17,15 @@ public class TimeShareMeasurables {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-
-    @OneToOne
+    //One to One
+    @ManyToOne
     @JoinColumn(name = "timeshareId", referencedColumnName = "id")
     private TimeShare fkTimeShareId;//check
 
     @OneToOne()
     private DelegationMeasurables fkDelegationMeasurablesId;//check
 
+    //One to One
     @ManyToOne
     @JoinColumn(name = "measurablesId", referencedColumnName = "id")
     private Measurables fkMeasurablesID;

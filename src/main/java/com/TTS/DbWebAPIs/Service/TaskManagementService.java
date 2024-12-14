@@ -108,17 +108,15 @@ public class TaskManagementService implements TaskManagementServiceInterface{
                                           String status) {
 //        , List<DelegationMeasurables> delegationMeasurablesAssociated
         User iptTskOwner = userRepository.findByUsername(taskOwnerUsername);
-        if(iptTskOwner.getUsername().isEmpty() || iptTskOwner.getEmail().isBlank()) new RuntimeException("task not assigned");
+        if(iptTskOwner == null) throw new NotFoundException("username not exist");
         User iptTskReceiver = userRepository.findByUsername(taskReceivedUsername);
-        if(iptTskReceiver.getUsername().isBlank() || iptTskReceiver.getUsername().isEmpty()) throw new RuntimeException("task not received");
+        if(iptTskReceiver == null) throw new NotFoundException("username not exist");
         Activity iptActivity = activityRepository.findByName(activityName);
         System.out.println(iptActivity);
         Project project;
-        try {
-            project = projectRepository.findByProjectCode(projectCode);
-        } catch (Exception e){
-            throw new RuntimeException("project not found");
-        }
+        project = projectRepository.findByProjectCode(projectCode);
+        if (project == null) throw new NotFoundException("projectCode not exist");
+
 //        try {
 //            iptActivity = activityRepository.findByName(activityName);
 //        } catch (RuntimeException e) {
