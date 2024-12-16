@@ -9,6 +9,7 @@ import com.TTS.DbWebAPIs.Repository.DailyTimeShareMeasurblesRepository;
 import com.TTS.DbWebAPIs.Repository.DailyTimeShareRepository;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DailyTimeShareMeasurablesService implements DailyTimeShareMeasurablesServiceInterface {
 
 

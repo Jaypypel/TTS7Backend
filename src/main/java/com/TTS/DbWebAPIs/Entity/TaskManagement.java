@@ -90,7 +90,7 @@ public class TaskManagement {
     private String status;
 
 //
-    @OneToOne(mappedBy = "fkTaskManagementID")
-    private DelegationMeasurables delegationMeasurablesAssociated;//check
+//    @OneToOne(mappedBy = "fkTaskManagementID")
+//    private DelegationMeasurables delegationMeasurablesAssociated;//check
 
 }
