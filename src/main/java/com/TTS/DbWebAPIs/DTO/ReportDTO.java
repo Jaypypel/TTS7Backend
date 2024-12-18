@@ -1,5 +1,7 @@
 package com.TTS.DbWebAPIs.DTO;
 
+import com.TTS.DbWebAPIs.Entity.Report;
+
 public class ReportDTO {
     private String timeShareDate;
     private String activityName;
@@ -14,6 +16,22 @@ public class ReportDTO {
     private String measurableUnit;
     private String description;
 
+    public ReportDTO( String timeShareDate,String activityName,String taskName,String projectCode, String projectName,
+                      String startTime,String endTime,  String consumedTime,String measurableName,
+                      String measurableQty, String measurableUnit, String description) {
+        this.timeShareDate = timeShareDate;
+        this.activityName = activityName;
+        this.taskName = taskName;
+        this.projectCode = projectCode;
+        this.projectName = projectName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.consumedTime = consumedTime;
+        this.measurableName = measurableName;
+        this.measurableQty = measurableQty;
+        this.measurableUnit = measurableUnit;
+        this.description = description;
+    }
 
     public String getActivityName() {
         return activityName;
@@ -109,5 +127,22 @@ public class ReportDTO {
 
     public void setTimeShareDate(String timeShareDate) {
         this.timeShareDate = timeShareDate;
+    }
+
+    public static Report report = new Report();
+    public static Report convertToReport(ReportDTO reportDTO){
+        report.setTimeShareDate(reportDTO.getTimeShareDate());
+        report.setTimeShareDate(reportDTO.getActivityName());
+        report.setTimeShareDate(reportDTO.getTaskName());
+        report.setTimeShareDate(reportDTO.getProjectCode());
+        report.setTimeShareDate(reportDTO.getProjectName());
+        report.setTimeShareDate(reportDTO.getStartTime());
+        report.setTimeShareDate(reportDTO.getEndTime());
+        report.setTimeShareDate(reportDTO.getConsumedTime());
+        report.setTimeShareDate(reportDTO.getMeasurableName());
+        report.setTimeShareDate(reportDTO.getMeasurableQty());
+        report.setTimeShareDate(reportDTO.getMeasurableUnit());
+        report.setTimeShareDate(reportDTO.getDescription());
+        return report;
     }
 }

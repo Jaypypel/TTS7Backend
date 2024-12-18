@@ -1,9 +1,14 @@
 package com.TTS.DbWebAPIs.Entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@Entity
+@NoArgsConstructor
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +22,29 @@ public class Report {
     private String endTime;
     private String consumedTime;
     private String measurableName;
-    private String measurableQty;
+    private Long measurableQty;
     private String measurableUnit;
     private String description;
 
+    public Report(Long id, String timeShareDate,String projectCode, String projectName,String activityName,
+                  String taskName, String startTime, String endTime, String consumedTime, String measurableName,
+                  Long measurableQty, String measurableUnit, String description){
+        this.id = id;
+        this.timeShareDate = timeShareDate;
+        this.projectCode = projectCode;
+        this.projectName = projectName;
+        this.activityName = activityName;
+        this.taskName = taskName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.consumedTime = consumedTime;
+        this.measurableName = measurableName;
+        this.measurableQty = measurableQty;
+        this.measurableUnit = measurableUnit;
+        this.description = description;
+
+
+    }
     public String getActivityName() {
         return activityName;
     }
@@ -69,11 +93,11 @@ public class Report {
         this.measurableName = measurableName;
     }
 
-    public String getMeasurableQty() {
+    public Long getMeasurableQty() {
         return measurableQty;
     }
 
-    public void setMeasurableQty(String measurableQty) {
+    public void setMeasurableQty(Long measurableQty) {
         this.measurableQty = measurableQty;
     }
 

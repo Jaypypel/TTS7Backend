@@ -43,18 +43,16 @@ public class DailyTimeShareController {
     //tested at 11:17 am on 8th Oct
     @GetMapping("/dailyTimeShareList/{username}")
     ResponseEntity<APIResponse> getDailyTimeShareList(@PathVariable String username, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String dateOfTimeShare){
-        if( username == null || dateOfTimeShare == null ){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("failed",null));
+        if( username == null || dateOfTimeShare == null ) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("failed", null));
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate TimeShareDate = LocalDate.parse(dateOfTimeShare,formatter)    ;
-        List<DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,TimeShareDate);
+        List<DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateOfTimeShare);
         return ResponseEntity.ok(new APIResponse("successful",dailyTimeShares));
     }
 
     //tested at 12:21 pm on 8th Oct
     @GetMapping("/User/{userId}/{startDate}/{endDate}/DTSReport")
-    ResponseEntity<List<DailyTimeShare>> getUserDTSReportDetails(@PathVariable String userId, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
+    ResponseEntity<List<DailyTimeShare>> getUserDTSReportDetails(@PathVariable String userId, @PathVariable String startDate, @PathVariable String endDate){
         List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getUserDTSReportDetails(userId,startDate,endDate);
         return ResponseEntity.ok(dailyTimeShares);
     }
@@ -69,7 +67,7 @@ public class DailyTimeShareController {
 
     //tested at 2:35 pm on 8th Oct
     @GetMapping("/Project/ConsumedTime/{username}/{startDate}/{endDate}")
-    ResponseEntity<List<String>> getProjectConsumedTime(@PathVariable String username, @PathVariable LocalDate startDate,@PathVariable LocalDate endDate){
+    ResponseEntity<List<String>> getProjectConsumedTime(@PathVariable String username, @PathVariable String startDate,@PathVariable String endDate){
         System.out.println("username : "+username);
         System.out.println("startdate : "+startDate);
         System.out.println("enddate : "+endDate);

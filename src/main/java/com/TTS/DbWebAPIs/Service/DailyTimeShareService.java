@@ -24,7 +24,7 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
   private  final  UserRepository userRepository;
     //get a list of Daily TimeShare
     @Override
-    public List<DailyTimeShare> getDailyTimeShareList(String username, LocalDate dateOfTimeShare){
+    public List<DailyTimeShare> getDailyTimeShareList(String username, String dateOfTimeShare){
         return dailyTimeShareRepository.findAllByUserUsernameAndDateOfTimeShare(username, dateOfTimeShare);
     }
 
@@ -46,12 +46,12 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
     }
 
     @Override
-    public List<DailyTimeShare> getUserDTSReportDetails(String userId, LocalDate startDate, LocalDate endDate) {
+    public List<DailyTimeShare> getUserDTSReportDetails(String userId, String startDate, String endDate) {
         return dailyTimeShareRepository.getUserDTSReportDetails(userId,startDate,endDate);
     }
 
     @Override
-    public List<String> getProjectConsumedTime(String  username, LocalDate startDate, LocalDate endDate) {
+    public List<String> getProjectConsumedTime(String  username, String startDate, String endDate) {
         return dailyTimeShareRepository.findByUserUsernameAndStartDateAndEndDate(username, startDate,endDate);
     }
 
