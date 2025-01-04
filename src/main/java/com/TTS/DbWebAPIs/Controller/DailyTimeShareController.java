@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -24,42 +25,68 @@ public class DailyTimeShareController {
 
     //tested at 1:06 pm on 4th oct
     @PostMapping("/dailyTimeShare/")
-    ResponseEntity<APIResponse> addDailyTimeShare(@RequestBody DailyTimeShare dailyTimeShare) {
-//        System.out.println(dailyTimeShareDTO);
-//        DailyTimeShare dailyTimeShare = dailyTimeShareDTO.getDailyTimeShare();
-//        System.out.println(dailyTimeShare);
-//        List<DailyTimeShareMeasurables> dailyTimeShareMeasurables = dailyTimeShareDTO.getDailyTimeShareMeasurables();
-//        System.out.println(dailyTimeShareMeasurables);
-        if(dailyTimeShare ==null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("getting dailytimeshare nul", null));
+    ResponseEntity<?> addDailyTimeShare(@RequestBody DailyTimeShare dailyTimeShare) {
+        try {
+            DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare);
+            return ResponseEntity.ok(new APIResponse<>("successful",adddailyTimeShare));
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while adding a daily-time-share. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
         }
-        System.out.println("User from front end : "+dailyTimeShare.getUser());
-        System.out.println("dailyTime from frontend: " + dailyTimeShare);
-        DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare);
-        System.out.println(adddailyTimeShare);
-        return ResponseEntity.ok(new APIResponse("successful",adddailyTimeShare));
     }
 
     //tested at 11:17 am on 8th Oct
     @GetMapping("/dailyTimeShareList/{username}")
-    ResponseEntity<APIResponse> getDailyTimeShareList(@PathVariable String username, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String dateOfTimeShare){
-        if( username == null || dateOfTimeShare == null ) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("failed", null));
-        }
-        List<DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateOfTimeShare);
-        return ResponseEntity.ok(new APIResponse("successful",dailyTimeShares));
+    ResponseEntity<?> getDailyTimeShareList(@PathVariable String username, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String dateOfTimeShare){
+       try {
+           List<DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateOfTimeShare);
+           if (dailyTimeShares == null || dailyTimeShares.isEmpty()){
+               return ResponseEntity
+                       .status(HttpStatus.NO_CONTENT)
+                       .body(new APIResponse<>("No dailyTimeShares found", null));
+           }
+           return ResponseEntity.ok(new APIResponse<>("successful",dailyTimeShares));
+       }catch (SQLException ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An error occurred while getting  dailyTimeshares. Please try again later.",null));
+       } catch (Exception ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+       }
     }
 
     //tested at 12:21 pm on 8th Oct
     @GetMapping("/User/{userId}/{startDate}/{endDate}/DTSReport")
-    ResponseEntity<List<DailyTimeShare>> getUserDTSReportDetails(@PathVariable String userId, @PathVariable String startDate, @PathVariable String endDate){
-        List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getUserDTSReportDetails(userId,startDate,endDate);
-        return ResponseEntity.ok(dailyTimeShares);
+    ResponseEntity<?> getUserDTSReportDetails(@PathVariable String userId, @PathVariable String startDate, @PathVariable String endDate){
+        try {
+            List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getUserDTSReportDetails(userId,startDate,endDate);
+            if (dailyTimeShares == null || dailyTimeShares.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No dailyTimeShares found", null));
+            }
+            return ResponseEntity.ok(dailyTimeShares);
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting  dailyTimeshares. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 12:49 pm on 8th Oct
     @GetMapping("/id/maximum")
-    ResponseEntity<Long> getDailyTimeShareMaxId(){
+    ResponseEntity<Long> getDailyTimeShareMaxId() throws SQLException {
         Long maxId = dailyTimeShareService.getMaxDailyTimeShareId();
         System.out.println(maxId);
         return ResponseEntity.ok(maxId);
@@ -67,12 +94,24 @@ public class DailyTimeShareController {
 
     //tested at 2:35 pm on 8th Oct
     @GetMapping("/Project/ConsumedTime/{username}/{startDate}/{endDate}")
-    ResponseEntity<List<String>> getProjectConsumedTime(@PathVariable String username, @PathVariable String startDate,@PathVariable String endDate){
-        System.out.println("username : "+username);
-        System.out.println("startdate : "+startDate);
-        System.out.println("enddate : "+endDate);
-        List<String> projectConsumedTime = dailyTimeShareService.getProjectConsumedTime(username,startDate,endDate);
-        System.out.println(projectConsumedTime);
-        return ResponseEntity.ok(projectConsumedTime);}
+    ResponseEntity<?> getProjectConsumedTime(@PathVariable String username, @PathVariable String startDate,@PathVariable String endDate){
+        try{
+            List<String> projectConsumedTime = dailyTimeShareService.getProjectConsumedTime(username,startDate,endDate);
+            if (projectConsumedTime == null || projectConsumedTime.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No project consumed Time found", null));
+            }
+            return ResponseEntity.ok(projectConsumedTime);
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting  dailyTimeshares. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
+    }
 
 }

@@ -13,6 +13,7 @@ import java.util.Set;
 @Entity
 @Setter
 @Getter
+@Table(name = "user")
 public class User {
 
     @Id
@@ -26,8 +27,10 @@ public class User {
 
     private String password;
 
+    @Column(unique = true)
     private   String email;
 
+    @Column(unique = true)
     private String mobileNo;
 
     private String createdOn;

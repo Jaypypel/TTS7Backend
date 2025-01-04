@@ -10,13 +10,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "DELEGATION_MEASURABLES")
 public class DelegationMeasurables {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "taskHandler", referencedColumnName = "id")
+    @JoinColumn(name = "taskManagementId", referencedColumnName = "id")
     @JsonIgnore
     private TaskManagement fkTaskManagementID;//check
 

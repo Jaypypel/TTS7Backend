@@ -10,6 +10,7 @@ import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -30,12 +31,12 @@ public class ProjectService implements ProjectServiceInterface  {
 
 
     @Override
-    public Project getProjectViaProjectCode(String projectCode) {
+    public Project getProjectViaProjectCode(String projectCode) throws SQLException {
         return projectRepository.findByProjectCode(projectCode);
     }
 
     @Override
-    public String getProjectCodeViaProjectName(String projectName) {
+    public String getProjectCodeViaProjectName(String projectName)  throws SQLException {
         String projectCode =  projectRepository.findByProjectName(projectName);
         if(projectCode == null) throw new NotFoundException("project code not found by the name");
         return projectCode;
@@ -43,18 +44,18 @@ public class ProjectService implements ProjectServiceInterface  {
     }
 
     @Override
-    public List<String> getProjectCodeList() {
+    public List<String> getProjectCodeList()throws SQLException {
         return projectRepository.findByProjectCodeList();
     }
 
     @Override
-    public List<String> getProjectNameList() {
+    public List<String> getProjectNameList()throws SQLException {
         return projectRepository.findByName();
     }
 
 
     @Override
-    public Project addProject(String userId, Long activityID, String projectCode, String projectName, String createdOn) {
+    public Project addProject(String userId, Long activityID, String projectCode, String projectName, String createdOn) throws SQLException {
         Project newProject = new Project();
         User inputUser = userRepository.findByUsername(userId) != null ? userRepository.findByUsername(userId): null;
         if (inputUser == null) throw new NotFoundException("Username not found");
@@ -73,12 +74,12 @@ public class ProjectService implements ProjectServiceInterface  {
 
 
     @Override
-    public Integer getProjectCount(String username, LocalDate startDate, LocalDate endDate) {
+    public Integer getProjectCount(String username, LocalDate startDate, LocalDate endDate) throws SQLException {
         return projectRepository.findByUserIdAndDateRange(username,startDate,endDate);
     }
 
     @Override
-    public Integer getProjectFrequency(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+    public Integer getProjectFrequency(Long userId, LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
         return projectRepository.findByIdAndDateRange(userId,startDate,endDate);
     }
 }

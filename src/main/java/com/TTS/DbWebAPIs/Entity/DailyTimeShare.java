@@ -10,6 +10,8 @@ import java.time.LocalTime;
 
 @Data
 @Entity
+
+@Table(name = "DAILY_TIME_SHARE")
 public class DailyTimeShare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +52,6 @@ public class DailyTimeShare {
     private String createdOn;
 
     @ManyToOne
-    @JoinColumn(name="userid", referencedColumnName = "username")
+    @JoinColumn(name="username", referencedColumnName = "username")
     private User user;
 }

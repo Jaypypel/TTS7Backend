@@ -12,6 +12,7 @@ import java.time.LocalTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "MEASURABLES")
 public class Measurables {
 
     @Id
@@ -23,7 +24,7 @@ public class Measurables {
     //added new
 
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "username")
+    @JoinColumn(name = "username", referencedColumnName = "username")
     private User user;
 
 //    @OneToOne(mappedBy = "fkMeasurablesID", cascade = CascadeType.MERGE)

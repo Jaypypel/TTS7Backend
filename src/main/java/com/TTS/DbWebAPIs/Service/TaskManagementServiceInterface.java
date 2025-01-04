@@ -5,6 +5,7 @@ import com.TTS.DbWebAPIs.Entity.Task;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -13,20 +14,20 @@ import java.util.List;
 public interface TaskManagementServiceInterface {
 
     /* it is  used in the existing TTS to get a list of modified task list & a list of processing task list and competed task list though same logic is repeated*/
-    List<TaskManagement> getAcceptedTaskList(String username, String status);
+    List<TaskManagement> getAcceptedTaskList(String username, String status) throws SQLException;
 
 
-    TaskManagement updateTaskManagementSeenOnTime(Long taskId);
+    TaskManagement updateTaskManagementSeenOnTime(Long taskId) throws SQLException;
 
-    TaskManagement updateTaskManagementProcessedOnTime(Long taskId);
+    TaskManagement updateTaskManagementProcessedOnTime(Long taskId) throws SQLException;
 
-    TaskManagement updateTaskManagementApprovedOnTime(Long taskId);
+    TaskManagement updateTaskManagementApprovedOnTime(Long taskId) throws SQLException;
 
-    TaskManagement updateTaskManagementAcceptTime(Long taskId);
+    TaskManagement updateTaskManagementAcceptTime(Long taskId) throws SQLException;
 
-    TaskManagement updateTaskManagementStatus(Long taskId,String status);
+    TaskManagement updateTaskManagementStatus(Long taskId,String status) throws SQLException;
 
-    TaskManagement addActualTotalTime(Long assignedTaskId,String actualTotalTime);
+    TaskManagement addActualTotalTime(Long assignedTaskId,String actualTotalTime) throws SQLException;
 
     //remove TimeShare timeShareAssociated
     //remove  List<DelegationMeasurables> delegationMeasurablesAssociated
@@ -41,30 +42,30 @@ public interface TaskManagementServiceInterface {
                                    String expectedTime, String expectedTotalTime, String description, String taskAssignedOn,
                                    String actualTotalTime, String taskSeenOn, String taskCompletedOn, String taskAcceptedOn,
                                    String taskProcessOn, String taskApproveOn,
-                                   String status);
+                                   String status) throws SQLException;
 
-    TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId);
+    TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId) throws SQLException;
 
-    List<TaskManagement> getSendModificationTaskList(String taskOwnerUsername, String status);
+    List<TaskManagement> getSendModificationTaskList(String taskOwnerUsername, String status) throws SQLException;
 
     /*it should be named recivedTaskList*/
-    List<TaskManagement> getTaskList(String  taskReceivedUsername);
+    List<TaskManagement> getTaskList(String  taskReceivedUsername) throws SQLException;
 
 
-    List<TaskManagement> getDelegatedTaskList(String taskOwnerUsername);
+    List<TaskManagement> getDelegatedTaskList(String taskOwnerUsername) throws SQLException;
 
 
 
-    Integer getPendingTaskCount(String username);
+    Integer getPendingTaskCount(String username) throws SQLException;
 
-    Integer getAcceptedTaskCount(String username);
+    Integer getAcceptedTaskCount(String username) throws SQLException;
 
-    Integer getApprovedTaskCount(String username);
+    Integer getApprovedTaskCount(String username) throws SQLException;
 
-    Integer getCompletedTaskCount(String username);
+    Integer getCompletedTaskCount(String username) throws SQLException;
 
-    Long getMaxDelegationTaskId();
+    Long getMaxDelegationTaskId() throws SQLException;
 
-    String getActualTotalTime(Long assignedTaskId);
+    String getActualTotalTime(Long assignedTaskId) throws SQLException;
 
 }

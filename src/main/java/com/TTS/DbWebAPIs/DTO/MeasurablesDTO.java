@@ -2,13 +2,13 @@ package com.TTS.DbWebAPIs.DTO;
 
 public class MeasurablesDTO {
     private Long id;
-    private String measurableName;
+    private String name;
     private String measurableQty;
     private String MeasurableUnit;
 
-    public MeasurablesDTO(Long id,String measurableName) {
+    public MeasurablesDTO(Long id,String name) {
         this.id = id;
-        this.measurableName = measurableName;
+        this.name = name;
         this.measurableQty = "";
         this.MeasurableUnit = "";
 
@@ -22,12 +22,12 @@ public class MeasurablesDTO {
         this.id = id;
     }
 
-    public String getMeasurableName() {
-        return measurableName;
+    public String getName() {
+        return name;
     }
 
     public void setMeasurableName(String measurableName) {
-        this.measurableName = measurableName;
+        this.name = name;
     }
 
     public String getMeasurableQty() {
@@ -35,7 +35,7 @@ public class MeasurablesDTO {
     }
 
     public void setMeasurableQty(String measurableQty) {
-        this.measurableQty = measurableQty;
+        this.name = name;
     }
 
     public String getMeasurableUnit() {
@@ -43,11 +43,11 @@ public class MeasurablesDTO {
     }
 
     public void setMeasurableUnit(String getMeasurableQty) {
-        this.MeasurableUnit = getMeasurableQty;
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return  this.id + "-" + this.measurableName;
+        return  this.id + "-" + this.name;
     }
 }

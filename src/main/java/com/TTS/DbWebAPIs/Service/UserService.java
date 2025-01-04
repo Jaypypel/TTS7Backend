@@ -7,6 +7,7 @@ import com.TTS.DbWebAPIs.Util.DateAndTimeConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class UserService implements UserServiceInterface {
     @Autowired
     UserRepository userRepository;
 
-    public User registerUser(User inputUser){
+    public User registerUser(User inputUser) throws SQLException {
         User oldUser = userRepository.findByFullNameAndUsernameAndPasswordAndEmailAndMobileNo(inputUser.getFullName(),inputUser.getUsername(), inputUser.getPassword(), inputUser.getEmail(), inputUser.getMobileNo());
         if(oldUser != null){
             return null;
@@ -40,7 +41,7 @@ public class UserService implements UserServiceInterface {
     }
 
     //get a list of username through users list
-    public List<String> getUsernameList(){
+    public List<String> getUsernameList()throws SQLException{
         List<String> username = new ArrayList<>();
         List<User> users = userRepository.findAll();
         for (User user : users) {

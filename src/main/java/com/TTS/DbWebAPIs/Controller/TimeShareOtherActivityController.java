@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -56,7 +57,7 @@ public class TimeShareOtherActivityController {
 public ResponseEntity<TimeShareOtherActivity> addOtherActivity(
         @PathVariable String username,
         @PathVariable String activityName,
-        @PathVariable("dateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
+        @PathVariable("dateTime") String date,
         @PathVariable("startTime") String startTime, // Changed to String for trimming
         @PathVariable("endTime") String endTime,     // Changed to String for trimming
         @PathVariable String timeDifference,
@@ -64,20 +65,13 @@ public ResponseEntity<TimeShareOtherActivity> addOtherActivity(
         @PathVariable("createdOn") String createdOn) { // Changed to String for trimming
 
     // Trim the inputs to remove unwanted characters
-    startTime = startTime.trim();
-    endTime = endTime.trim();
-    createdOn = createdOn.trim();
-
-    LocalTime parsedStartTime = LocalTime.parse(startTime);
-    LocalTime parsedEndTime = LocalTime.parse(endTime);
-    LocalTime parsedCreatedOn = LocalTime.parse(createdOn);
 
     TimeShareOtherActivity timeShareOtherActivity = timeShareOtherActivityService.addOtherActivity(
             username,
             activityName,
-            dateTime,
-            parsedStartTime,
-            parsedEndTime,
+            date,
+            startTime,
+            endTime,
             timeDifference,
             description, createdOn);
 

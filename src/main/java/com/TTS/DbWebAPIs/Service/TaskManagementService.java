@@ -7,6 +7,7 @@ import com.TTS.DbWebAPIs.Util.DateAndTimeConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -29,12 +30,12 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
     /*the function is  used in existing tts app for the receivedModfifcationtAskList,*/
     @Override
-    public List<TaskManagement> getAcceptedTaskList(String taskReceivedUsername, String status) {
+    public List<TaskManagement> getAcceptedTaskList(String taskReceivedUsername, String status) throws SQLException {
         return taskManagementRepository.findByUserUsernameAndStatus(taskReceivedUsername,status);
     }
 
     @Override
-    public TaskManagement updateTaskManagementStatus(Long taskId, String status) {
+    public TaskManagement updateTaskManagementStatus(Long taskId, String status)  throws SQLException{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new NotFoundException("task not found"));
         existingTaskManagement.setStatus(status);
         if(isStatusApproved(existingTaskManagement,status)) return taskManagementRepository
@@ -89,7 +90,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     }
 
     @Override
-    public TaskManagement addActualTotalTime(Long assignedTaskId, String actualTotalTime) {
+    public TaskManagement addActualTotalTime(Long assignedTaskId, String actualTotalTime)  throws SQLException{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(assignedTaskId).orElseThrow(()-> new RuntimeException("task not found"));
         existingTaskManagement.setActualTotalTime(actualTotalTime);
         return taskManagementRepository.save(existingTaskManagement);
@@ -105,7 +106,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
                                           String expectedTime, String expectedTotalTime, String description, String taskAssignedOn,
                                           String actualTotalTime, String taskSeenOn, String taskCompletedOn, String taskAcceptedOn,
                                           String taskProcessOn, String taskApproveOn,
-                                          String status) {
+                                          String status)  throws SQLException{
 //        , List<DelegationMeasurables> delegationMeasurablesAssociated
         User iptTskOwner = userRepository.findByUsername(taskOwnerUsername);
         if(iptTskOwner == null) throw new NotFoundException("username not exist");
@@ -159,7 +160,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
 
     @Override
-    public TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId) {
+    public TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId) throws SQLException{
         TaskManagement existingTask = taskManagementRepository.findById(taskId).orElseThrow(()-> new RuntimeException("task not found"));
         existingTask.setDescription(description);
         existingTask.setStatus("revised");
@@ -167,7 +168,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     }
 
     @Override
-    public TaskManagement updateTaskManagementSeenOnTime(Long taskId) {
+    public TaskManagement updateTaskManagementSeenOnTime(Long taskId)  throws SQLException{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
         String taskSeenOnTime = DateAndTimeConfig.getCurrentDateAndTime();
         existingTaskManagement.setTaskSeenOn(taskSeenOnTime);
@@ -175,7 +176,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     }
 
     @Override
-    public TaskManagement updateTaskManagementProcessedOnTime(Long taskId) {
+    public TaskManagement updateTaskManagementProcessedOnTime(Long taskId)  throws SQLException{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
         String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
         existingTaskManagement.setStatus("In-Process");
@@ -184,7 +185,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     }
 
     @Override
-    public TaskManagement updateTaskManagementApprovedOnTime(Long taskId) {
+    public TaskManagement updateTaskManagementApprovedOnTime(Long taskId)  throws SQLException{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
         String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
         existingTaskManagement.setStatus("approved");
@@ -193,7 +194,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     }
 
     @Override
-    public TaskManagement updateTaskManagementAcceptTime(Long taskId) {
+    public TaskManagement updateTaskManagementAcceptTime(Long taskId)  throws SQLException{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
         String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
         existingTaskManagement.setStatus("Accepted");
@@ -203,17 +204,17 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
 
     @Override
-     public List<TaskManagement> getSendModificationTaskList(String  taskOwnerUserID, String status) {
+     public List<TaskManagement> getSendModificationTaskList(String  taskOwnerUserID, String status) throws SQLException{
         return taskManagementRepository.findByTaskOwnerUserIdAndStatus(taskOwnerUserID,status);
     }
 
     @Override
-    public List<TaskManagement> getTaskList(String taskReceivedUsername) {
+    public List<TaskManagement> getTaskList(String taskReceivedUsername) throws SQLException{
         return taskManagementRepository.findByTaskReceivedUserId(taskReceivedUsername);
     }
 
     @Override
-    public List<TaskManagement> getDelegatedTaskList(String taskOwnerUsername) {
+    public List<TaskManagement> getDelegatedTaskList(String taskOwnerUsername) throws SQLException{
         return taskManagementRepository.findByTaskOwnerUserId(taskOwnerUsername);
     }
 
@@ -224,35 +225,35 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 //    }
 
     @Override
-    public Integer getPendingTaskCount(String username){
+    public Integer getPendingTaskCount(String username) throws SQLException{
         return taskManagementRepository.CountByUserUsernameAndStatus(
-                 username,"pending");
+                 username,"Pending");
     }
 
     @Override
-    public Integer getAcceptedTaskCount(String username) {
-        return taskManagementRepository.CountByUserUsernameAndStatus( username, "accepted");
+    public Integer getAcceptedTaskCount(String username) throws SQLException {
+        return taskManagementRepository.CountByUserUsernameAndStatus( username, "Accepted");
 
     }
 
     @Override
-    public Integer getApprovedTaskCount(String username) {
-        return taskManagementRepository.CountByUserUsernameAndStatus( username, "approved");
+    public Integer getApprovedTaskCount(String username) throws SQLException{
+        return taskManagementRepository.CountByUserUsernameAndStatus( username, "Approved");
     }
 
     @Override
-    public Integer getCompletedTaskCount(String username) {
-        return taskManagementRepository.CountByUserUsernameAndStatus( username, "completed");
+    public Integer getCompletedTaskCount(String username) throws SQLException{
+        return taskManagementRepository.CountByUserUsernameAndStatus( username, "Completed");
     }
 
     @Override
-    public Long getMaxDelegationTaskId() {
+    public Long getMaxDelegationTaskId() throws SQLException{
         Long maxId = taskManagementRepository.findMaxId();
         return maxId + 1;
     }
 
     @Override
-    public String getActualTotalTime(Long assignedTaskId) {
+    public String getActualTotalTime(Long assignedTaskId) throws SQLException{
         return taskManagementRepository.getActualTotalFromId(assignedTaskId);
     }
 

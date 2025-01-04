@@ -17,6 +17,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
+@Table(name = "TASK_MANAGEMENT")
 public class TaskManagement {
 
     @Id
@@ -24,12 +25,12 @@ public class TaskManagement {
     private  long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "taskOwner", referencedColumnName = "username")
+    @JoinColumn(name = "taskOwnerUsername", referencedColumnName = "username")
     private   User taskOwnerUserID;//check
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
-            name = "taskReceiver", referencedColumnName = "username"
+            name = "taskReceiverUsername", referencedColumnName = "username"
     )
     private   User taskReceivedUserID;//check
 
@@ -83,7 +84,7 @@ public class TaskManagement {
     @Column(name = "task_processed_on")
     private String taskProcessedOn;
 
-    @Column(name = "taskapproved_on")
+    @Column(name = "task_approved_on")
     private String tasKApprovedOn;
 
     @Column(name = "status")

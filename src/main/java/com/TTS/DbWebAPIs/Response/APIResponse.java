@@ -1,10 +1,12 @@
 package com.TTS.DbWebAPIs.Response;
 
-public class APIResponse {
-    String message;
-    Object body;
 
-    public APIResponse(String message, Object body) {
+
+public class APIResponse<T> {
+    String message;
+    T body;
+
+    public APIResponse(String message, T body) {
         this.message = message;
         this.body = body;
     }
@@ -14,17 +16,17 @@ public class APIResponse {
 
     public String getMessage() {
         return message;
-    }git
+    }
 
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public Object getBody() {
+    public T getBody() {
         return body;
     }
 
-    public void setBody(Object body) {
+    public void setBody(T body) {
         this.body = body;
     }
 }

@@ -14,11 +14,13 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,7 +33,7 @@ public class TaskManagementController {
 
     //tested at the 4:41 pm on 3rd of oct
     @PostMapping("/taskm")
-    ResponseEntity<APIResponse> addAssignedTask(@RequestBody TaskManagementDTO taskAssigned) {
+    ResponseEntity<?> addAssignedTask(@RequestBody TaskManagementDTO taskAssigned) {
        System.out.println(taskAssigned.getTaskAssignedOn());
 
 
@@ -47,22 +49,7 @@ public class TaskManagementController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             LocalDate expectDate = LocalDate.parse(taskAssigned.getExpectedDate(),formatter);
-//            System.out.println("localDate : "+localDate);
-//
-//            DateTimeFormatter timeformatter = DateTimeFormatter.ofPattern("HH:mm");
-//            LocalTime localTime = LocalTime.parse(taskAssigned.getExpectedTime(), timeformatter);
-//
-//            System.out.println("localTime : "+localTime);
-//
-//            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a", Locale.ENGLISH);
-//            System.out.println(dateTimeFormatter);
-//            LocalDateTime taskAssignedOn = LocalDateTime.parse(taskAssigned.getTaskAssignedOn().trim(),dateTimeFormatter);
-//            LocalDateTime updatedAssignedOn = taskAssignedOn.truncatedTo(ChronoUnit.MINUTES);
-
-//            System.out.println("before printing tasking assigned");
-//            System.out.println("taskAssignedOn : "+taskAssignedOn);
-//            System.out.println("after printing tasking assigned");
-            TaskManagement taskManagement = taskManagementService.addAssignedTask(
+             TaskManagement taskManagement = taskManagementService.addAssignedTask(
                     taskAssigned.getTaskOwnerUserID(),
                     taskAssigned.getTaskReceivedUserID(),
                     activityName,
@@ -83,47 +70,109 @@ public class TaskManagementController {
                     taskAssigned.getStatus());
 
             System.out.println("taskManagement : " + taskManagement);
-            return ResponseEntity.ok(new APIResponse("Successful",taskManagement));
-        } catch (Exception e) {
-            System.out.println("getting Exception");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("Error",e.getMessage())  );
+            return ResponseEntity.ok(new APIResponse<>("Successful",taskManagement));
+        } catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while fetching assigning task. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
         }
     }
 
     //tested at 3:04pm on 9th oct
     @GetMapping("/list/accepted/{truId}/{status}")
     ResponseEntity<APIResponse> getTasksByTaskReceiveUsernameAndStatus(@PathVariable String truId, @PathVariable String status){
-        List<TaskManagement> taskManagements = taskManagementService.getAcceptedTaskList(truId,status);
-        return ResponseEntity.ok(new APIResponse("Successful",taskManagements));
+        try{
+            List<TaskManagement> taskManagements = taskManagementService.getAcceptedTaskList(truId,status);
+            if (taskManagements == null || taskManagements.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No tasks found", null));
+            }
+            return ResponseEntity.ok(new APIResponse("Successful",convertToTaskManagementDTOList(taskManagements)));
+        } catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while fetching tasks. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 4:00pm on 9th oct
     @PutMapping("/task/{taskID}/seentime/update/")
     ResponseEntity<?> updateTaskManagementSeenOnTime(@PathVariable Long  taskID){
-        TaskManagement taskManagement = taskManagementService.updateTaskManagementSeenOnTime(taskID);
-        return ResponseEntity.ok(new APIResponse("successful","-"));
+        try {
+            TaskManagement taskManagement = taskManagementService.updateTaskManagementSeenOnTime(taskID);
+            return ResponseEntity.ok(new APIResponse<>("successful","-"));
+
+        }
+         catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while updating seen time. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 4:37 pm on 9th oct
     @PutMapping("/task/{taskID}/processedTime/update/")
-    ResponseEntity<TaskManagement> updateTaskManagementProcessedOnTime(@PathVariable Long  taskID){
-        TaskManagement taskManagement = taskManagementService.updateTaskManagementProcessedOnTime(taskID);
-        return ResponseEntity.ok(taskManagement);
+    ResponseEntity<?> updateTaskManagementProcessedOnTime(@PathVariable Long  taskID){
+        try {
+            TaskManagement taskManagement = taskManagementService.updateTaskManagementProcessedOnTime(taskID);
+            return ResponseEntity.ok(new APIResponse<>("successful",taskManagement));
+        } catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while updating processing time. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
 
     //tested at 5:15 pm on 9th oct
     @PutMapping("task/{taskID}/approvedTime/update/")
-    ResponseEntity<TaskManagement> updateTaskManagementApprovedOnTime(@PathVariable Long  taskID){
-        TaskManagement taskManagement = taskManagementService.updateTaskManagementApprovedOnTime(taskID);
-        return ResponseEntity.ok(taskManagement);
+    ResponseEntity<?> updateTaskManagementApprovedOnTime(@PathVariable Long  taskID){
+        try {
+            TaskManagement taskManagement = taskManagementService.updateTaskManagementApprovedOnTime(taskID);
+            return ResponseEntity.ok(new APIResponse<>("successful",taskManagement));
+        } catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while updating approved time. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 4:45 pm on 9th
     @PutMapping("task/{taskID}/acceptTime/update/")
-    ResponseEntity<TaskManagement> updateTaskManagementAcceptTime(@PathVariable Long  taskID){
-        TaskManagement taskManagement = taskManagementService.updateTaskManagementAcceptTime(taskID);
-        return ResponseEntity.ok(taskManagement);
+    ResponseEntity<?> updateTaskManagementAcceptTime(@PathVariable Long  taskID){
+        try {
+            TaskManagement taskManagement = taskManagementService.updateTaskManagementAcceptTime(taskID);
+            return ResponseEntity.ok(new APIResponse<>("successful",taskManagement));
+        } catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while updating accept time. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 5:00 pm on 9th oct
@@ -131,75 +180,213 @@ public class TaskManagementController {
     ResponseEntity<?> updateTaskManagementStatus(@PathVariable Long  taskID, @PathVariable String status){
        try {
            TaskManagement taskManagement = taskManagementService.updateTaskManagementStatus(taskID, status);
-           return ResponseEntity.ok(new APIResponse("updated",null));
-       }catch (NotFoundException e){
-          return ResponseEntity.status(HttpStatus.CONFLICT).body("task not found" + e.getMessage());
+           return ResponseEntity.ok(new APIResponse("updated","-"));
+       }catch (SQLException ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An error occurred while updating status of task. Please try again later.",null));
+       } catch (Exception ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
        }
     }
 
-    //tested at 11:35 am on 10 oct
     @PutMapping("task/description-status/update")
     ResponseEntity<?>   updateModifiedTaskStatusAndDescription(@RequestParam String description,
-                                                                             @RequestParam Long taskId){
-        TaskManagement taskManagement = taskManagementService.updateModifiedTaskStatusAndDescription(description,taskId);
-        return ResponseEntity.ok(new APIResponse("updated","_"));
+                                                               @RequestParam Long taskId){
+        try{
+            TaskManagement taskManagement = taskManagementService.updateModifiedTaskStatusAndDescription(description,taskId);
+            return ResponseEntity.ok(new APIResponse("updated","_"));
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while updating description of task. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
+    //tested at 11:35 am on 10 oct
 
     //tested at 3:15 pm on 9th oct
     @GetMapping("/{touId}/{status}/modified/list")
-    ResponseEntity<APIResponse> getTasksByTaskOwnerUsernameAndStatus(@PathVariable String touId,
+    ResponseEntity<?> getTasksByTaskOwnerUsernameAndStatus(@PathVariable String touId,
                                                                      @PathVariable String status){
-        List<TaskManagement> taskManagements = taskManagementService.getSendModificationTaskList(touId,status);
-        return ResponseEntity.ok(new APIResponse("successful",taskManagements));
+        try{
+           List<TaskManagement> taskManagements = taskManagementService.getSendModificationTaskList(touId,status);
+            if (taskManagements == null || taskManagements.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No tasks found", null));
+            }
+           return ResponseEntity.ok(new APIResponse("successful",convertToTaskManagementDTOList(taskManagements)));
+       }catch (SQLException ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An error occurred while getting  tasks. Please try again later.",null));
+       } catch (Exception ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+       }
     }
 
     //tested at 3:20pm on 9th Oct
     @GetMapping("/{truId}/list")
-    ResponseEntity<APIResponse> getTaskList(@PathVariable String truId){
-        List<TaskManagement> taskManagements = taskManagementService.getTaskList(truId);
-        return ResponseEntity.ok(new APIResponse("successful",taskManagements)  );
+    ResponseEntity<?> getTaskList(@PathVariable String truId){
+        try{
+            List<TaskManagement> taskManagements = taskManagementService.getTaskList(truId);
+            if (taskManagements == null || taskManagements.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No tasks found", null));
+            }
+            return ResponseEntity.ok(new APIResponse("successful",convertToTaskManagementDTOList(taskManagements))  );
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting  tasks. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 3:30 pm on 9th Oct
     @GetMapping("delegated/{touId}/list")
-    ResponseEntity<APIResponse> getDelegatedTaskList(@PathVariable String touId){
-        List<TaskManagement> taskManagements = taskManagementService.getDelegatedTaskList(touId);
-        return ResponseEntity.ok(new APIResponse("successful", taskManagements));
+    ResponseEntity<?> getDelegatedTaskList(@PathVariable String touId){
+       try{
+           List<TaskManagement> taskManagements = taskManagementService.getDelegatedTaskList(touId);
+           if (taskManagements == null || taskManagements.isEmpty()){
+               return ResponseEntity
+                       .status(HttpStatus.NO_CONTENT)
+                       .body(new APIResponse<>("No tasks found", null));
+           }
+           return ResponseEntity.ok(new APIResponse("successful", convertToTaskManagementDTOList(taskManagements)));
 
+       }
+        catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting  tasks. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
+    }
+
+    private  List<TaskManagementDTO> convertToTaskManagementDTOList(List<TaskManagement> taskManagements){
+        List<TaskManagementDTO> taskManagementDTOs = new ArrayList<>();
+        for (TaskManagement taskManagement: taskManagements){
+            taskManagementDTOs.add(TaskManagementDTO.convertToDTO(taskManagement));
+        }
+        return taskManagementDTOs;
     }
 
     //tested at 11:24 am on 10 oct
     @GetMapping("/pending/count/{userId}")
-    ResponseEntity<APIResponse> getPendingTaskCount(@PathVariable String userId){
-        Integer pndTskCnt = taskManagementService.getPendingTaskCount(userId);
-        return ResponseEntity.ok(new APIResponse("successful",pndTskCnt));
+    ResponseEntity<?> getPendingTaskCount(@PathVariable String userId){
+        try{
+            Integer pndTskCnt = taskManagementService.getPendingTaskCount(userId);
+            if(pndTskCnt == null || pndTskCnt == 0){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No tasks pending ", null));
+            }
+            return ResponseEntity.ok(new APIResponse("successful",pndTskCnt));
+        }
+        catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting pending tasks count. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 11:07 am on 10 oct
     @GetMapping("/accepted/count/{userId}")
-    ResponseEntity<APIResponse> getAcceptedTaskCount(@PathVariable String userId){
-        Integer aptTskCnt = taskManagementService.getAcceptedTaskCount(userId);
-        return ResponseEntity.ok(new APIResponse("successful",aptTskCnt));
+    ResponseEntity<?> getAcceptedTaskCount(@PathVariable String userId){
+
+        try{
+            Integer aptTskCnt = taskManagementService.getAcceptedTaskCount(userId);
+            if(aptTskCnt == null || aptTskCnt == 0){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No task  accepted ", null));
+            }
+            return ResponseEntity.ok(new APIResponse<>("successful",aptTskCnt));
+        }
+        catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting accepted tasks count. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 11:07 am on 10 oct
     @GetMapping("/approved/count/{userId}")
-    ResponseEntity<APIResponse> getApprovedTaskCount(@PathVariable String userId){
-        System.out.println("Username: " + userId);
-        Integer apvTskCnt = taskManagementService.getApprovedTaskCount(userId);
-        return ResponseEntity.ok(new APIResponse("successful",apvTskCnt));
+    ResponseEntity<?> getApprovedTaskCount(@PathVariable String userId){
+
+        try{
+            Integer apvTskCnt = taskManagementService.getApprovedTaskCount(userId);
+            if(apvTskCnt == null || apvTskCnt == 0){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No task approved ", null));
+            }
+            return ResponseEntity.ok(new APIResponse<>("successful",apvTskCnt));
+        }
+        catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting approved tasks count. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
+
     }
 
     //tested at 11:07 am on 10 oct
     @GetMapping("/completed/count/{userId}")
-    ResponseEntity<APIResponse> getCompletedTaskCount(@PathVariable String  userId){
-        Integer cmpTskCnt = taskManagementService.getCompletedTaskCount(userId);
-        return ResponseEntity.ok(new APIResponse("successful",cmpTskCnt));
+    ResponseEntity<?> getCompletedTaskCount(@PathVariable String  userId){
+
+
+        try{
+            Integer cmpTskCnt = taskManagementService.getCompletedTaskCount(userId);
+            if(cmpTskCnt == null || cmpTskCnt == 0){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No task completed ", null));
+            }
+            return ResponseEntity.ok(new APIResponse<>("successful",cmpTskCnt));
+        }
+        catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting completed tasks count. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 3:40 pm on 9th Oct
     @GetMapping("/task/assigned/maxId")
-    ResponseEntity<Long> getMaxDelegationTaskId(){
+    ResponseEntity<Long> getMaxDelegationTaskId() throws SQLException {
         Long maxId = taskManagementService.getMaxDelegationTaskId();
         return ResponseEntity.ok(maxId);
     }
@@ -207,14 +394,38 @@ public class TaskManagementController {
     //tested at 3:50 pm on 9th Oct
     @GetMapping("/time/assigned/{assignedTaskId}")
     ResponseEntity<?> getActualTotalTime(@PathVariable Long assignedTaskId){
-        String atlTime = taskManagementService.getActualTotalTime(assignedTaskId);
-        return ResponseEntity.ok(new APIResponse("successful",atlTime));
+       try{
+           String atlTime = taskManagementService.getActualTotalTime(assignedTaskId);
+           return ResponseEntity.ok(new APIResponse<>("successful",atlTime));
+       }
+       catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting actual total time. Please try again later.",null));
+        }
+       catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     @PutMapping("/new-actual-time")
     ResponseEntity<?> updateActualTotalTime(@RequestParam Long assignedTaskId, @RequestParam String newActualTotalTime){
-        taskManagementService.addActualTotalTime(assignedTaskId,newActualTotalTime);
-        return ResponseEntity.ok(new APIResponse("successful","-"));
+        try{
+            taskManagementService.addActualTotalTime(assignedTaskId,newActualTotalTime);
+            return ResponseEntity.ok(new APIResponse<>("successful","-"));
+        }
+         catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting actual total time. Please try again later.",null));
+        }
+       catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
 

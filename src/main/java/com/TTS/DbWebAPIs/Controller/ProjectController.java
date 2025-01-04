@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -30,25 +31,66 @@ public class ProjectController {
     ResponseEntity<?> getProjectCodeList(){
         try {
             List<String> projectCodes = projectService.getProjectCodeList();
+            if (projectCodes == null || projectCodes.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No project code found", null));
+            }
             return ResponseEntity.ok(new APIResponse("successful",projectCodes));
-        }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting project codes . Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
         }
     }
 
     //tested at 11:09 am on 9th Oct
     @GetMapping("/project/count/{username}/{startDate}/{endDate}")
-    ResponseEntity<Integer> getProjectCount(@PathVariable String username, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate startDate ,@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate endDate){
-        System.out.println("Username: " + username + ", StartDate: " + startDate + ", EndDate: " + endDate);
-        Integer prjCnt = projectService.getProjectCount(username, startDate, endDate);
-        return ResponseEntity.ok(prjCnt);
+    ResponseEntity<?> getProjectCount(@PathVariable String username, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate startDate ,@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate endDate){
+        try {
+            Integer prjCnt = projectService.getProjectCount(username, startDate, endDate);
+            if (prjCnt == null || prjCnt==0){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("Not available in the submitted date range", null));
+            }
+            return ResponseEntity.ok(prjCnt);
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while fetching no of project. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 4:30pm on 8th Oct
     @GetMapping("/name/list")
     ResponseEntity<?> getProjectNameList() {
-        List<String>  projectNames = projectService.getProjectNameList();
-        return ResponseEntity.ok(new APIResponse("successful",projectNames));
+       try{
+           List<String>  projectNames = projectService.getProjectNameList();
+           if (projectNames == null || projectNames.isEmpty()){
+               return ResponseEntity
+                       .status(HttpStatus.NO_CONTENT)
+                       .body(new APIResponse<>("No count present", null));
+           }
+           return ResponseEntity.ok(new APIResponse<>("successful",projectNames));
+       }
+        catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while fetching project names . Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested
@@ -59,33 +101,60 @@ public class ProjectController {
         try {
             Project project = projectService.addProject(username,activityId,projectCode,prjNme,createdOn);
             return ResponseEntity.ok(new APIResponse("successful","-"));
-        } catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while adding a project. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
         }
     }
 
     //tested at 10:00am on 9th Oct
     @GetMapping("/project/projectCode")
-    ResponseEntity<Project> getProjectViaProjectCode(@RequestParam("pro_code") String projectCode){
-        Project project = projectService.getProjectViaProjectCode(projectCode);
-        System.out.println(project);
-        return ResponseEntity.ok(project);
+    ResponseEntity<?> getProjectViaProjectCode(@RequestParam("pro_code") String projectCode){
+       try {
+           Project project = projectService.getProjectViaProjectCode(projectCode);
+           if ( project == null){
+               return ResponseEntity
+                       .status(HttpStatus.NO_CONTENT)
+                       .body(new APIResponse<>("No project is present with the submitted project code", null));
+           }
+           return ResponseEntity.ok(project);
+       }
+        catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting a Project . Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     @GetMapping("/project/projectName")
     ResponseEntity<APIResponse> getProjectCodeViaProjectName(@RequestParam("proj_name") String projectName ){
-        System.out.println(projectName);
-
 
         try {
-            String Name = projectService.getProjectCodeViaProjectName(projectName);
-            System.out.println(Name);
-            return ResponseEntity.ok(new APIResponse("project code",Name));
+            String projectCode = projectService.getProjectCodeViaProjectName(projectName);
+            if ( projectCode == null){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No project code is present with the submitted project name", null));
+            }
+            return ResponseEntity.ok(new APIResponse("project code",projectCode));
         //    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("application/json")).body("{ name: "+Name+"}");
-
-        } catch (Exception e) {
-            //System.out.println("Error retrieving project code: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("error ", e.fillInStackTrace()));
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting a project code. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
         }
     }
 

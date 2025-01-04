@@ -7,6 +7,7 @@ import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -18,12 +19,12 @@ public class OtherActivityService implements OtherActivityServiceInterface {
     private  final OtherActivityRepository otherActivityRepository;
 
     @Override
-    public List<String> getOtherActivityList() {
+    public List<String> getOtherActivityList()  throws SQLException {
         return otherActivityRepository.findOtherActivityNames();
     }
 
     @Override
-    public OtherActivity addOtherActivity(String otherActiName, String createdOn) {
+    public OtherActivity addOtherActivity(String otherActiName, String createdOn)  throws SQLException{
         OtherActivity otherActivity = new OtherActivity();
         otherActivity.setName(otherActiName);
         otherActivity.setCreatedOn(createdOn);

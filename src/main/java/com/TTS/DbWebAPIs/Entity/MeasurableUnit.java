@@ -1,14 +1,12 @@
 package com.TTS.DbWebAPIs.Entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 //create mew class
 @Data
 @Entity
+@Table(name = "MEASURABLE_UNIT")
 public class MeasurableUnit {
 
     @Id

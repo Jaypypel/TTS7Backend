@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,10 @@ public class DailyTimeShareMeasurablesService implements DailyTimeShareMeasurabl
    private final DailyTimeShareRepository dailyTimeShareRepository;
 
     @Override
-    public DailyTimeShareMeasurables addDailyTimeShareMeasurables(Long timeShareId, Measurables mesrblId, Long mesrbQuantity, String mesrbUnit) {
+    public DailyTimeShareMeasurables addDailyTimeShareMeasurables(Long timeShareId,
+                                                                  Measurables mesrblId,
+                                                                  Long mesrbQuantity,
+                                                                  String mesrbUnit)  throws SQLException{
         DailyTimeShareMeasurables dailyTimeShareMeasurables = new DailyTimeShareMeasurables();
         DailyTimeShare dailyTimeShare = dailyTimeShareRepository.findById(timeShareId).orElseThrow(() -> new NotFoundException("task not found"));
         dailyTimeShareMeasurables.setDailyTimeShare(dailyTimeShare);
@@ -50,7 +54,7 @@ public class DailyTimeShareMeasurablesService implements DailyTimeShareMeasurabl
 
     /*need to check whether getting list of dtsMeasurables or measurables since in the TTSDailyShareFragment Measurable model is different from than the db measurable model*/
     @Override
-    public List<Measurables> getDailyTimeShareMeasurablesList(Long dtsId) {
+    public List<Measurables> getDailyTimeShareMeasurablesList(Long dtsId)  throws SQLException {
         return measurablesRepository.findMeasurablesById(dtsId);
     }
 }

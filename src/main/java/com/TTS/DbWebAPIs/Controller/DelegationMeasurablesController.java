@@ -1,12 +1,17 @@
 package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.*;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
+import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
+import com.TTS.DbWebAPIs.Repository.TaskManagementRepository;
 import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.DelegationMeasurablesServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -15,33 +20,55 @@ import java.util.List;
 public class DelegationMeasurablesController {
 
     private final DelegationMeasurablesServiceInterface delegationMeasurablesService;
+    private final TaskManagementRepository taskManagementRepository;
+    private final MeasurablesRepository measurablesRepository;
 
     @GetMapping("/allocatedMeasurabeslist/{taskId}")
     ResponseEntity<APIResponse> getAllocatedMeasurableList(@PathVariable Long taskId){
-       List<Measurables> delegationMeasurables = delegationMeasurablesService.getAllocatedMeasurableList(taskId);
-       System.out.println(delegationMeasurables);
-       return ResponseEntity.ok(new APIResponse("successful",delegationMeasurables));
+
+        try {
+            List<Measurables> delegationMeasurables = delegationMeasurablesService.getAllocatedMeasurableList(taskId);
+            if (delegationMeasurables == null || delegationMeasurables.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No measurable found", null));
+            }
+            return ResponseEntity.ok(new APIResponse<>("successful",delegationMeasurables));
+        }
+       catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting measurable/s. " +
+                            "Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     @PostMapping("/add-delegationMeasurable")
-    ResponseEntity<APIResponse> addDailyTimeShareMeasurable(@RequestParam Long taskHandlerId, @RequestParam Long measurablesId,
+    ResponseEntity<?> addDailyTimeShareMeasurable(@RequestParam Long taskHandlerId, @RequestParam Long measurablesId,
                                                             @RequestParam Long mesrbQunty, @RequestParam String mesrbUnit){
-        System.out.println("ts_id  :"+taskHandlerId );
-        System.out.println("m_id  :"+measurablesId );
-        System.out.println("mesrbQunty  :"+mesrbQunty );
-        System.out.println("mesrbUnit  :"+mesrbUnit );
 
-        if(taskHandlerId == null || measurablesId == null || mesrbQunty == null  || mesrbUnit==null){
-            System.out.println("Any of field like measurId, timesharId is not null");
+        try {
+            TaskManagement taskManagement = taskManagementRepository.findById(taskHandlerId).orElseThrow(()
+                    -> new  NotFoundException("task Management not found"));
+            Measurables measurables =  measurablesRepository.findById(measurablesId).orElseThrow(()
+                    -> new  NotFoundException("measurable not found"));
+            DelegationMeasurables delegationMeasurable = delegationMeasurablesService.
+                    addDelegationMeasurables(taskManagement,measurables,mesrbQunty,mesrbUnit);
+            return ResponseEntity.ok(new APIResponse("successful",delegationMeasurable));
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while fetching adding measurables of daily time share. " +
+                            "Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
         }
-        TaskManagement taskManagement = new TaskManagement();
-        taskManagement.setId(taskHandlerId);
-
-        Measurables measurables = new Measurables();
-        measurables.setId(measurablesId);
-        DelegationMeasurables delegationMeasurable = delegationMeasurablesService.addDelegationMeasurables(taskManagement,measurables,mesrbQunty,mesrbUnit);
-        System.out.println(delegationMeasurable);
-        return ResponseEntity.ok(new APIResponse("successful",delegationMeasurable));
     }
 
 }

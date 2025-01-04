@@ -25,10 +25,20 @@ public class OtherActivityController {
     ResponseEntity<?> getOtherActivityList() throws SQLException {
       try {
           List<String> otherActivities = otherActivityService.getOtherActivityList() ;
-          System.out.println(otherActivities );
+          if (otherActivities == null || otherActivities.isEmpty()){
+              return ResponseEntity
+                      .status(HttpStatus.NO_CONTENT)
+                      .body(new APIResponse<>("No other activities found", null));
+          }
           return ResponseEntity.ok(new APIResponse("successful",otherActivities));
-      } catch (RuntimeException e){
-          return  ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+      } catch (SQLException ex){
+          return ResponseEntity
+                  .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                  .body(new APIResponse<>("An error occured while fetching  other activity names. Please try again later.",null));
+      } catch (Exception ex){
+          return ResponseEntity
+                  .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                  .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
       }
     }
 
@@ -38,8 +48,14 @@ public class OtherActivityController {
         try {
             OtherActivity otherActivity = otherActivityService.addOtherActivity(otherActiName,createdOn);
             return ResponseEntity.ok(new APIResponse("successful","-"));
-        } catch (RuntimeException e){
-            return  ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occured while fetching  other activity names. Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
         }
     }
 }

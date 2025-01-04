@@ -129,8 +129,9 @@ public class ReportDTO {
         this.timeShareDate = timeShareDate;
     }
 
-    public static Report report = new Report();
+
     public static Report convertToReport(ReportDTO reportDTO){
+        Report report = new Report();
         report.setTimeShareDate(reportDTO.getTimeShareDate());
         report.setTimeShareDate(reportDTO.getActivityName());
         report.setTimeShareDate(reportDTO.getTaskName());

@@ -8,6 +8,7 @@ import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,21 +21,16 @@ public class DelegationMeasurablesService implements DelegationMeasurablesServic
 
     //"it is used in the existing tts app to get a list of approvedTaskMeasurables , ProcessingTaskMeasurable and CompletedMeasurable , ModifiedTaskMeasurable, DelegatedMeasurable
     @Override
-    public List<Measurables> getAllocatedMeasurableList(Long taskId) {
+    public List<Measurables> getAllocatedMeasurableList(Long taskId) throws SQLException {
         List<Measurables>  measurables = measurablesRepository.findAllocatedMeasurablesByTaskId(taskId);
-//        List<DelegationMeasurables> delegationMeasurables = new ArrayList<>();
-//        DelegationMeasurables delegationMeasurable;
-//        for (Measurables measurable: measurables){
-//            delegationMeasurable = new DelegationMeasurables();
-//            delegationMeasurable.setId(measurable.getId());
-//            delegationMeasurable.setFkMeasurableId(measurable);
-//            delegationMeasurables.add(delegationMeasurable);
-//        }
         return measurables;
     }
 
     @Override
-    public DelegationMeasurables addDelegationMeasurables(TaskManagement taskManagement, Measurables mesrblId, Long mesrbQuantity, String mesrbUnit) {
+    public DelegationMeasurables addDelegationMeasurables(TaskManagement taskManagement,
+                                                          Measurables mesrblId,
+                                                          Long mesrbQuantity,
+                                                          String mesrbUnit) throws SQLException{
         DelegationMeasurables delegationMeasurable = new DelegationMeasurables();
         delegationMeasurable.setFkTaskManagementID(taskManagement);
         delegationMeasurable.setFkMeasurableId(mesrblId);

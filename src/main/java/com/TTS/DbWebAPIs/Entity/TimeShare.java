@@ -14,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "TIME_SHARE")
 public class TimeShare {
 
     @Id
@@ -21,7 +22,7 @@ public class TimeShare {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "taskHandler", referencedColumnName="id")
+    @JoinColumn(name = "taskManagementId", referencedColumnName="id")
     private TaskManagement fkTaskManagementId;//check
 
 

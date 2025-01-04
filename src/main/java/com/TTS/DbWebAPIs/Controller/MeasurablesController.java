@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -29,15 +30,50 @@ public class MeasurablesController {
 
     //tested at 2:15 on 4th oct
     @GetMapping("/DTSMeasurablesList/{dtsId}")
-    ResponseEntity<APIResponse> getDTSMeasurablesList(@PathVariable Long dtsId){
-        List<Measurables> measurables = measurablesService.getDTSMeasurablesList(dtsId);
-        return ResponseEntity.ok(new APIResponse("successful",measurables));
+    ResponseEntity<?> getDTSMeasurablesList(@PathVariable Long dtsId){
+        try {
+            List<Measurables> measurables = measurablesService.getDTSMeasurablesList(dtsId);
+            if (measurables == null || measurables.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No measurable found", null));
+            }
+            return ResponseEntity.ok(new APIResponse<>("successful",measurables));
+        }catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while fetching getting measurable/s. " +
+                            "Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested at 2:30 on 4th oct
     @GetMapping("/list")
     ResponseEntity<APIResponse> getMeasurableList(){
-        List<Measurables> measurables = measurablesService.getMeasurableList();
+        try {
+            List<Measurables> measurables = measurablesService.getMeasurableList();
+            if (measurables == null || measurables.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No measurable found", null));
+            }
+            return ResponseEntity.ok(new APIResponse("measurable list",convertToMeasurableDTO(measurables)));
+        } catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting measurable/s. " +
+                            "Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
+    }
+    private ArrayList<MeasurablesDTO> convertToMeasurableDTO(List<Measurables> measurables){
         ArrayList<MeasurablesDTO> measurableList = new ArrayList<>();
         MeasurablesDTO measurable;
         for(Measurables m: measurables){
@@ -45,14 +81,29 @@ public class MeasurablesController {
             measurableList.add(measurable);
 
         }
-
-        return ResponseEntity.ok(new APIResponse("measurable list",measurableList));
+        return measurableList;
     }
-
     @GetMapping("/count/{username}/{startDate}/{endDate}/")
-    ResponseEntity<Integer> getMeasurablesCount(@PathVariable String username, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @PathVariable LocalDate endDate){
-        Integer measurablesCount = measurablesService.getMeasurableCount(username,startDate,endDate);
-        return ResponseEntity.ok(measurablesCount);
+    ResponseEntity<?> getMeasurablesCount(@PathVariable String username, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @PathVariable LocalDate endDate){
+        try {
+            Integer measurablesCount = measurablesService.getMeasurableCount(username,startDate,endDate);
+            if (measurablesCount == null || measurablesCount==0){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("0", null));
+            }
+            return ResponseEntity.ok(measurablesCount);
+        }
+         catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting measurable/s. " +
+                            "Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
     }
 
     //tested on 7 oct at 4:41 pm
@@ -60,10 +111,21 @@ public class MeasurablesController {
     ResponseEntity<?> getMeasurableNamesbyUsername(@RequestParam String username){
         try {
             List<String> measurables = measurablesService.getMeasurableListForUsername(username);
-            System.out.println(measurables);
+            if (measurables == null || measurables.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body(new APIResponse<>("No measurable found", null));
+            }
             return ResponseEntity.ok(new APIResponse("successful",measurables));
-        }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (SQLException ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An error occurred while getting measurable/s. " +
+                            "Please try again later.",null));
+        } catch (Exception ex){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
         }
     }
 
@@ -73,8 +135,15 @@ public class MeasurablesController {
        try{
            Measurables measurables = measurablesService.addMeasurable(username,measurableName,createdOn);
            return ResponseEntity.ok(new APIResponse("successful","-"));
-       }catch (RuntimeException e){
-           return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+       } catch (SQLException ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An error occurred while adding a measurable. " +
+                           "Please try again later.",null));
+       } catch (Exception ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
        }
     }
 

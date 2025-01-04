@@ -1,15 +1,13 @@
 package com.TTS.DbWebAPIs.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalTime;
 //created new class
 @Data
 @Entity
+@Table(name = "OTHER_ACTIVITY")
 public class OtherActivity {
 
     @Id

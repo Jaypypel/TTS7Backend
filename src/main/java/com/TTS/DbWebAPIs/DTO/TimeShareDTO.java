@@ -68,19 +68,14 @@ public class TimeShareDTO {
         TimeDifference = timeDifference;
     }
 
-    public static TimeShare getTimeShare() {
-        return timeShare;
-    }
 
-    public static void setTimeShare(TimeShare timeShare) {
-        TimeShareDTO.timeShare = timeShare;
-    }
 
     private String TimeDifference;
     private String description;
     private String createdOn;
-    private static TimeShare timeShare = new TimeShare();
+
     public static TimeShare convertToTimeShare(TimeShareDTO timeShareDTO){
+        TimeShare timeShare = new TimeShare();
         TaskManagement taskManagement = new TaskManagement();
         taskManagement.setId(timeShareDTO.getTaskHandlerId());
         timeShare.setFkTaskManagementId(taskManagement);

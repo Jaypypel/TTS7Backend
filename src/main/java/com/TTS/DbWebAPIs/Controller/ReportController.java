@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -37,8 +38,14 @@ public class ReportController {
                    .filename("file.xlsx")
                    .build());
            return  new ResponseEntity<>(bytes, headers, HttpStatus.OK);
-       }catch (NotFoundException notFoundException){
-           return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("error",notFoundException.getMessage()));
+       }catch (SQLException ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An error occurred while getting a dts report. Please try again later.",null));
+       } catch (Exception ex){
+           return ResponseEntity
+                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
        }
     }
 

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
   private  final  UserRepository userRepository;
     //get a list of Daily TimeShare
     @Override
-    public List<DailyTimeShare> getDailyTimeShareList(String username, String dateOfTimeShare){
+    public List<DailyTimeShare> getDailyTimeShareList(String username, String dateOfTimeShare) throws SQLException {
         return dailyTimeShareRepository.findAllByUserUsernameAndDateOfTimeShare(username, dateOfTimeShare);
     }
 
@@ -32,7 +33,7 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
     /*here need to check how can we pass dailyTimeshare Id to addDailyTimeShareMeasurables function*/
     @Transactional
     @Override
-    public DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare){
+    public DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare) throws SQLException{
 //        for(DailyTimeShareMeasurables dailyTimeShareMeasurable: dailyTimeShareMeasurablesList){
 //            dailyTimeShareMeasurablesServiceInterface.addDailyTimeShareMeasurables(dailyTimeShareMeasurable.getFkTimeShareId(), dailyTimeShareMeasurable.getFkMeasurablesID(),dailyTimeShareMeasurable.getMeasurableQuantity(),dailyTimeShareMeasurable.getMeasurableUnit());
 //        }
@@ -46,17 +47,17 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
     }
 
     @Override
-    public List<DailyTimeShare> getUserDTSReportDetails(String userId, String startDate, String endDate) {
+    public List<DailyTimeShare> getUserDTSReportDetails(String userId, String startDate, String endDate) throws SQLException{
         return dailyTimeShareRepository.getUserDTSReportDetails(userId,startDate,endDate);
     }
 
     @Override
-    public List<String> getProjectConsumedTime(String  username, String startDate, String endDate) {
+    public List<String> getProjectConsumedTime(String  username, String startDate, String endDate) throws SQLException {
         return dailyTimeShareRepository.findByUserUsernameAndStartDateAndEndDate(username, startDate,endDate);
     }
 
     @Override
-    public Long getMaxDailyTimeShareId() {
+    public Long getMaxDailyTimeShareId() throws SQLException {
         return dailyTimeShareRepository.findMaxDailyTimeShareId();
     }
 

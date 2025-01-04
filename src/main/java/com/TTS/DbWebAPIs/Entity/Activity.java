@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 
 @Data
+@Table(name = "ACTIVITY")
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

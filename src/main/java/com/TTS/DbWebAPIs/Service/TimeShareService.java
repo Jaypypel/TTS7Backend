@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,14 +24,14 @@ public class TimeShareService implements TimeShareServiceInterface{
     private final TimeShareMeasurablesRepository timeShareMeasurablesRepository;
 
     @Override
-    public List<TimeShare> getTimeShareList(String username, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<TimeShare> getTimeShareList(String username, LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
         User user   = userRepository.findByUsername(username);
         if(user == null || user.getUsername().isEmpty() || user.getUsername().isBlank()) throw new RuntimeException("user not found");
       return timeShareRepository.findTimeSharesByUserIdAndDateRange(username,startDate,endDate );
     }
 
     @Override
-    public List<TimeShare> getTimeShareLists(Long taskId) {
+    public List<TimeShare> getTimeShareLists(Long taskId) throws SQLException{
         TaskManagement taskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found "));
         return timeShareRepository.findTimeShareByTaskManagementId(taskId);
 
@@ -42,7 +43,7 @@ public class TimeShareService implements TimeShareServiceInterface{
     }
 
     @Override
-    public TimeShare addTimeShare(TimeShare timeShare) {
+    public TimeShare addTimeShare(TimeShare timeShare) throws SQLException{
        // TaskManagement taskManagement = taskManagementRepository.findById(timeShare.getFkTaskManagementId().getId()).orElseThrow(()->new RuntimeException("task not found"));
         return timeShareRepository.save(timeShare);
     }

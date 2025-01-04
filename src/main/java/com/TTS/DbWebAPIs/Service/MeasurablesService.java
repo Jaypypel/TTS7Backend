@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -25,28 +26,28 @@ public class MeasurablesService implements MeasurablesServiceInterface{
     /*need to check whether getting list of dtsMeasurables or measurables since in the TTSDailyShareFragment Measurable model is different from than the db measurable model
     * same*/
     @Override
-    public List<Measurables> getDTSMeasurablesList(Long dtsId) {
+    public List<Measurables> getDTSMeasurablesList(Long dtsId) throws SQLException {
         return measurablesRepository.findMeasurablesById(dtsId);
     }
 
     @Override
-    public List<Measurables> getMeasurableList() {
+    public List<Measurables> getMeasurableList() throws SQLException {
         return measurablesRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
 
     @Override
-    public Integer getMeasurableCount(String username, LocalDate startDate, LocalDate endDate) {
+    public Integer getMeasurableCount(String username, LocalDate startDate, LocalDate endDate) throws SQLException {
         return measurablesRepository.findByUserAndDateRange(username,startDate,endDate);
     }
 
     @Override
-    public List<String> getMeasurableListForUsername(String username) {
+    public List<String> getMeasurableListForUsername(String username)  throws SQLException{
         return measurablesRepository.findByUsername(username);
     }
 
     @Override
-    public Measurables addMeasurable(String username, String measurableName, String createdOn) {
+    public Measurables addMeasurable(String username, String measurableName, String createdOn) throws SQLException {
         User user = userRepository.findByUsername(username);
         if(user.getUsername().isEmpty() || user.getUsername().isBlank()){
             throw  new RuntimeException("user not found");

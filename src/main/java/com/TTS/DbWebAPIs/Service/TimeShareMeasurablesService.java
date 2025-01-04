@@ -8,6 +8,8 @@ import com.TTS.DbWebAPIs.Repository.TimeShareRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
+
 @Service
 @RequiredArgsConstructor
 public class TimeShareMeasurablesService implements TimeShareMeasurablesServiceInterface {
@@ -17,7 +19,7 @@ public class TimeShareMeasurablesService implements TimeShareMeasurablesServiceI
     private final TimeShareMeasurablesRepository timeShareMeasurablesRepository;
 
     @Override
-    public TimeShareMeasurables addTimeShareMeasurables(Long timeShareId, Measurables measuableId, Long measurableQuantity, String measurableUnit) {
+    public TimeShareMeasurables addTimeShareMeasurables(Long timeShareId, Measurables measuableId, Long measurableQuantity, String measurableUnit) throws SQLException {
         TimeShare timeShare = timeShareRepository.findById(timeShareId).orElseThrow(() -> new RuntimeException("timeshare not found"));
         TimeShareMeasurables timeShareMeasurables = new TimeShareMeasurables();
         timeShareMeasurables.setFkTimeShareId(timeShare);

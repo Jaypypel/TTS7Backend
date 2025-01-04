@@ -10,6 +10,7 @@ import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -25,22 +26,22 @@ public class TaskService implements TaskServiceInterface{
 
 
     @Override
-    public List<String> getTaskNameList(String userId) {
+    public List<String> getTaskNameList(String userId)  throws SQLException {
         return taskRepository.findById(userId);
     }
 
     @Override
-    public Integer getTaskCount(String username, LocalDate startDate, LocalDate endDate) {
+    public Integer getTaskCount(String username, LocalDate startDate, LocalDate endDate)  throws SQLException{
         return taskRepository.findByUserIdAndStartDateAndEndDate(username,startDate,endDate);
     }
 
     @Override
-    public Integer getTaskFreqeuncyCount(String username, LocalDate startDate, LocalDate endDate) {
+    public Integer getTaskFreqeuncyCount(String username, LocalDate startDate, LocalDate endDate)   throws SQLException{
         return taskRepository.findByIdAndStartDateAndEndDate(username,startDate,endDate);
     }
 
     @Override
-    public Task addTask(String username, Long activtyId, String taskName, String createdOn) {
+    public Task addTask(String username, Long activtyId, String taskName, String createdOn)   throws SQLException{
         User inputUser = userRepository.findByUsername(username);
         if(inputUser.getUsername().isBlank() || inputUser.getEmail().isEmpty()){
                 throw  new RuntimeException("user not found ");
@@ -56,7 +57,7 @@ public class TaskService implements TaskServiceInterface{
     }
 
     @Override
-    public List<String> getTaskNames() {
+    public List<String> getTaskNames() throws SQLException  {
         return taskRepository.findAllDistinctName();
     }
 

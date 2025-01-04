@@ -2,6 +2,8 @@ package com.TTS.DbWebAPIs.Repository;
 
 import com.TTS.DbWebAPIs.Entity.Activity;
 import com.TTS.DbWebAPIs.Entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,6 +14,9 @@ public interface ActivityRepository extends JpaRepository<Activity,Long> {
 
     @Query("Select DISTINCT a.name from Activity a")
     List<String> getActivityNames();
+//
+//    @Query("Select DISTINCT a.name from Activity a")
+//    Page<String> getActivityNames(Pageable pageable);
     
     @Query("Select DISTINCT a.name from Activity a where a.user.username =:username")
     List<String> getActivityNamesbyUserName(String username);
@@ -24,4 +29,7 @@ public interface ActivityRepository extends JpaRepository<Activity,Long> {
     Integer ActivityCount(String username, LocalDate startDate, LocalDate endDate);
 
     Activity findByName(String name);
+
+
+    //Page<Activity> findAll(Pageable pageable);
 }

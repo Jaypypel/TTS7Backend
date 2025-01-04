@@ -12,6 +12,7 @@ import java.sql.Time;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "TIME_SHARE_MEASURABLES")
 public class TimeShareMeasurables {
 
     @Id
@@ -19,15 +20,15 @@ public class TimeShareMeasurables {
     private Long Id;
     //One to One
     @ManyToOne
-    @JoinColumn(name = "timeshareId", referencedColumnName = "id")
+    @JoinColumn(name = "time_share_id", referencedColumnName = "id")
     private TimeShare fkTimeShareId;//check
 
-    @OneToOne()
-    private DelegationMeasurables fkDelegationMeasurablesId;//check
+//    @ManyToOne()
+//    private DelegationMeasurables fkDelegationMeasurablesId;//check
 
     //One to One
     @ManyToOne
-    @JoinColumn(name = "measurablesId", referencedColumnName = "id")
+    @JoinColumn(name = "measurableId", referencedColumnName = "id")
     private Measurables fkMeasurablesID;
 
     private Long measurableQuantity;
