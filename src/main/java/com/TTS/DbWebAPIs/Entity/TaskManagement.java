@@ -22,7 +22,8 @@ public class TaskManagement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  long id;
+    @Column(name = "id", nullable = false, updatable = false)
+    private  Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "taskOwnerUsername", referencedColumnName = "username")

@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.DTO.MeasurablesDTO;
 import com.TTS.DbWebAPIs.Entity.Measurables;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import com.TTS.DbWebAPIs.Response.APIResponse;
@@ -71,6 +72,24 @@ public class MeasurablesController {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+        }
+    }
+
+
+    @GetMapping("/measurable-list/")
+    ResponseEntity<?> getMeasurables(){
+        try {
+            List<Measurables> measurables = measurablesService.getMeasurableList();
+            if (measurables == null || measurables.isEmpty()){
+                return ResponseEntity
+                        .status(HttpStatus.NO_CONTENT)
+                        .body("");
+            }
+            return ResponseEntity.ok(new APIResponse<>("measurable list",convertToMeasurableDTO(measurables)));
+        } catch (SQLException ex){
+          throw new DatabaseException("Error accessing measurable/s from database", ex);
+        } catch (Exception ex){
+            throw  new RuntimeException(ex.getMessage());
         }
     }
     private ArrayList<MeasurablesDTO> convertToMeasurableDTO(List<Measurables> measurables){

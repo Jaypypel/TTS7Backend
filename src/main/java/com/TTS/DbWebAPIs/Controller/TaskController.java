@@ -31,11 +31,11 @@ public class TaskController {
                        .status(HttpStatus.NO_CONTENT)
                        .body(new APIResponse<>("No activities found", null));
            }
-           return ResponseEntity.ok(new APIResponse("successful",taskNames) );
+           return ResponseEntity.ok(new APIResponse<>("successful",taskNames) );
        }catch (SQLException ex){
            return ResponseEntity
                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An error occured while fetching task names. Please try again later.",null));
+                   .body(new APIResponse<>("An error occurred while fetching task names. Please try again later.",null));
        } catch (Exception ex){
            return ResponseEntity
                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -53,11 +53,11 @@ public class TaskController {
                        .status(HttpStatus.NO_CONTENT)
                        .body(new APIResponse<>("No activities found", null));
            }
-           return ResponseEntity.ok(new APIResponse("successful",taskNames));
+           return ResponseEntity.ok(new APIResponse<>("successful",taskNames));
        } catch (SQLException ex){
            return ResponseEntity
                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An error occured while fetching task names. Please try again later.",null));
+                   .body(new APIResponse<>("An error occurred while fetching task names. Please try again later.",null));
        } catch (Exception ex){
            return ResponseEntity
                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -79,7 +79,7 @@ public class TaskController {
        }catch (SQLException ex){
            return ResponseEntity
                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An error occured while fetching task count for submitted date range. Please try again later.",null));
+                   .body(new APIResponse<>("An error occurred while fetching task count for submitted date range. Please try again later.",null));
        } catch (Exception ex){
            return ResponseEntity
                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -102,7 +102,7 @@ public class TaskController {
         catch (SQLException ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occured while fetching task count for submitted date range. Please try again later.",null));
+                    .body(new APIResponse<>("An error occurred while fetching task count for submitted date range. Please try again later.",null));
         } catch (Exception ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -120,7 +120,7 @@ public class TaskController {
            catch (SQLException ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occured while fetching task count for submitted date range. Please try again later.",null));
+                    .body(new APIResponse<>("An error occurred while fetching task count for submitted date range. Please try again later.",null));
         } catch (Exception ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
