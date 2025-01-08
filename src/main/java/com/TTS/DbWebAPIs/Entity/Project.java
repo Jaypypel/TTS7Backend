@@ -25,13 +25,17 @@ public class Project {
     @JoinColumn(name= "activity_id", referencedColumnName = "id")
     private Activity activitiesAssociated;//check
 
-    @ManyToMany
-    @JoinTable(
-            name = "projectBelongsToUser",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> usersAssociated = new HashSet<>();//check
+
+    @ManyToOne
+    @JoinColumn(name = "FK_AUTHENTICATION_USER_ID", referencedColumnName = "username")
+    private User user;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "projectBelongsToUser",
+//            joinColumns = @JoinColumn(name = "project_id"),
+//            inverseJoinColumns = @JoinColumn(name = "user_id")
+//    )
+//    private Set<User> usersAssociated = new HashSet<>();//check
 
     //added new
     private String createdOn;

@@ -60,9 +60,9 @@ public class ProjectService implements ProjectServiceInterface  {
         User inputUser = userRepository.findByUsername(userId) != null ? userRepository.findByUsername(userId): null;
         if (inputUser == null) throw new NotFoundException("Username not found");
 
-        Set<User> userAssociatedProject = new HashSet<>();
-        userAssociatedProject.add(inputUser);
-        newProject.setUsersAssociated(userAssociatedProject);
+//        Set<User> userAssociatedProject = new HashSet<>();
+//        userAssociatedProject.add(inputUser);
+        newProject.setUser(inputUser);
         Activity activity = activityRepository.findById(activityID).orElseThrow(()-> new RuntimeException("activity not exist"));
         newProject.setActivitiesAssociated(activity);
         newProject.setProjectCode(projectCode);
