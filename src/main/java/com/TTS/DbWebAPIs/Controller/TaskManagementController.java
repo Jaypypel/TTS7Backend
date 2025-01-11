@@ -326,7 +326,7 @@ public class TaskManagementController {
         catch (SQLException ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occurred while getting accepted tasks count. Please try again later.",null));
+                    .body(new APIResponse<>("An error occurred while getting accepted tasks count. Please try again later.",ex.getMessage()));
         } catch (Exception ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
