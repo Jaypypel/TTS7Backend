@@ -188,7 +188,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     public TaskManagement updateTaskManagementApprovedOnTime(Long taskId)  throws SQLException{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
         String taskCompletedTime = DateAndTimeConfig.getCurrentDateAndTime();
-        existingTaskManagement.setStatus("approved");
+        existingTaskManagement.setStatus("Approved");
         existingTaskManagement.setTasKApprovedOn(taskCompletedTime);
         return taskManagementRepository.save(existingTaskManagement);
     }

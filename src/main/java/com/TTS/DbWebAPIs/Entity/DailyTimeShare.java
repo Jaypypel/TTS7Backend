@@ -19,7 +19,7 @@ public class DailyTimeShare {
 
     @Column(name = "date_of_time_share")
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private String dateOfTimeShare;
+    private LocalDate dateOfTimeShare;
 
     @Column(name = "project_code")
     private String projectCode;
@@ -48,8 +48,7 @@ public class DailyTimeShare {
 
 
     @Column(name = "created_on")
-
-    private String createdOn;
+     private String createdOn;
 
     @ManyToOne
     @JoinColumn(name="username", referencedColumnName = "username")

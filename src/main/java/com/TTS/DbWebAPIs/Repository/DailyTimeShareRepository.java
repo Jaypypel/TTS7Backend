@@ -1,6 +1,8 @@
 package com.TTS.DbWebAPIs.Repository;
 
 import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
+import com.TTS.DbWebAPIs.Entity.User;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -8,7 +10,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface DailyTimeShareRepository extends JpaRepository<DailyTimeShare,Long> {
-    List<DailyTimeShare> findAllByUserUsernameAndDateOfTimeShare(String username, String dateOfTimeShare);
+
+
+
+    List<DailyTimeShare> findAllByUserUsernameAndDateOfTimeShare(String username, LocalDate dateOfTimeShare);
 
     //    @Query("SELECT dts, m.name, dtsm.measurableQuantity, dtsm.measurableUnit " +
 //            "FROM DailyTimeShare dts " +
@@ -35,7 +40,7 @@ public interface DailyTimeShareRepository extends JpaRepository<DailyTimeShare,L
       AND daily_time_share.date_of_time_share BETWEEN ?2 AND ?3
     """, nativeQuery = true)
 
-    List<DailyTimeShare> getUserDTSReportDetails(String username, String startDate, String endDate);
+    List<DailyTimeShare> getUserDTSReportDetails(String username, LocalDate startDate, LocalDate endDate);
 
 //    @Query("SELECT dts.timeDifference " +
 //            "FROM DailyTimeShare dts " +
@@ -43,8 +48,9 @@ public interface DailyTimeShareRepository extends JpaRepository<DailyTimeShare,L
 //            "AND dts.dateOfTimeShare BETWEEN :startDate AND :endDate")
 
     @Query(value="SELECT daily_time_share.time_difference FROM daily_time_share WHERE daily_time_share.userid = ?1 AND daily_time_share.date_of_time_share BETWEEN ?2 AND ?3",nativeQuery = true)
-    List<String> findByUserUsernameAndStartDateAndEndDate(String username, String startDate, String endDate);
+    List<String> findByUserUsernameAndStartDateAndEndDate(String username, LocalDate startDate, LocalDate endDate);
 
+   // List<DailyTimeShare> findAllByUserAndDateOfTimeShareAndDateOfTimeShare(User username, String startDate, String endDate);
     //@Query("SELECT MAX(dts.id)  FROM DailyTimeShare dts")
 
     @Query(value = "SELECT MAX(id) FROM daily_time_share", nativeQuery = true)

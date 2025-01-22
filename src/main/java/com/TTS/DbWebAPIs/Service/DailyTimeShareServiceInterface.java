@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface DailyTimeShareServiceInterface {
 
-    List<DailyTimeShare> getDailyTimeShareList(String  username, String dateOfTimeShare) throws SQLException;
+    List<DailyTimeShare> getDailyTimeShareList(String  username, LocalDate dateOfTimeShare) throws SQLException;
 
    // DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare, List<DailyTimeShareMeasurables> dailyTimeShareMeasurablesList);
     DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare) throws SQLException;
     //can be moved to user controller
-    List<DailyTimeShare> getUserDTSReportDetails(String userId, String startDate, String endDate) throws SQLException;
+    List<DailyTimeShare> getUserDTSReportDetails(String userId, LocalDate startDate, LocalDate endDate) throws SQLException;
     //can be moved to project controller
-    List<String> getProjectConsumedTime(String username, String startDate, String endDate) throws SQLException;
+    List<String> getProjectConsumedTime(String username, LocalDate startDate, LocalDate endDate) throws SQLException;
 
     Long getMaxDailyTimeShareId() throws SQLException;
 }

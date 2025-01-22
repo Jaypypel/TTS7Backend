@@ -35,8 +35,8 @@ public class ActivityController {
 
         @Async
         @GetMapping("/names")
-        ResponseEntity<?> getActivtiesNames(){
-            try {
+        ResponseEntity<?> getActivtiesNames() throws Exception{
+//            try {
                 List<String> activities = activityService.getActivityNames();
                 if (activities == null || activities.isEmpty()){
                     return ResponseEntity
@@ -44,15 +44,15 @@ public class ActivityController {
                             .body(new APIResponse<>("No activities found", null));
                 }
                 return ResponseEntity.ok(new APIResponse<>("successful",activities));
-            }catch (SQLException ex){
-                return ResponseEntity
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new APIResponse<>("An error occured while fetching activity names. Please try again later.",null));
-            } catch (Exception ex){
-                return ResponseEntity
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-            }
+//            }catch (SQLException ex){
+//                return ResponseEntity
+//                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                        .body(new APIResponse<>("An error occured while fetching activity names. Please try again later.",null));
+//            } catch (Exception ex){
+//                return ResponseEntity
+//                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                        .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+//            }
         }
 
 

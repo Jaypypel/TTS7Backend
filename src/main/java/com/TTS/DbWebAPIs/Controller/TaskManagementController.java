@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -33,7 +34,7 @@ public class TaskManagementController {
 
     //tested at the 4:41 pm on 3rd of oct
     @PostMapping("/taskm")
-    ResponseEntity<?> addAssignedTask(@RequestBody TaskManagementDTO taskAssigned) {
+    ResponseEntity<?> addAssignedTask(@RequestBody @Validated TaskManagementDTO taskAssigned) {
        System.out.println(taskAssigned.getTaskAssignedOn());
 
 
@@ -292,18 +293,14 @@ public class TaskManagementController {
     ResponseEntity<?> getPendingTaskCount(@PathVariable String userId){
         try{
             Integer pndTskCnt = taskManagementService.getPendingTaskCount(userId);
-            if(pndTskCnt == null || pndTskCnt == 0){
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body(new APIResponse<>("No tasks pending ", null));
-            }
-            return ResponseEntity.ok(new APIResponse("successful",pndTskCnt));
+            return ResponseEntity.ok(new APIResponse<>("successful",pndTskCnt));
         }
         catch (SQLException ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new APIResponse<>("An error occurred while getting pending tasks count. Please try again later.",null));
-        } catch (Exception ex){
+        }
+        catch (Exception ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
@@ -315,12 +312,7 @@ public class TaskManagementController {
     ResponseEntity<?> getAcceptedTaskCount(@PathVariable String userId){
 
         try{
-            Integer aptTskCnt = taskManagementService.getAcceptedTaskCount(userId);
-            if(aptTskCnt == null || aptTskCnt == 0){
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body(new APIResponse<>("No task  accepted ", null));
-            }
+            int aptTskCnt = taskManagementService.getAcceptedTaskCount(userId);
             return ResponseEntity.ok(new APIResponse<>("successful",aptTskCnt));
         }
         catch (SQLException ex){
@@ -330,7 +322,7 @@ public class TaskManagementController {
         } catch (Exception ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+                    .body(ex.getMessage());
         }
     }
 
@@ -340,11 +332,6 @@ public class TaskManagementController {
 
         try{
             Integer apvTskCnt = taskManagementService.getApprovedTaskCount(userId);
-            if(apvTskCnt == null || apvTskCnt == 0){
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body(new APIResponse<>("No task approved ", null));
-            }
             return ResponseEntity.ok(new APIResponse<>("successful",apvTskCnt));
         }
         catch (SQLException ex){
@@ -354,7 +341,7 @@ public class TaskManagementController {
         } catch (Exception ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+                    .body(ex.getMessage());
         }
 
     }
@@ -366,11 +353,6 @@ public class TaskManagementController {
 
         try{
             Integer cmpTskCnt = taskManagementService.getCompletedTaskCount(userId);
-            if(cmpTskCnt == null || cmpTskCnt == 0){
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body(new APIResponse<>("No task completed ", null));
-            }
             return ResponseEntity.ok(new APIResponse<>("successful",cmpTskCnt));
         }
         catch (SQLException ex){
@@ -380,7 +362,7 @@ public class TaskManagementController {
         } catch (Exception ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+                    .body(ex.getMessage() );
         }
     }
 

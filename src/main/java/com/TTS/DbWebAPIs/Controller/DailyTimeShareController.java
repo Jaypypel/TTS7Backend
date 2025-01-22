@@ -44,7 +44,12 @@ public class DailyTimeShareController {
     @GetMapping("/dailyTimeShareList/{username}")
     ResponseEntity<?> getDailyTimeShareList(@PathVariable String username, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String dateOfTimeShare){
        try {
-           List<DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateOfTimeShare);
+           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+           // Parse the string to LocalDate
+           LocalDate dateTimeShare = LocalDate.parse(dateOfTimeShare, formatter);
+
+           List<DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateTimeShare);
            if (dailyTimeShares == null || dailyTimeShares.isEmpty()){
                return ResponseEntity
                        .status(HttpStatus.NO_CONTENT)
@@ -66,7 +71,12 @@ public class DailyTimeShareController {
     @GetMapping("/User/{userId}/{startDate}/{endDate}/DTSReport")
     ResponseEntity<?> getUserDTSReportDetails(@PathVariable String userId, @PathVariable String startDate, @PathVariable String endDate){
         try {
-            List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getUserDTSReportDetails(userId,startDate,endDate);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            // Parse the string to LocalDate
+            LocalDate strtDate = LocalDate.parse(startDate, formatter);
+            LocalDate edDate = LocalDate.parse(startDate, formatter);
+            List<com.TTS.DbWebAPIs.Entity.DailyTimeShare> dailyTimeShares = dailyTimeShareService.getUserDTSReportDetails(userId,strtDate,edDate);
             if (dailyTimeShares == null || dailyTimeShares.isEmpty()){
                 return ResponseEntity
                         .status(HttpStatus.NO_CONTENT)
@@ -96,7 +106,12 @@ public class DailyTimeShareController {
     @GetMapping("/Project/ConsumedTime/{username}/{startDate}/{endDate}")
     ResponseEntity<?> getProjectConsumedTime(@PathVariable String username, @PathVariable String startDate,@PathVariable String endDate){
         try{
-            List<String> projectConsumedTime = dailyTimeShareService.getProjectConsumedTime(username,startDate,endDate);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            // Parse the string to LocalDate
+            LocalDate strtDate = LocalDate.parse(startDate, formatter);
+            LocalDate edDate = LocalDate.parse(startDate, formatter);
+            List<String> projectConsumedTime = dailyTimeShareService.getProjectConsumedTime(username,strtDate,edDate);
             if (projectConsumedTime == null || projectConsumedTime.isEmpty()){
                 return ResponseEntity
                         .status(HttpStatus.NO_CONTENT)

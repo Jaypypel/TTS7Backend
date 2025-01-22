@@ -11,6 +11,7 @@ import com.TTS.DbWebAPIs.Service.ReportServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -27,10 +30,16 @@ public class ReportController {
 
     private  final ReportServiceInterface reportService;
 
+    @Transactional
     @GetMapping("/dts")
     public ResponseEntity<?> getUserDTSReport(@RequestParam String username, @RequestParam String startDate, @RequestParam String endDate) throws IOException {
        try {
-           List<Report> reports = reportService.getUserDTSReport(username,startDate,endDate);
+           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+           // Parse the string to LocalDate
+           LocalDate strtDate = LocalDate.parse(startDate, formatter);
+           LocalDate edDate = LocalDate.parse(endDate, formatter);
+           List<Report> reports = reportService.getUserDTSReport(username,strtDate,edDate);
+
            HttpHeaders headers = new HttpHeaders();
            byte[] bytes = generateExcelReport(reports);
            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);  // For generic binary content
@@ -45,22 +54,17 @@ public class ReportController {
        } catch (Exception ex){
            return ResponseEntity
                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", ex.getMessage()));
        }
     }
 
     private byte[] generateExcelReport(List<Report> reports) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Daily Worksheet");
-
-
-
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);
         headerFont.setFontHeightInPoints((short) 12);
-
         CellStyle headerStyle = workbook.createCellStyle();
-
         headerStyle.setFont(headerFont);
         headerStyle.setAlignment(HorizontalAlignment.CENTER);
         headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -96,17 +100,29 @@ public class ReportController {
         int rowNum = 1;
         for (Report report : reports) {
             Row row = sheet.createRow(rowNum++);
+            System.out.println(report.getTimeShareDate());
             row.createCell(0).setCellValue(report.getTimeShareDate());
+            System.out.println(report.getProjectCode());
             row.createCell(1).setCellValue(report.getProjectCode());
+            System.out.println(report.getProjectName());
             row.createCell(2).setCellValue(report.getProjectName());
+            System.out.println(report.getActivityName());
             row.createCell(3).setCellValue(report.getActivityName());
+            System.out.println(report.getTaskName());
             row.createCell(4).setCellValue(report.getTaskName());
+            System.out.println(report.getStartTime());
             row.createCell(5).setCellValue(report.getStartTime());
+            System.out.println(report.getEndTime());
             row.createCell(6).setCellValue(report.getEndTime());
-            row.createCell(7).setCellValue(report.getConsumedTime());
+            System.out.println(report.getTimeDifference());
+            row.createCell(7).setCellValue(report.getTimeDifference());
+            System.out.println(report.getMeasurableName());
             row.createCell(8).setCellValue(report.getMeasurableName());
+            System.out.println(report.getMeasurableQty());
             row.createCell(9).setCellValue(report.getMeasurableQty());
+            System.out.println(report.getMeasurableUnit());
             row.createCell(10).setCellValue(report.getMeasurableUnit());
+            System.out.println(report.getDescription());
             row.createCell(11).setCellValue(report.getDescription());
 
             for (int i = 0; i < headers.length; i++) {

@@ -4,33 +4,20 @@ import com.TTS.DbWebAPIs.DTO.ReportDTO;
 import com.TTS.DbWebAPIs.Entity.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ReportRepository extends JpaRepository<Report,Long> {
-    @Query("SELECT new com.TTS.DbWebAPIs.Entity.Report(" +
-            "dts.id," +
-            "dts.dateOfTimeShare," +
-            "dts.projectCode, " +
-            "dts.projectName, " +
-            "dts.activityName, " +
-            "dts.taskName, " +
-            "dts.startTime, " +
-            "dts.endTime, " +
-            "dts.timeDifference, " +
-            "m.name, " +
-            "dtm.measurableQuantity, " +
-            "dtm.measurableUnit, dts.description) " +
-            "FROM DailyTimeShare dts " +
-            "LEFT JOIN DailyTimeShareMeasurables dtm ON dts.id = dtm.dailyTimeShare.id " +
-            "LEFT JOIN Measurables m ON dtm.fkMeasurablesID.id = m.id " +
-            "WHERE dts.user.username = :username " +
-            "AND dts.dateOfTimeShare BETWEEN :startDate AND :endDate")
-    List<Report> findReportsByUserAndDateRange(
-            @Param("username") String username,
-            @Param("startDate") String startDate,
-            @Param("endDate") String endDate
-    );
 
+    @Transactional
+    @Procedure(name = "getUserReportWithInDateRange")
+    List<Report> getUserReportWithInDateRange(
+            @Param("p_username") String username,
+            @Param("p_startDate") LocalDate startDate,
+            @Param("p_endDate") LocalDate endDate
+    );
 }

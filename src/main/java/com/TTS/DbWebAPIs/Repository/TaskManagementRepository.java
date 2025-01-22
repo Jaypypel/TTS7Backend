@@ -15,7 +15,7 @@ public interface TaskManagementRepository  extends JpaRepository<TaskManagement,
     @Query("SELECT tm from TaskManagement tm WHERE tm.taskReceivedUserID.username =:username AND tm.status =:status")
     List<TaskManagement> findByUserUsernameAndStatus(@Param("username") String username,@Param("status") String status);
 
-    @Query(value = "SELECT COUNT(*) FROM  tts7.task_management  WHERE task_owner =:username AND status  =:status",nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM  task_management  WHERE task_owner_username =:username AND status  =:status",nativeQuery = true)
     Integer CountByUserUsernameAndStatus(@Param("username") String  username,@Param("status") String status);
 
     @Query("SELECT tm from TaskManagement tm WHERE tm.taskOwnerUserID.username =:username AND tm.status =:status")

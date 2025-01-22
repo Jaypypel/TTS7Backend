@@ -130,20 +130,20 @@ public class ReportDTO {
     }
 
 
-    public static Report convertToReport(ReportDTO reportDTO){
-        Report report = new Report();
-        report.setTimeShareDate(reportDTO.getTimeShareDate());
-        report.setTimeShareDate(reportDTO.getActivityName());
-        report.setTimeShareDate(reportDTO.getTaskName());
-        report.setTimeShareDate(reportDTO.getProjectCode());
-        report.setTimeShareDate(reportDTO.getProjectName());
-        report.setTimeShareDate(reportDTO.getStartTime());
-        report.setTimeShareDate(reportDTO.getEndTime());
-        report.setTimeShareDate(reportDTO.getConsumedTime());
-        report.setTimeShareDate(reportDTO.getMeasurableName());
-        report.setTimeShareDate(reportDTO.getMeasurableQty());
-        report.setTimeShareDate(reportDTO.getMeasurableUnit());
-        report.setTimeShareDate(reportDTO.getDescription());
-        return report;
-    }
+//    public static Report convertToReport(ReportDTO reportDTO){
+//        Report report = new Report();
+//        report.setTimeShareDate(reportDTO.getTimeShareDate());
+//        report.setActivityName(reportDTO.getActivityName());
+//        report.setTaskName(reportDTO.getTaskName());
+//        report.setProjectCode(reportDTO.getProjectCode());
+//        report.setProjectName(reportDTO.getProjectName());
+//        report.setStartTime(reportDTO.getStartTime());
+//        report.setEndTime(reportDTO.getEndTime());
+//        report.setTimeDifference(reportDTO.getConsumedTime());
+//        report.setMeasurableName(reportDTO.getMeasurableName());
+//        report.setMeasurableQty(Long.valueOf(reportDTO.getMeasurableQty()));
+//        report.setMeasurableUnit(reportDTO.getMeasurableUnit());
+//        report.setDescription(reportDTO.getDescription());
+//        return report;
+//    }
 }
