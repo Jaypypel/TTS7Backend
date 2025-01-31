@@ -95,7 +95,7 @@ public class TaskManagementDTO {
         taskManagementDTO.setActivityName(taskManagement.getActivityName());
         taskManagementDTO.setTaskName(taskManagement.getTaskName());
         taskManagementDTO.setProjectCode(taskManagement.getProjectCode());
-        taskManagementDTO.setProjectCode(taskManagement.getProjectName());
+        taskManagementDTO.setProjectName(taskManagement.getProjectName());
         taskManagementDTO.setExpectedDate(String.valueOf(taskManagement.getExpectedDate()));
         taskManagementDTO.setExpectedTotalTime(taskManagement.getExpectedTotalTime());
         taskManagementDTO.setDescription(taskManagement.getDescription());

@@ -75,11 +75,11 @@ public class TaskManagementController {
         } catch (SQLException ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occurred while fetching assigning task. Please try again later.",null));
+                    .body(new APIResponse<>("An error occurred while fetching assigning task. Please try again later.",ex.getMessage()));
         } catch (Exception ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", ex.getMessage()));
         }
     }
 
@@ -93,7 +93,7 @@ public class TaskManagementController {
                         .status(HttpStatus.NO_CONTENT)
                         .body(new APIResponse<>("No tasks found", null));
             }
-            return ResponseEntity.ok(new APIResponse("Successful",convertToTaskManagementDTOList(taskManagements)));
+            return ResponseEntity.ok(new APIResponse<>("Successful",convertToTaskManagementDTOList(taskManagements)));
         } catch (SQLException ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

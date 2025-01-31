@@ -6,6 +6,7 @@ import com.TTS.DbWebAPIs.Repository.*;
 import com.TTS.DbWebAPIs.Util.DateAndTimeConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -100,6 +101,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     //passed name of project as id since id needs to be uniquef
     //need to refactor and ask delegatonMeasurablesAssociated
     //removed time shareId
+    @Transactional
     @Override
     public TaskManagement addAssignedTask(String taskOwnerUsername, String taskReceivedUsername, String activityName,
                                           String taskName, String projectCode, String projectName, LocalDate expectedDate,

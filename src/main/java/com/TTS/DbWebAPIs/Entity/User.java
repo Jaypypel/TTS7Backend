@@ -1,6 +1,11 @@
 package com.TTS.DbWebAPIs.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Setter
-@Getter
+@Data
 @Table(name = "user")
 public class User {
 
@@ -20,15 +24,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Full name can not be empty")
+    @Size(max = 100, min= 10, message = "your full name needs to be between 10 and 100 characters")
     private String fullName;
 
     @Column(unique = true)
+    @NotBlank(message = "Username name can not be empty")
+    @Size(min = 4 , max=15, message = "username must be between 4 and 15 characters")
     private String username;
 
+    @NotBlank(message = "Password can not be blank")
+    @Size(min = 8, max=64)
     private String password;
 
     @Column(unique = true)
-    private   String email;
+    @Email(message = "the entered email id is not correct format")
+    @NotBlank
+    private String email;
 
     @Column(unique = true)
     private String mobileNo;
@@ -55,18 +67,4 @@ public class User {
 //
 //    @OneToMany(mappedBy = "user")
 //    private List<Activity> userActivity;//check
-
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", fullName='" + fullName + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", mobileNo='" + mobileNo + '\'' +
-                ", createdOn=" + createdOn +
-                '}';
-    }
 }
