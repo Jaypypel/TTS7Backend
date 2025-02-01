@@ -3,73 +3,17 @@ package com.TTS.DbWebAPIs.DTO;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
+import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
+@Data
 public class TimeShareDTO {
     private Long taskHandlerId;
-    private String date;
+    private LocalDate date;
     private String startTime;
     private String endTime;
-
-    public String getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public Long getTaskHandlerId() {
-        return taskHandlerId;
-    }
-
-    public void setTaskHandlerId(Long taskHandlerId) {
-        this.taskHandlerId = taskHandlerId;
-    }
-
-    public String getTimeDifference() {
-        return TimeDifference;
-    }
-
-    public void setTimeDifference(String timeDifference) {
-        TimeDifference = timeDifference;
-    }
-
-
-
     private String TimeDifference;
     private String description;
     private String createdOn;

@@ -38,7 +38,7 @@ public class User {
     private String password;
 
     @Column(unique = true)
-    @Email(message = "the entered email id is not correct format")
+    @Email(message = "Enter valid email address")
     @NotBlank
     private String email;
 

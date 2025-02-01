@@ -1,6 +1,10 @@
 package com.TTS.DbWebAPIs.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +28,7 @@ public class TimeShare {
 
     @OneToOne
     @JoinColumn(name = "taskManagementId", referencedColumnName="id")
+    @NotNull
     private TaskManagement fkTaskManagementId;//check
 
 
@@ -33,17 +38,24 @@ public class TimeShare {
 //    @OneToOne(mappedBy = "fkTimeShareId")
 //    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
 
+    @NotNull
+    @FutureOrPresent
+    private LocalDate dateOfTimeShare;
 
-    private String dateOfTimeShare;
-
+    @NotBlank
     private String startTime;
 
+    @NotBlank
     private String endTime;
 
+    @NotBlank
     private String timeDifference;
 
+    @NotBlank
+    @Size(max = 150, message = "description can not exceed 150 characters")
     private String description;
 
+    @NotNull
     private String createdOn;
 
 
