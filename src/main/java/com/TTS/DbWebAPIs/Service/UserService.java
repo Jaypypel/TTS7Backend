@@ -36,9 +36,15 @@ public class UserService implements UserServiceInterface {
         return userRepository.save(newUser);
     }
 
-    public Optional<User> getUserbyUsernameAndPassword(String username, String password) throws Exception {
-       return Optional.ofNullable(userRepository.findByUsernameAndPassword(username,password).orElseThrow(() -> new Exception("invalid details")));
+    public Optional<User> areUserCredentialValid(String username, String password) throws SQLException{
+       return userRepository.findByUsernameAndPassword(username,password);
     }
+
+    @Override
+    public Optional<User> isUsernameExist(String username) throws Exception {
+        return Optional.ofNullable(userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("invalid username")));
+    }
+
 
     //get a list of username through users list
     public List<String> getUsernameList()throws SQLException{

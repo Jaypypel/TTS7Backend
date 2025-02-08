@@ -25,9 +25,7 @@ public class TimeShareService implements TimeShareServiceInterface{
 
     @Override
     public List<TimeShare> getTimeShareList(String username, LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
-        User user   = userRepository.findByUsername(username);
-        if(user == null || user.getUsername().isEmpty() || user.getUsername().isBlank()) throw new RuntimeException("user not found");
-      return timeShareRepository.findTimeSharesByUserIdAndDateRange(username,startDate,endDate );
+        return timeShareRepository.findTimeSharesByUserIdAndDateRange(username,startDate,endDate );
     }
 
     @Override

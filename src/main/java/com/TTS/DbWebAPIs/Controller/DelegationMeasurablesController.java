@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Controller;
 
+import com.TTS.DbWebAPIs.DTO.MeasurablesDTO;
 import com.TTS.DbWebAPIs.Entity.*;
 import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
@@ -33,7 +34,7 @@ public class DelegationMeasurablesController {
                         .status(HttpStatus.NO_CONTENT)
                         .body(new APIResponse<>("No measurable found", null));
             }
-            return ResponseEntity.ok(new APIResponse<>("successful",delegationMeasurables));
+            return ResponseEntity.ok(new APIResponse<>("successful", MeasurablesDTO.convertToMeasurableDTO(delegationMeasurables)));
         }
        catch (SQLException ex){
             return ResponseEntity

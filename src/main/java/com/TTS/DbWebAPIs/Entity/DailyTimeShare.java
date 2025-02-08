@@ -24,8 +24,8 @@ public class DailyTimeShare {
 
     @Column(name = "date_of_time_share")
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @NotNull()
-    @FutureOrPresent
+//    @NotNull()
+//    @FutureOrPresent
     private LocalDate dateOfTimeShare;
 
     @NotBlank

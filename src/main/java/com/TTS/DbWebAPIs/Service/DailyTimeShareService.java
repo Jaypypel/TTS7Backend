@@ -37,12 +37,6 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
 //        for(DailyTimeShareMeasurables dailyTimeShareMeasurable: dailyTimeShareMeasurablesList){
 //            dailyTimeShareMeasurablesServiceInterface.addDailyTimeShareMeasurables(dailyTimeShareMeasurable.getFkTimeShareId(), dailyTimeShareMeasurable.getFkMeasurablesID(),dailyTimeShareMeasurable.getMeasurableQuantity(),dailyTimeShareMeasurable.getMeasurableUnit());
 //        }
-        User user = userRepository.findByUsername(dailyTimeShare.getUser().getUsername());
-        if(user==null){
-            throw new RuntimeException("user not found");
-        }
-        dailyTimeShare.setUser(user);
-
         return  dailyTimeShareRepository.save(dailyTimeShare);
     }
 

@@ -57,12 +57,7 @@ public class ProjectService implements ProjectServiceInterface  {
     @Override
     public Project addProject(String userId, Long activityID, String projectCode, String projectName, String createdOn) throws SQLException {
         Project newProject = new Project();
-        User inputUser = userRepository.findByUsername(userId) != null ? userRepository.findByUsername(userId): null;
-        if (inputUser == null) throw new NotFoundException("Username not found");
-
-//        Set<User> userAssociatedProject = new HashSet<>();
-//        userAssociatedProject.add(inputUser);
-        newProject.setUser(inputUser);
+        userRepository.findByUsername(userId).ifPresentOrElse(newProject::setUser,() -> new NotFoundException("Username not found"));
         Activity activity = activityRepository.findById(activityID).orElseThrow(()-> new RuntimeException("activity not exist"));
         newProject.setActivitiesAssociated(activity);
         newProject.setProjectCode(projectCode);

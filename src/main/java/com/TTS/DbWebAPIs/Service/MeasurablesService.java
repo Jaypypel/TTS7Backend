@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
@@ -48,12 +49,8 @@ public class MeasurablesService implements MeasurablesServiceInterface{
 
     @Override
     public Measurables addMeasurable(String username, String measurableName, String createdOn) throws SQLException {
-        User user = userRepository.findByUsername(username);
-        if(user.getUsername().isEmpty() || user.getUsername().isBlank()){
-            throw  new RuntimeException("user not found");
-        }
         Measurables measurables = new Measurables();
-        measurables.setUser(user);
+        userRepository.findByUsername(username).ifPresentOrElse(measurables::setUser,()-> new NotFoundException("user name not found"));
         measurables.setName(measurableName);
         measurables.setCreatedOn(createdOn);
         measurablesRepository.save(measurables);

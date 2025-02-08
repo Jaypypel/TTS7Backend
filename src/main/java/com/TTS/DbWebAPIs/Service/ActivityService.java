@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.Activity;
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.ActivityRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,11 +47,13 @@ public class ActivityService implements ActivityServiceInterface{
     @Override
     public Activity addActivity(String username, String activityName, String createdOn) throws SQLException {
         Activity inputActivity = new Activity();
-        User user = userRepository.findByUsername(username);
-        if(user.getUsername().isEmpty() || user.getUsername().isBlank()){
-            throw new RuntimeException("username not found");
-        }
-        inputActivity.setUser(user);
+        userRepository
+                .findByUsername(username)
+                .ifPresentOrElse(inputActivity::setUser,
+                        () -> new NotFoundException("username not found"));
+//        if(user.getUsername().isEmpty() || user.getUsername().isBlank()){
+//            throw new RuntimeException("username not found");
+//        }
         inputActivity.setName(activityName);
         inputActivity.setCreatedOn(createdOn);
         return activityRepository .save(inputActivity);
@@ -58,10 +62,7 @@ public class ActivityService implements ActivityServiceInterface{
     //getActivityCount
     @Override
     public Integer getActivityCount(String username, LocalDate startDate, LocalDate endDate) throws SQLException {
-        User user = userRepository.findByUsername(username);
-        if(user.getUsername().isBlank() || user.getUsername().isEmpty()){
-            throw new RuntimeException("User not found");
-        }
+        userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("username not found"));
         return activityRepository.ActivityCount(username,startDate,endDate);
     }
 
@@ -72,11 +73,8 @@ public class ActivityService implements ActivityServiceInterface{
 
     @Override
     public List<String> getActivityNamesByUsername(String username) throws SQLException {
-        User user = userRepository.findByUsername(username);
-        if(user.getUsername().isBlank() || user.getUsername().isEmpty()){
-            throw new RuntimeException("User not found");
-        }
-      return   activityRepository.getActivityNamesbyUserName(username);
+        userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("username not found"));
+        return   activityRepository.getActivityNamesbyUserName(username);
     }
 
 

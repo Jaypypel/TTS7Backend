@@ -39,7 +39,7 @@ public class MeasurablesController {
                         .status(HttpStatus.NO_CONTENT)
                         .body(new APIResponse<>("No measurable found", null));
             }
-            return ResponseEntity.ok(new APIResponse<>("successful",measurables));
+            return ResponseEntity.ok(new APIResponse<>("successful",MeasurablesDTO.convertToMeasurableDTO(measurables)));
         }catch (SQLException ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -62,7 +62,7 @@ public class MeasurablesController {
                         .status(HttpStatus.NO_CONTENT)
                         .body(new APIResponse<>("No measurable found", null));
             }
-            return ResponseEntity.ok(new APIResponse("measurable list",convertToMeasurableDTO(measurables)));
+            return ResponseEntity.ok(new APIResponse<>("measurable list",MeasurablesDTO.convertToMeasurableDTO(measurables)));
         } catch (SQLException ex){
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -85,23 +85,14 @@ public class MeasurablesController {
                         .status(HttpStatus.NO_CONTENT)
                         .body("");
             }
-            return ResponseEntity.ok(new APIResponse<>("measurable list",convertToMeasurableDTO(measurables)));
+            return ResponseEntity.ok(new APIResponse<>("measurable list",MeasurablesDTO.convertToMeasurableDTO(measurables)));
         } catch (SQLException ex){
           throw new DatabaseException("Error accessing measurable/s from database", ex);
         } catch (Exception ex){
             throw  new RuntimeException(ex.getMessage());
         }
     }
-    private ArrayList<MeasurablesDTO> convertToMeasurableDTO(List<Measurables> measurables){
-        ArrayList<MeasurablesDTO> measurableList = new ArrayList<>();
-        MeasurablesDTO measurable;
-        for(Measurables m: measurables){
-            measurable = new MeasurablesDTO(m.getId(),m.getName());
-            measurableList.add(measurable);
 
-        }
-        return measurableList;
-    }
     @GetMapping("/count/{username}/{startDate}/{endDate}/")
     ResponseEntity<?> getMeasurablesCount(@PathVariable String username, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @PathVariable LocalDate endDate){
         try {

@@ -3,6 +3,7 @@ package com.TTS.DbWebAPIs.Service;
 import com.TTS.DbWebAPIs.Entity.Activity;
 import com.TTS.DbWebAPIs.Entity.Task;
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.ActivityRepository;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.TaskName;
 import com.TTS.DbWebAPIs.Repository.TaskRepository;
@@ -42,13 +43,9 @@ public class TaskService implements TaskServiceInterface{
 
     @Override
     public Task addTask(String username, Long activtyId, String taskName, String createdOn)   throws SQLException{
-        User inputUser = userRepository.findByUsername(username);
-        if(inputUser.getUsername().isBlank() || inputUser.getEmail().isEmpty()){
-                throw  new RuntimeException("user not found ");
-        }
         Activity inputActivity = activityRepository.findById(activtyId).orElseThrow(() -> new RuntimeException("activity not found"));
         Task task = new Task();
-        task.setUser(inputUser);
+        userRepository.findByUsername(username).ifPresentOrElse(task::setUser,() -> new NotFoundException("Username not found"));
         task.setActivityAssociated(inputActivity);
         task.setName(taskName);
         task.setCreatedOn(createdOn);

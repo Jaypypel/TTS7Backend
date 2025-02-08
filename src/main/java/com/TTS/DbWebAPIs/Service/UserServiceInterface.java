@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface UserServiceInterface {
     User registerUser(User inputUser) throws SQLException;
-    Optional<User> getUserbyUsernameAndPassword(String username, String password) throws Exception;
+    Optional<User> areUserCredentialValid(String username, String password) throws SQLException;
+    Optional<User> isUsernameExist(String username) throws Exception;
     List<String> getUsernameList() throws SQLException;
 }

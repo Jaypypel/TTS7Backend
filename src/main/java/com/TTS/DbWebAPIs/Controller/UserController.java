@@ -77,15 +77,14 @@ public class UserController {
 @GetMapping("/login")
 public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) throws Exception {
     try{
-        boolean userExists = userService.getUserbyUsernameAndPassword(username, password).isPresent();
-
+        boolean userExists = userService.areUserCredentialValid(username, password).isPresent();
         if (userExists) {
             // If user exists, return HTTP 200 OK with a success message.
             // return new ResponseEntity<>("Login successful", HttpStatus.OK);
-            return ResponseEntity.ok(new APIResponse("Successful",null));
+            return ResponseEntity.ok(new APIResponse<>("Successful",null));
         } else {
             // If user does not exist, return HTTP 401 Unauthorized with an error message.
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new APIResponse("Invalid Login details", null));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new APIResponse<>("Invalid Login details", null));
         }
     }catch (SQLException ex){
         return ResponseEntity

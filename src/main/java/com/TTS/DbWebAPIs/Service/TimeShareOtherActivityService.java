@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.TimeShareOtherActivity;
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.TimeShareOtherActivityRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,9 @@ public class TimeShareOtherActivityService implements TimeShareOtherActivityServ
     private  final TimeShareOtherActivityRepository timeShareOtherActivityRepository;
     @Override
     public TimeShareOtherActivity addOtherActivity(String username, String activityName, String date, String startTime, String endTime, String timeDifference, String description, String createdOn) {
-        User user = userRepository.findByUsername(username);
-        if(user.getUsername().isEmpty()){
-            throw new RuntimeException("username not found");
-        }
+
         TimeShareOtherActivity timeShareOtherActivity = new TimeShareOtherActivity();
-        timeShareOtherActivity.setUser(user);
+        userRepository.findByUsername(username).ifPresentOrElse(timeShareOtherActivity::setUser,() -> new NotFoundException("username not found"));
         timeShareOtherActivity.setActivity(activityName);
         timeShareOtherActivity.setDate(date);
         timeShareOtherActivity.setStartTime(startTime);

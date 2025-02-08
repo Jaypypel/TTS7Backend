@@ -110,25 +110,11 @@ public class TaskManagementService implements TaskManagementServiceInterface{
                                           String taskProcessOn, String taskApproveOn,
                                           String status)  throws SQLException{
 //        , List<DelegationMeasurables> delegationMeasurablesAssociated
-        User iptTskOwner = userRepository.findByUsername(taskOwnerUsername);
-        if(iptTskOwner == null) throw new NotFoundException("username not exist");
-        User iptTskReceiver = userRepository.findByUsername(taskReceivedUsername);
-        if(iptTskReceiver == null) throw new NotFoundException("username not exist");
-        Activity iptActivity = activityRepository.findByName(activityName);
-        System.out.println(iptActivity);
-        Project project;
-        project = projectRepository.findByProjectCode(projectCode);
-        if (project == null) throw new NotFoundException("projectCode not exist");
-
-//        try {
-//            iptActivity = activityRepository.findByName(activityName);
-//        } catch (RuntimeException e) {
-//            throw new RuntimeException("activity not found");
-//        }
         TaskManagement assignedTaskManagement = new TaskManagement();
-        assignedTaskManagement.setTaskOwnerUserID(iptTskOwner);
-        assignedTaskManagement.setTaskReceivedUserID(iptTskReceiver);
-      //  assignedTaskManagement.setTimeShareAssociated(timeShareAssociated);
+        userRepository.findByUsername(taskOwnerUsername).ifPresentOrElse(assignedTaskManagement::setTaskOwnerUserID,() -> new NotFoundException("username not found"));
+        userRepository.findByUsername(taskReceivedUsername).ifPresentOrElse(assignedTaskManagement::setTaskReceivedUserID,() -> new NotFoundException("username not found"));
+        Project  project = projectRepository.findByProjectCode(projectCode);
+        if (project == null) throw new NotFoundException("projectCode not exist");
         assignedTaskManagement.setActivityName(activityName);
         assignedTaskManagement.setTaskName(taskName);
         project.setName(projectName);
@@ -146,16 +132,6 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         assignedTaskManagement.setTaskProcessedOn(taskProcessOn);
         assignedTaskManagement.setTasKApprovedOn(taskApproveOn);
         assignedTaskManagement.setStatus(status);
-//        final TaskManagement saveAssignedTaskManagement = taskManagementRepository.save(assignedTaskManagement);
-//        delegationMeasurablesAssociated.forEach(delegationMeasurable -> {
-//
-//            //delegationMeasurable.setId(Long.parseLong(delegationMeasurable.getFkMeasurableId().getName().replaceAll("[^0-9]", ""))); // Example: setting value
-//            // Set other fields as required
-//            delegationMeasurable.setActualMeasurableQuantity(delegationMeasurable.getActualMeasurableQuantity());
-//            delegationMeasurable.setExpectedMeasurableQuantity(delegationMeasurable.getExpectedMeasurableQuantity());
-//            delegationMeasurable.setMeasurableUnit(delegationMeasurable.getMeasurableUnit());
-//            delegationMeasurablesRepository.save(delegationMeasurable);
-//        });
         return taskManagementRepository.save(assignedTaskManagement);
     }
 
