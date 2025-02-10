@@ -7,6 +7,7 @@ import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class MeasurablesService implements MeasurablesServiceInterface{
         return measurablesRepository.findMeasurablesById(dtsId);
     }
 
+    @Cacheable
     @Override
     public List<Measurables> getMeasurableList() throws SQLException {
         return measurablesRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));

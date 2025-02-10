@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.List;
 public interface MeasurablesServiceInterface {
      List<Measurables> getDTSMeasurablesList(Long dtsId) throws SQLException;
 
+     @Cacheable
      List<Measurables> getMeasurableList() throws SQLException;
 
   //   List<Measurables> getAllocatedMeasurableList(Long taskId);
