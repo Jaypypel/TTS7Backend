@@ -1,31 +1,30 @@
 package com.TTS.DbWebAPIs.DTO;
 
+import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
+import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
+@Data
 public class DailyTimeShareDTO {
-    com.TTS.DbWebAPIs.Entity.DailyTimeShare dailyTimeShare;
-    List<DailyTimeShareMeasurables> dailyTimeShareMeasurables;
 
-    public DailyTimeShareDTO(com.TTS.DbWebAPIs.Entity.DailyTimeShare dailyTimeShare, List<DailyTimeShareMeasurables> dailyTimeShareMeasurables) {
-        this.dailyTimeShare = dailyTimeShare;
-        this.dailyTimeShareMeasurables = dailyTimeShareMeasurables;
-    }
+    private String dateOfTimeShare;
+    private String projectCode;
+    private String projectName;
+    private String activityName;
+    private String taskName;
+    private String startTime;
+    private String endTime;
+    private String timeDifference;
+    private String description;
+    private String createdOn;
+    private String username ;
 
-    public com.TTS.DbWebAPIs.Entity.DailyTimeShare getDailyTimeShare() {
+    public static DailyTimeShare mapDailyTimeShareDTOtoDailyTimeShare(DailyTimeShareDTO dailyTimeShareDTO){
+        DailyTimeShare dailyTimeShare = new DailyTimeShare();
+        dailyTimeShare.setDateOfTimeShare(LocalDate.parse(dailyTimeShareDTO.getDateOfTimeShare()));
         return dailyTimeShare;
-    }
-
-    public void setDailyTimeShare(com.TTS.DbWebAPIs.Entity.DailyTimeShare dailyTimeShare) {
-        this.dailyTimeShare = dailyTimeShare;
-    }
-
-    public List<DailyTimeShareMeasurables> getDailyTimeShareMeasurables() {
-        return dailyTimeShareMeasurables;
-    }
-
-    public void setDailyTimeShareMeasurables(List<DailyTimeShareMeasurables> dailyTimeShareMeasurables) {
-        this.dailyTimeShareMeasurables = dailyTimeShareMeasurables;
     }
 }

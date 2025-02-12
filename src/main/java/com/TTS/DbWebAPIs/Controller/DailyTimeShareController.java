@@ -26,7 +26,9 @@ public class DailyTimeShareController {
     //tested at 1:06 pm on 4th oct
     @PostMapping("/dailyTimeShare/")
     ResponseEntity<?> addDailyTimeShare(@RequestBody DailyTimeShare dailyTimeShare) {
+        System.out.println("dailytime ob : " + dailyTimeShare );
         try {
+
             DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare);
             return ResponseEntity.ok(new APIResponse<>("successful",adddailyTimeShare));
         }catch (SQLException ex){

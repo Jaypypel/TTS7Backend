@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
+import org.springframework.web.jsf.FacesContextUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -71,7 +73,7 @@ public class DailyTimeShare {
 
     @Valid
     @NotNull
-    @ManyToOne(cascade= CascadeType.PERSIST)
+     @ManyToOne()
     @JoinColumn(name="username", referencedColumnName = "username")
     private User user;
 }
