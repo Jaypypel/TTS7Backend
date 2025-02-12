@@ -71,7 +71,7 @@ public class DailyTimeShare {
 
     @Valid
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade= CascadeType.PERSIST)
     @JoinColumn(name="username", referencedColumnName = "username")
     private User user;
 }
