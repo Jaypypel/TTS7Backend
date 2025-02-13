@@ -71,6 +71,9 @@ public class ActivityController {
     ResponseEntity<?> getActivtiesNamesByUserName(@RequestParam(name = "username" , required = true) String username) throws SQLException {
        try {
            List<String> activities = activityService.getActivityNamesByUsername(username);
+           for (String activity : activities){
+               System.out.println("activites" + activity);
+           }
            if (activities == null || activities.isEmpty()){
                return ResponseEntity
                        .status(HttpStatus.NO_CONTENT)

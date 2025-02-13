@@ -32,7 +32,7 @@ public class MeasurablesService implements MeasurablesServiceInterface{
         return measurablesRepository.findMeasurablesById(dtsId);
     }
 
-    @Cacheable
+    @Cacheable("measurables")
     @Override
     public List<Measurables> getMeasurableList() throws SQLException {
         return measurablesRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));

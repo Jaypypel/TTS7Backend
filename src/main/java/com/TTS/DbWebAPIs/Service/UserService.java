@@ -4,7 +4,9 @@ package com.TTS.DbWebAPIs.Service;
 import com.TTS.DbWebAPIs.Entity.User;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import com.TTS.DbWebAPIs.Util.DateAndTimeConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -15,10 +17,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserServiceInterface {
 
-    @Autowired
-    UserRepository userRepository;
+
+   private final UserRepository userRepository;
 
     public User registerUser(User inputUser) throws SQLException {
         User oldUser = userRepository.findByFullNameAndUsernameAndPasswordAndEmailAndMobileNo(inputUser.getFullName(),inputUser.getUsername(), inputUser.getPassword(), inputUser.getEmail(), inputUser.getMobileNo());
@@ -47,6 +50,8 @@ public class UserService implements UserServiceInterface {
 
 
     //get a list of username through users list
+    @Cacheable("usernames")
+    @Override
     public List<String> getUsernameList()throws SQLException{
         List<String> username = new ArrayList<>();
         List<User> users = userRepository.findAll();
