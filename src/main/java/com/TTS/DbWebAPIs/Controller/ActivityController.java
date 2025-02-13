@@ -71,9 +71,7 @@ public class ActivityController {
     ResponseEntity<?> getActivtiesNamesByUserName(@RequestParam(name = "username" , required = true) String username) throws SQLException {
        try {
            List<String> activities = activityService.getActivityNamesByUsername(username);
-           for (String activity : activities){
-               System.out.println("activites" + activity);
-           }
+
            if (activities == null || activities.isEmpty()){
                return ResponseEntity
                        .status(HttpStatus.NO_CONTENT)
@@ -97,11 +95,15 @@ public class ActivityController {
     ResponseEntity<?>  getActivityList(@PathVariable String username) throws SQLException{
         try {
             List<Activity>  activities = activityService.getActivityList(username);
-            if (activities == null || activities.isEmpty()){
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body(new APIResponse<>("No activities found", null));
-            }
+//            System.out.println("activites" + activities);
+//            for (Activity activity : activities){
+//                System.out.println("activites" + activity);
+//            }
+//            if (activities.isEmpty()){
+//                return ResponseEntity
+//                        .status(HttpStatus.NO_CONTENT)
+//                        .body(new APIResponse<>("No activities found", activities));
+//            }
             return ResponseEntity.ok(new APIResponse<>("successful",activities));
 
         }catch (SQLException ex){
