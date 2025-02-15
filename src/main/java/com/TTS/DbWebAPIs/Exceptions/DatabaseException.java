@@ -1,7 +1,9 @@
 package com.TTS.DbWebAPIs.Exceptions;
 
-public class DatabaseException extends RuntimeException{
-    public DatabaseException(String msg, Throwable cause){
-        super(msg,cause);
+import java.sql.SQLException;
+
+public class DatabaseException extends SQLException {
+    public DatabaseException(String msg){
+        super(msg);
     }
 }

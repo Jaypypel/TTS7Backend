@@ -77,7 +77,7 @@ public class MeasurablesController {
 
 
     @GetMapping("/measurable-list/")
-    ResponseEntity<?> getMeasurables(){
+    ResponseEntity<?> getMeasurables() throws DatabaseException {
         try {
             List<Measurables> measurables = measurablesService.getMeasurableList();
             if (measurables == null || measurables.isEmpty()){
@@ -87,7 +87,7 @@ public class MeasurablesController {
             }
             return ResponseEntity.ok(new APIResponse<>("measurable list",MeasurablesDTO.convertToMeasurableDTO(measurables)));
         } catch (SQLException ex){
-          throw new DatabaseException("Error accessing measurable/s from database", ex);
+          throw new DatabaseException("Error accessing measurable/s from database");
         } catch (Exception ex){
             throw  new RuntimeException(ex.getMessage());
         }

@@ -3,7 +3,9 @@ package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.User;
 import com.TTS.DbWebAPIs.Exceptions.AlreadyExistException;
+import com.TTS.DbWebAPIs.Exceptions.InvalidLoginDetailsException;
 import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
+import com.TTS.DbWebAPIs.Exceptions.UserAlreadyExistsException;
 import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/app/user")
+@RequestMapping("/app1/user")
 @RequiredArgsConstructor
 
 
@@ -56,46 +58,15 @@ public class UserController {
 
     //tested again at 11:24 am on 3rd Oct
     @PostMapping("/register")
-    public ResponseEntity<?> Registration(@RequestBody User inputUser) {
-            try {
-                User user = userService.registerUser(inputUser);
-                return ResponseEntity.ok(new APIResponse("successful","-"));
-            } catch (AlreadyExistException e){
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIResponse("Error : "+e.getMessage(),"-"));
-            } catch (SQLException ex){
-                return ResponseEntity
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new APIResponse<>("An error occured while fetching activity names. Please try again later.",null));
-            } catch (Exception ex){
-                return ResponseEntity
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-            }
-
+    public ResponseEntity<?> Registration(@RequestBody User inputUser) throws UserAlreadyExistsException,SQLException {
+        userService.registerUser(inputUser);
+        return ResponseEntity.ok(new APIResponse<>("successful","-"));
     }
 
-@GetMapping("/login")
-public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) throws Exception {
-    try{
-        boolean userExists = userService.areUserCredentialValid(username, password).isPresent();
-        if (userExists) {
-            // If user exists, return HTTP 200 OK with a success message.
-            // return new ResponseEntity<>("Login successful", HttpStatus.OK);
-            return ResponseEntity.ok(new APIResponse<>("Successful",null));
-        } else {
-            // If user does not exist, return HTTP 401 Unauthorized with an error message.
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new APIResponse<>("Invalid Login details", null));
-        }
-    }catch (SQLException ex){
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new APIResponse<>("An error occured while fetching activity names. Please try again later.",null));
-    } catch (Exception ex){
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
+@GetMapping("/login1")
+public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) throws NotFoundException, InvalidLoginDetailsException {
+        String validatedUsername = userService.isUsernameExist(username).getUsername();
+        userService.areUserCredentialValid(validatedUsername, password);
+        return ResponseEntity.ok(new APIResponse<>("Successful", null));
     }
-}
-
-
 }
