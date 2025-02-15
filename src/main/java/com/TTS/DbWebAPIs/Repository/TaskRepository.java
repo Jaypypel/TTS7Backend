@@ -24,7 +24,7 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
     @Query(value = "SELECT COUNT(dts.task_name) FROM daily_time_share dts WHERE LOWER(dts.userid) = LOWER(:username) AND dts.date_of_time_share BETWEEN :startDate AND :endDate", nativeQuery = true)
     Integer findByIdAndStartDateAndEndDate(String username, LocalDate startDate, LocalDate endDate);
 
-    @Cacheable
+    @Cacheable("taskNames")
     @Query("SELECT DISTINCT t.name FROM Task t")
     List<String> findAllDistinctName();
 }

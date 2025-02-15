@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project,Long> {
-    @Cacheable
+
     @Query("SELECT DISTINCT(p.projectCode) FROM Project p WHERE p.name = :name")
     String findByProjectName(String name);
 
@@ -26,6 +26,7 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
 @Query(value = "SELECT COUNT(DISTINCT(dts.project_code)) FROM daily_time_share dts WHERE LOWER(dts.userid) = LOWER(:username) AND dts.date_of_time_share BETWEEN :startDate AND :endDate", nativeQuery = true)
     Integer findByUserIdAndDateRange(String username, LocalDate startDate, LocalDate endDate);
 
+    @Cacheable("projectsNames")
     @Query("SELECT p.name FROM Project p")
     List<String> findByName();
 
