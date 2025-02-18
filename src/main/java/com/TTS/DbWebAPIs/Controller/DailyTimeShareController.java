@@ -40,7 +40,7 @@ public class DailyTimeShareController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             // Parse the string to LocalDate
             LocalDate dateTimeShare = LocalDate.parse(dateOfTimeShare, formatter);
-            List<DailyTimeShare> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateTimeShare);
+            List<DailyTimeShareDTO> dailyTimeShares = dailyTimeShareService.getDailyTimeShareList(username,dateTimeShare);
             if (dailyTimeShares == null || dailyTimeShares.isEmpty()){
                return ResponseEntity
                        .status(HttpStatus.NO_CONTENT)
@@ -68,7 +68,7 @@ public class DailyTimeShareController {
 
     //tested at 12:49 pm on 8th Oct
     @GetMapping("/id/maximum")
-    ResponseEntity<Long> getDailyTimeShareMaxId() throws SQLException {
+    ResponseEntity<Long> getDailyTimeShareMaxId() throws DatabaseException,InternalServerException {
         Long maxId = dailyTimeShareService.getMaxDailyTimeShareId();
         System.out.println(maxId);
         return ResponseEntity.ok(maxId);

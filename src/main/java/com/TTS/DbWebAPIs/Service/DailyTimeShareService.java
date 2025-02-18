@@ -1,6 +1,7 @@
 package com.TTS.DbWebAPIs.Service;
 
 
+import com.TTS.DbWebAPIs.DTO.DailyTimeShareDTO;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +31,12 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
   private  final  UserRepository userRepository;
     //get a list of Daily TimeShare
     @Override
-    public List<DailyTimeShare> getDailyTimeShareList(String username, LocalDate dateOfTimeShare) throws DatabaseException {
-        return dailyTimeShareRepository.findAllByUserUsernameAndDateOfTimeShare(username, dateOfTimeShare);
+    public List<DailyTimeShareDTO> getDailyTimeShareList(String username, LocalDate dateOfTimeShare) throws DatabaseException {
+         return dailyTimeShareRepository
+                 .findAllByUserUsernameAndDateOfTimeShare(username, dateOfTimeShare)
+                 .stream()
+                 .map(DailyTimeShareDTO::mapDailyTimeSharetoDailyTimeShareDto)
+                 .collect(Collectors.toList());
     }
 
     //add a daily timeshare

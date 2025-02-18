@@ -1,10 +1,14 @@
 package com.TTS.DbWebAPIs.Service;
 
 import com.TTS.DbWebAPIs.Entity.*;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
+import com.TTS.DbWebAPIs.Exceptions.UserNotFoundException;
 import com.TTS.DbWebAPIs.Repository.*;
 import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.sql.Time;
@@ -21,27 +25,36 @@ public class TimeShareService implements TimeShareServiceInterface{
     private final UserRepository userRepository;
     private  final TimeShareRepository timeShareRepository;
     private final TaskManagementRepository taskManagementRepository;
-    private final TimeShareMeasurablesRepository timeShareMeasurablesRepository;
+
 
     @Override
-    public List<TimeShare> getTimeShareList(String username, LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
-        return timeShareRepository.findTimeSharesByUserIdAndDateRange(username,startDate,endDate );
+    public List<TimeShare> getTimeShareList(String username, LocalDateTime startDate, LocalDateTime endDate)
+            throws DatabaseException, UserNotFoundException {
+        User existingUser = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found by username :" +username));
+        return timeShareRepository
+                .findTimeSharesByUserIdAndDateRange(existingUser.getUsername(),startDate,endDate );
     }
 
     @Override
-    public List<TimeShare> getTimeShareLists(Long taskId) throws SQLException{
-        TaskManagement taskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found "));
+    public List<TimeShare> getTimeShareLists(Long taskId)
+            throws NotFoundException, DatabaseException {
+        TaskManagement taskManagement = taskManagementRepository
+                .findById(taskId)
+                .orElseThrow(() -> new NotFoundException("task not found "));
         return timeShareRepository.findTimeShareByTaskManagementId(taskId);
 
     }
 
     @Override
-    public Long getMaxTimeShareId() {
+    public Long getMaxTimeShareId() throws DatabaseException{
         return (timeShareRepository.findMaxTimeShareId() != null) ? (timeShareRepository.findMaxTimeShareId() + 1) : 0;
     }
 
+    @Transactional
     @Override
-    public TimeShare addTimeShare(TimeShare timeShare) throws SQLException{
+    public TimeShare addTimeShare(TimeShare timeShare) throws DatabaseException{
        // TaskManagement taskManagement = taskManagementRepository.findById(timeShare.getFkTaskManagementId().getId()).orElseThrow(()->new RuntimeException("task not found"));
         return timeShareRepository.save(timeShare);
     }

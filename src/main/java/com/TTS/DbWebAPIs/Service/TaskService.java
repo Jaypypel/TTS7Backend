@@ -3,7 +3,9 @@ package com.TTS.DbWebAPIs.Service;
 import com.TTS.DbWebAPIs.Entity.Activity;
 import com.TTS.DbWebAPIs.Entity.Task;
 import com.TTS.DbWebAPIs.Entity.User;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
 import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
+import com.TTS.DbWebAPIs.Exceptions.UserNotFoundException;
 import com.TTS.DbWebAPIs.Repository.ActivityRepository;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.TaskName;
 import com.TTS.DbWebAPIs.Repository.TaskRepository;
@@ -27,26 +29,27 @@ public class TaskService implements TaskServiceInterface{
 
 
     @Override
-    public List<String> getTaskNameList(String userId)  throws SQLException {
+    public List<String> getTaskNameList(String userId)  throws DatabaseException {
         return taskRepository.findById(userId);
     }
 
     @Override
-    public Integer getTaskCount(String username, LocalDate startDate, LocalDate endDate)  throws SQLException{
+    public Integer getTaskCount(String username, LocalDate startDate, LocalDate endDate)  throws DatabaseException{
         return taskRepository.findByUserIdAndStartDateAndEndDate(username,startDate,endDate);
     }
 
     @Override
-    public Integer getTaskFreqeuncyCount(String username, LocalDate startDate, LocalDate endDate)   throws SQLException{
+    public Integer getTaskFreqeuncyCount(String username, LocalDate startDate, LocalDate endDate)   throws DatabaseException{
         return taskRepository.findByIdAndStartDateAndEndDate(username,startDate,endDate);
     }
 
     @Override
-    public Task addTask(String username, Long activtyId, String taskName, String createdOn)   throws SQLException{
-        Activity inputActivity = activityRepository.findById(activtyId).orElseThrow(() -> new RuntimeException("activity not found"));
+    public Task addTask(String username, Long activtyId, String taskName, String createdOn)   throws DatabaseException, NotFoundException, UserNotFoundException {
+        Activity inputActivity = activityRepository.findById(activtyId).orElseThrow(() -> new NotFoundException("activity not found"));
+        User user =  userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("Username not found"));
         Task task = new Task();
-        userRepository.findByUsername(username).ifPresentOrElse(task::setUser,() -> new NotFoundException("Username not found"));
         task.setActivityAssociated(inputActivity);
+        task.setUser(user);
         task.setName(taskName);
         task.setCreatedOn(createdOn);
         return taskRepository.save(task);
@@ -54,7 +57,7 @@ public class TaskService implements TaskServiceInterface{
     }
 
     @Override
-    public List<String> getTaskNames() throws SQLException  {
+    public List<String> getTaskNames() throws DatabaseException  {
         return taskRepository.findAllDistinctName();
     }
 

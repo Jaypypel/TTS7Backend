@@ -1,11 +1,12 @@
 package com.TTS.DbWebAPIs.Controller;
 
 
+import com.TTS.DbWebAPIs.DTO.ActivityDto;
 import com.TTS.DbWebAPIs.Entity.Activity;
-import com.TTS.DbWebAPIs.Exceptions.AlreadyExistException;
-import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
+import com.TTS.DbWebAPIs.Exceptions.*;
 import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.ActivityServiceInterface;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +36,7 @@ public class ActivityController {
 
         @Async
         @GetMapping("/names")
-        ResponseEntity<?> getActivtiesNames() throws Exception{
+        ResponseEntity<?> getActivtiesNames() throws DatabaseException, InternalServerException {
 //            try {
                 List<String> activities = activityService.getActivityNames();
                 if (activities == null || activities.isEmpty()){
@@ -44,17 +45,8 @@ public class ActivityController {
                             .body(new APIResponse<>("No activities found", null));
                 }
                 return ResponseEntity.ok(new APIResponse<>("successful",activities));
-//            }catch (SQLException ex){
-//                return ResponseEntity
-//                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                        .body(new APIResponse<>("An error occured while fetching activity names. Please try again later.",null));
-//            } catch (Exception ex){
-//                return ResponseEntity
-//                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                        .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-//            }
-        }
 
+        }
 
 //        @GetMapping("/names")
 //        ResponseEntity<?> getActivtiesNames(
@@ -68,59 +60,31 @@ public class ActivityController {
 //        }
 
     @GetMapping("/activityNames")
-    ResponseEntity<?> getActivtiesNamesByUserName(@RequestParam(name = "username" , required = true) String username) throws SQLException {
-       try {
-           List<String> activities = activityService.getActivityNamesByUsername(username);
+    ResponseEntity<?> getActivtiesNamesByUserName(@RequestParam(name = "username" , required = true) String username) throws UserNotFoundException, DatabaseException,InternalServerException {
 
+           List<String> activities = activityService.getActivityNamesByUsername(username);
            if (activities == null || activities.isEmpty()){
                return ResponseEntity
                        .status(HttpStatus.NO_CONTENT)
                        .body(new APIResponse<>("No activities found", null));
            }
            return ResponseEntity.ok(new APIResponse<>("successful",activities));
-       }catch (SQLException ex){
-           return ResponseEntity
-                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An error occured while fetching activity names. Please try again later.",null));
-       } catch (Exception ex){
-           return ResponseEntity
-                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-       }
+
 
     }
 
     //tested at 2:45pm on 7 oct
     @GetMapping("/names/{username}")
-    ResponseEntity<?>  getActivityList(@PathVariable String username) throws SQLException{
-        try {
-            List<Activity>  activities = activityService.getActivityList(username);
-//            System.out.println("activites" + activities);
-//            for (Activity activity : activities){
-//                System.out.println("activites" + activity);
-//            }
-//            if (activities.isEmpty()){
-//                return ResponseEntity
-//                        .status(HttpStatus.NO_CONTENT)
-//                        .body(new APIResponse<>("No activities found", activities));
-//            }
+    ResponseEntity<?>  getActivityList(@PathVariable String username) throws UserNotFoundException, DatabaseException,InternalServerException{
+            List<ActivityDto>  activities = activityService.getActivityList(username);
             return ResponseEntity.ok(new APIResponse<>("successful",activities));
 
-        }catch (SQLException ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occured while fetching activity . Please try again later.",null));
-        } catch (Exception ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-        }
         }
 
         //tested already
         @GetMapping("/activityCount/{username}/{startDate}/{endDate}")
-        ResponseEntity<?>  getActivityCount(@PathVariable String username, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate) throws SQLException{
-            try {
+        ResponseEntity<?>  getActivityCount(@PathVariable String username, @PathVariable LocalDate startDate, @PathVariable LocalDate endDate) throws DatabaseException,InternalServerException{
+
                 Integer activityCount = activityService.getActivityCount(username, startDate, endDate);
                 if (activityCount == null || activityCount==0  ){
                     return ResponseEntity
@@ -128,39 +92,23 @@ public class ActivityController {
                             .body(new APIResponse<>("No count present", null));
                 }
                 return ResponseEntity.ok(activityCount);
-            }catch (SQLException ex){
-                return ResponseEntity
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new APIResponse<>("An error occured while fetching activity names. Please try again later.",null));
-            } catch (Exception ex){
-                return ResponseEntity
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-            }
+
         }
 
         //tested already
         @PostMapping("/activity")
-        ResponseEntity<?>  addActivity(@RequestParam String username, @RequestParam String actvtyNme, @RequestParam String createdOn){
-               try {
+        ResponseEntity<?>  addActivity(@RequestParam String username, @RequestParam String actvtyNme, @RequestParam String createdOn) throws UserNotFoundException
+    ,DatabaseException ,InternalServerException{
+
                    Activity activity = activityService.addActivity(username,actvtyNme,createdOn);
                    return ResponseEntity.ok(new APIResponse("successful","-"));
-               } catch (SQLException ex){
-                   return ResponseEntity
-                           .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                           .body(new APIResponse<>("An error occured while fetching activity names. Please try again later.",null));
-               } catch (Exception ex){
-                   return ResponseEntity
-                           .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                           .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-               }
+
 
         }
 
         //tested already
         @GetMapping("/activity/{name}")
-        ResponseEntity<?>   getActivity(@PathVariable String name) {
-           try {
+        ResponseEntity<?>   getActivity(@PathVariable String name) throws DatabaseException,InternalServerException {
                Activity activity = activityService.getActivity(name);
                if (activity == null){
                    return ResponseEntity
@@ -168,15 +116,7 @@ public class ActivityController {
                            .body(new APIResponse<>("No activities found", null));
                }
                return ResponseEntity.ok(activity);
-           } catch (SQLException ex){
-               return ResponseEntity
-                       .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                       .body(new APIResponse<>("An error occured while fetching activity names. Please try again later.",null));
-           } catch (Exception ex){
-               return ResponseEntity
-                       .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                       .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-           }
+
         }
 
 }

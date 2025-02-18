@@ -4,6 +4,8 @@ import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
+import com.TTS.DbWebAPIs.Exceptions.InternalServerException;
 import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
@@ -31,27 +33,16 @@ public class DailyTimeShareMeasurablesController {
 
     @PostMapping("/dailyTimeShareMeasurable")
     ResponseEntity<?> addDailyTimeShareMeasurable(@RequestParam Long timeShareId, @RequestParam Long measurablesId,
-                                                            @RequestParam Long mesrbQunty, @RequestParam String mesrbUnit){
-       try {
-           Measurables measurable = measurablesRepository.findById(measurablesId)
+                                                            @RequestParam Long mesrbQunty, @RequestParam String mesrbUnit) throws DatabaseException,NotFoundException, InternalServerException {
+          Measurables measurable = measurablesRepository.findById(measurablesId)
                    .orElseThrow(() -> new NotFoundException("Measurable not found"));
            DailyTimeShareMeasurables dailyTimeShareMeasurables = dailyTimeShareMeasurablesService.addDailyTimeShareMeasurables(timeShareId,measurable,mesrbQunty,mesrbUnit);
            return ResponseEntity.ok(new APIResponse<>("successful",dailyTimeShareMeasurables));
-       }
-        catch (SQLException ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occurred while getting  dailyTimeshares. Please try again later.",null));
-        } catch (Exception ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-        }
+
     }
 
     @GetMapping("/dailyTimeShareList/{dtsId}")
-    ResponseEntity<?> getDailyTimeMeasurablesList(@PathVariable Long dtsId){
-        try {
+    ResponseEntity<?> getDailyTimeMeasurablesList(@PathVariable Long dtsId) throws DatabaseException, InternalServerException{
             List<Measurables> dailyTimeShareMeasurables = dailyTimeShareMeasurablesService
                     .getDailyTimeShareMeasurablesList(dtsId);
             if (dailyTimeShareMeasurables == null || dailyTimeShareMeasurables.isEmpty()){
@@ -60,14 +51,5 @@ public class DailyTimeShareMeasurablesController {
                         .body(new APIResponse<>("No measurables found", null));
             }
             return ResponseEntity.ok(dailyTimeShareMeasurables);
-        }catch (SQLException ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occurred while getting  dailyTimeshares. Please try again later.",null));
-        } catch (Exception ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-        }
-     }
+    }
 }

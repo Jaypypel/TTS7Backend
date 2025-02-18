@@ -2,10 +2,7 @@ package com.TTS.DbWebAPIs.Service;
 
 
 import com.TTS.DbWebAPIs.Entity.User;
-import com.TTS.DbWebAPIs.Exceptions.InvalidLoginDetailsException;
-import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
-import com.TTS.DbWebAPIs.Exceptions.UserAlreadyExistsException;
-import com.TTS.DbWebAPIs.Exceptions.UserNotFoundException;
+import com.TTS.DbWebAPIs.Exceptions.*;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import com.TTS.DbWebAPIs.Util.DateAndTimeConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,7 @@ public class UserService implements UserServiceInterface {
     @Autowired
     UserRepository userRepository;
 
-    public void registerUser(User inputUser) throws SQLException, UserAlreadyExistsException {
+    public void registerUser(User inputUser) throws DatabaseException, UserAlreadyExistsException {
         userRepository
                 .findByFullNameAndUsernameAndPasswordAndEmailAndMobileNo(
                         inputUser.getFullName(),
@@ -39,7 +36,7 @@ public class UserService implements UserServiceInterface {
         userRepository.save(newUser);
     }
 
-    public void areUserCredentialValid(String username, String password) throws InvalidLoginDetailsException {
+    public void areUserCredentialValid(String username, String password) throws InvalidLoginDetailsException, DatabaseException {
         userRepository
                 .findByUsernameAndPassword(username, password)
                 .orElseThrow(() ->
@@ -48,7 +45,7 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public User isUsernameExist(String username) throws NotFoundException {
+    public User isUsernameExist(String username) throws UserNotFoundException {
         return userRepository
                 .findByUsername(username)
                 .orElseThrow(
@@ -60,7 +57,7 @@ public class UserService implements UserServiceInterface {
 
 
     //get a list of username through users list
-    public List<String> getUsernameList()throws SQLException{
+    public List<String> getUsernameList() throws DatabaseException {
 
       return userRepository
               .findAll()

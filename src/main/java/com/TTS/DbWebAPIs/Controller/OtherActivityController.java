@@ -1,6 +1,8 @@
 package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.OtherActivity;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
+import com.TTS.DbWebAPIs.Exceptions.InternalServerException;
 import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.OtherActivityServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -22,40 +24,24 @@ public class OtherActivityController {
 
     //tested at 10:17 on 8 Oct
     @GetMapping("/list")
-    ResponseEntity<?> getOtherActivityList() throws SQLException {
-      try {
+    ResponseEntity<?> getOtherActivityList()
+            throws DatabaseException, InternalServerException {
+
           List<String> otherActivities = otherActivityService.getOtherActivityList() ;
           if (otherActivities == null || otherActivities.isEmpty()){
               return ResponseEntity
                       .status(HttpStatus.NO_CONTENT)
                       .body(new APIResponse<>("No other activities found", null));
           }
-          return ResponseEntity.ok(new APIResponse("successful",otherActivities));
-      } catch (SQLException ex){
-          return ResponseEntity
-                  .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                  .body(new APIResponse<>("An error occured while fetching  other activity names. Please try again later.",null));
-      } catch (Exception ex){
-          return ResponseEntity
-                  .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                  .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-      }
+          return ResponseEntity.ok(new APIResponse<>("successful",otherActivities));
+
     }
 
     //tested at 10:00  on 8 Oct
     @PostMapping("/activity")
-    ResponseEntity<?> addOtherActivity(@RequestParam String  otherActiName, @RequestParam String createdOn){
-        try {
+    ResponseEntity<?> addOtherActivity(@RequestParam String  otherActiName, @RequestParam String createdOn)
+            throws DatabaseException,  InternalServerException {
             OtherActivity otherActivity = otherActivityService.addOtherActivity(otherActiName,createdOn);
-            return ResponseEntity.ok(new APIResponse("successful","-"));
-        } catch (SQLException ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occured while fetching  other activity names. Please try again later.",null));
-        } catch (Exception ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-        }
+            return ResponseEntity.ok(new APIResponse<>("successful","-"));
     }
 }

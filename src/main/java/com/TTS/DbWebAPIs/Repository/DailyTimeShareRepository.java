@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Repository;
 
+import com.TTS.DbWebAPIs.DTO.DailyTimeShareDTO;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.User;
 import org.springframework.cglib.core.Local;

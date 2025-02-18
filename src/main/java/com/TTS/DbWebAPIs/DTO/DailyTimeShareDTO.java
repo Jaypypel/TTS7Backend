@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 public class DailyTimeShareDTO {
 
+    private Long id;
     private String dateOfTimeShare;
     private String projectCode;
     private String projectName;
@@ -22,9 +23,18 @@ public class DailyTimeShareDTO {
     private String createdOn;
     private String username ;
 
-    public static DailyTimeShare mapDailyTimeShareDTOtoDailyTimeShare(DailyTimeShareDTO dailyTimeShareDTO){
-        DailyTimeShare dailyTimeShare = new DailyTimeShare();
-        dailyTimeShare.setDateOfTimeShare(LocalDate.parse(dailyTimeShareDTO.getDateOfTimeShare()));
-        return dailyTimeShare;
+    public static DailyTimeShareDTO mapDailyTimeSharetoDailyTimeShareDto(DailyTimeShare dailyTimeShare){
+        DailyTimeShareDTO dailyTimeShareDTO =  new DailyTimeShareDTO();
+        dailyTimeShareDTO.setId(dailyTimeShare.getId());
+        dailyTimeShareDTO.setDateOfTimeShare(String.valueOf(dailyTimeShare.getDateOfTimeShare()));
+        dailyTimeShareDTO.setProjectCode(dailyTimeShare.getProjectCode());
+        dailyTimeShareDTO.setProjectName(dailyTimeShare.getProjectName());
+        dailyTimeShareDTO.setActivityName(dailyTimeShare.getActivityName());
+        dailyTimeShareDTO.setTaskName(dailyTimeShare.getTaskName());
+        dailyTimeShareDTO.setStartTime(dailyTimeShare.getStartTime());
+        dailyTimeShareDTO.setEndTime(dailyTimeShare.getEndTime());
+        dailyTimeShareDTO.setDescription(dailyTimeShare.getDescription());
+        dailyTimeShareDTO.setUsername(dailyTimeShare.getUser().getUsername());
+        return dailyTimeShareDTO;
     }
 }

@@ -4,6 +4,8 @@ import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 
 import java.sql.SQLException;
@@ -15,8 +17,8 @@ public interface DailyTimeShareMeasurablesServiceInterface {
     DailyTimeShareMeasurables addDailyTimeShareMeasurables(Long dailyTimeShareId,
                                                            Measurables mesrblId,
                                                            Long mesrbQuantity,
-                                                           String mesrbUnit) throws SQLException;
+                                                           String mesrbUnit) throws DatabaseException, NotFoundException;
 
-    List<Measurables> getDailyTimeShareMeasurablesList(Long dtsId)  throws SQLException;;
+    List<Measurables> getDailyTimeShareMeasurablesList(Long dtsId)  throws DatabaseException;;
 
 }

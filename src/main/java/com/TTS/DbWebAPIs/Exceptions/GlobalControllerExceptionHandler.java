@@ -29,11 +29,16 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(InternalServerException.class)
     ResponseEntity<?> handleInternalServerException(Exception e){
-        return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DatabaseException.class)
     ResponseEntity<?> handleDatabaseException(Exception e){
+        return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidAssignTaskRequestException.class)
+    ResponseEntity<?> handleInvalidAssignTaskRequestException(Exception e){
         return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
     }
 }

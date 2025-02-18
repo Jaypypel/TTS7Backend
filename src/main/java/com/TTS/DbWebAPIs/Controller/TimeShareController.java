@@ -3,9 +3,14 @@ package com.TTS.DbWebAPIs.Controller;
 import com.TTS.DbWebAPIs.DTO.TimeShareDTO;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
+import com.TTS.DbWebAPIs.Exceptions.InternalServerException;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
+import com.TTS.DbWebAPIs.Exceptions.UserNotFoundException;
 import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.TimeShareServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,31 +30,21 @@ public class TimeShareController {
 
     //tested at 12:54 pm on 10 oct
     @GetMapping("/list/{username}/{startDate}/{endDate}")
-    ResponseEntity<?> getTimeShareList(@PathVariable String username, @PathVariable LocalDateTime startDate, @PathVariable LocalDateTime endDate){
-        try {
+    ResponseEntity<?> getTimeShareList
+    (@PathVariable String username, @PathVariable LocalDateTime startDate, @PathVariable LocalDateTime endDate)
+            throws DatabaseException, InternalServerException, UserNotFoundException {
             List<TimeShare> timeShareList = timeShareService.getTimeShareList(username,startDate,endDate);
-
             if (timeShareList == null || timeShareList.isEmpty()){
                 return ResponseEntity
                         .status(HttpStatus.NO_CONTENT)
                         .body(new APIResponse<>("No time share found", null));
             }
-            return ResponseEntity.ok(new APIResponse<>("succesful",timeShareList));
-        }catch (SQLException ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occured while fetching time share list. Please try again later.",null));
-        } catch (Exception ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-        }
+            return ResponseEntity.ok(new APIResponse<>("successful",timeShareList));
     }
 
     //tested at 12:58 pm on 10 oct
     @GetMapping("/list/{taskId}")
-    ResponseEntity<?> getTimeShareLists(@PathVariable Long taskId){
-        try{
+    ResponseEntity<?> getTimeShareLists(@PathVariable Long taskId) throws DatabaseException, InternalServerException, NotFoundException {
             List<TimeShare> timeShareList = timeShareService.getTimeShareLists(taskId);
             if (timeShareList == null || timeShareList.isEmpty()){
                 return ResponseEntity
@@ -57,20 +52,11 @@ public class TimeShareController {
                         .body(new APIResponse<>("No time share found", null));
             }
             return ResponseEntity.ok(new APIResponse<>("successful",timeShareList));
-        }catch (SQLException ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occured while fetching time share list. Please try again later.",null));
-        } catch (Exception ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-        }
     }
 
     //tested at 1:35 on 10 oct
     @GetMapping("/timeshare/maxId")
-    ResponseEntity<Long> getMaxTimeShareId(){
+    ResponseEntity<Long> getMaxTimeShareId() throws DatabaseException {
         Long maxTimeShareId = timeShareService.getMaxTimeShareId();
         return ResponseEntity.ok(maxTimeShareId);
 
@@ -78,21 +64,9 @@ public class TimeShareController {
 
     //tested at 12:27 pm on 4th oct 2024
     @PostMapping("/timeshare")
-    ResponseEntity<?> addTimeShare(@RequestBody TimeShareDTO timeShareDTO){
-
-        try {
+    ResponseEntity<?> addTimeShare(@RequestBody TimeShareDTO timeShareDTO) throws DatabaseException, InternalServerException {
             TimeShare timeShare = timeShareService.addTimeShare(TimeShareDTO.convertToTimeShare(timeShareDTO));
             return ResponseEntity.ok(new APIResponse<>("successful",timeShare));
-        }
-         catch (SQLException ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An error occured while adding a time share list. Please try again later.",null));
-        } catch (Exception ex){
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-        }
     }
 
 

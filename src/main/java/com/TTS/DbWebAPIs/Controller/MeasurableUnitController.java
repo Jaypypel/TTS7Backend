@@ -1,6 +1,7 @@
 package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.MeasurableUnit;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
 import com.TTS.DbWebAPIs.Service.MeasurableUnitServiceInterface;
 import jakarta.persistence.GenerationType;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class MeasurableUnitController {
     private final MeasurableUnitServiceInterface measurableUnitService;
 
     @GetMapping("/unitlist")
-    ResponseEntity<List<MeasurableUnit>> getMeasurableUnit(){
+    ResponseEntity<List<MeasurableUnit>> getMeasurableUnit() throws DatabaseException {
        List<MeasurableUnit> measurableUnitList = measurableUnitService.getMeasurableUnitList();
        return ResponseEntity.ok(measurableUnitList);
     }

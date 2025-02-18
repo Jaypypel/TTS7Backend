@@ -3,10 +3,12 @@ package com.TTS.DbWebAPIs.Service;
 import com.TTS.DbWebAPIs.Entity.DelegationMeasurables;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
 import com.TTS.DbWebAPIs.Repository.DelegationMeasurablesRepository;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,16 +23,17 @@ public class DelegationMeasurablesService implements DelegationMeasurablesServic
 
     //"it is used in the existing tts app to get a list of approvedTaskMeasurables , ProcessingTaskMeasurable and CompletedMeasurable , ModifiedTaskMeasurable, DelegatedMeasurable
     @Override
-    public List<Measurables> getAllocatedMeasurableList(Long taskId) throws SQLException {
+    public List<Measurables> getAllocatedMeasurableList(Long taskId) throws DatabaseException {
         List<Measurables>  measurables = measurablesRepository.findAllocatedMeasurablesByTaskId(taskId);
         return measurables;
     }
 
+    @Transactional
     @Override
     public DelegationMeasurables addDelegationMeasurables(TaskManagement taskManagement,
                                                           Measurables mesrblId,
                                                           Long mesrbQuantity,
-                                                          String mesrbUnit) throws SQLException{
+                                                          String mesrbUnit) throws DatabaseException{
         DelegationMeasurables delegationMeasurable = new DelegationMeasurables();
         delegationMeasurable.setFkTaskManagementID(taskManagement);
         delegationMeasurable.setFkMeasurableId(mesrblId);

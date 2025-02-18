@@ -1,6 +1,8 @@
 package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.Report;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
+import com.TTS.DbWebAPIs.Exceptions.InternalServerException;
 import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.ReportService;
@@ -32,8 +34,8 @@ public class ReportController {
 
     @Transactional
     @GetMapping("/dts")
-    public ResponseEntity<?> getUserDTSReport(@RequestParam String username, @RequestParam String startDate, @RequestParam String endDate) throws IOException {
-       try {
+    public ResponseEntity<?> getUserDTSReport(@RequestParam String username, @RequestParam String startDate, @RequestParam String endDate) throws IOException, DatabaseException, InternalServerException {
+
            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
            // Parse the string to LocalDate
            LocalDate strtDate = LocalDate.parse(startDate, formatter);
@@ -47,15 +49,7 @@ public class ReportController {
                    .filename("file.xlsx")
                    .build());
            return  new ResponseEntity<>(bytes, headers, HttpStatus.OK);
-       }catch (SQLException ex){
-           return ResponseEntity
-                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An error occurred while getting a dts report. Please try again later.",null));
-       } catch (Exception ex){
-           return ResponseEntity
-                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", ex.getMessage()));
-       }
+
     }
 
     private byte[] generateExcelReport(List<Report> reports) throws IOException {

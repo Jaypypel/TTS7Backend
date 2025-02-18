@@ -2,6 +2,9 @@ package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
+import com.TTS.DbWebAPIs.Exceptions.InternalServerException;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Response.APIResponse;
 import com.TTS.DbWebAPIs.Service.TimeShareMeasurablesServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +25,13 @@ public class TimeShareMeasurablesController {
     ResponseEntity<?> addTimeShareMeasurables(@RequestParam Long timeShareId,
                                                                  @RequestParam  Measurables measuableId,
                                                                  @RequestParam Long measurableQuantity,
-                                                                 @RequestParam String measurableUnit){
-       try{
-           TimeShareMeasurables timeShareMeasurables = timeShareMeasurablesService.addTimeShareMeasurables(
-                   timeShareId,measuableId,measurableQuantity,measurableUnit);
-           return ResponseEntity.ok(new APIResponse("successful",timeShareMeasurables));
-       }catch (SQLException ex){
+                                                                 @RequestParam String measurableUnit)
+            throws NotFoundException, DatabaseException, InternalServerException {
+           TimeShareMeasurables timeShareMeasurables = timeShareMeasurablesService
+                   .addTimeShareMeasurables(timeShareId,measuableId,measurableQuantity,measurableUnit);
            return ResponseEntity
-                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An error occured while adding a time share. Please try again later.",null));
-       } catch (Exception ex){
-           return ResponseEntity
-                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(new APIResponse<>("An unexpected error occurred. Please contact support.", null));
-       }
+                   .ok(new APIResponse<>("successful",timeShareMeasurables));
+
     }
 
 

@@ -3,6 +3,8 @@ package com.TTS.DbWebAPIs.Service;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
+import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
+import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Repository.TimeShareMeasurablesRepository;
 import com.TTS.DbWebAPIs.Repository.TimeShareRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +21,8 @@ public class TimeShareMeasurablesService implements TimeShareMeasurablesServiceI
     private final TimeShareMeasurablesRepository timeShareMeasurablesRepository;
 
     @Override
-    public TimeShareMeasurables addTimeShareMeasurables(Long timeShareId, Measurables measuableId, Long measurableQuantity, String measurableUnit) throws SQLException {
-        TimeShare timeShare = timeShareRepository.findById(timeShareId).orElseThrow(() -> new RuntimeException("timeshare not found"));
+    public TimeShareMeasurables addTimeShareMeasurables(Long timeShareId, Measurables measuableId, Long measurableQuantity, String measurableUnit) throws NotFoundException, DatabaseException {
+        TimeShare timeShare = timeShareRepository.findById(timeShareId).orElseThrow(() -> new NotFoundException("timeshare not found"));
         TimeShareMeasurables timeShareMeasurables = new TimeShareMeasurables();
         timeShareMeasurables.setFkTimeShareId(timeShare);
         timeShareMeasurables.setFkMeasurablesID(measuableId);
