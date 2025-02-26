@@ -10,6 +10,8 @@ import com.TTS.DbWebAPIs.Repository.*;
 import com.TTS.DbWebAPIs.Util.DateAndTimeConfig;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,8 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
 
     /*the function is  used in existing tts app for the receivedModfifcationtAskList,*/
+
+    @Cacheable("acceptedTasks")
     @Override
     public List<TaskManagement> getAcceptedTaskList(String taskReceivedUsername, String status) throws DatabaseException {
         return taskManagementRepository.findByUserUsernameAndStatus(taskReceivedUsername,status);
@@ -48,7 +52,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 //        return taskManagementRepository.save(existingTaskManagement);
 //    }
 //
-
+@CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks"}, allEntries = true)
     @Override
     public TaskManagement updateTaskManagementStatus(Long taskId, String status)  throws NotFoundException, DatabaseException{
         TaskManagement existingTaskManagement = taskManagementRepository
@@ -70,7 +74,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     }
 
 
-
+    @CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks"}, allEntries = true)
     @Override
     public TaskManagement addActualTotalTime(Long assignedTaskId, String actualTotalTime) throws  DatabaseException, NotFoundException {
         TaskManagement existingTaskManagement = taskManagementRepository.findById(assignedTaskId).orElseThrow(()-> new NotFoundException("task not found"));
@@ -82,6 +86,8 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     //passed name of project as id since id needs to be uniquef
     //need to refactor and ask delegatonMeasurablesAssociated
     //removed time shareId
+
+    @CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks"}, allEntries = true)
     @Transactional
     @Override
     public TaskManagement addAssignedTask(TaskManagementDTO taskManagementDTO)  throws UserNotFoundException, InvalidAssignTaskRequestException, DatabaseException {
@@ -107,7 +113,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     }
 
 
-
+    @CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks"}, allEntries = true)
     @Override
     public TaskManagement updateModifiedTaskStatusAndDescription(String description, Long taskId) throws DatabaseException, NotFoundException{
         TaskManagement existingTask = taskManagementRepository.findById(taskId).orElseThrow(()-> new NotFoundException("task not found"));
@@ -116,6 +122,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         return taskManagementRepository.save(existingTask);
     }
 
+    @CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks"}, allEntries = true)
     @Override
     public TaskManagement updateTaskManagementSeenOnTime(Long taskId)  throws DatabaseException,NotFoundException{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
@@ -147,17 +154,19 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 //        return taskManagementRepository.save(existingTaskManagement);
 //    }
 
-
+    @Cacheable(value = "modifiedTasks")
     @Override
      public List<TaskManagement> getSendModificationTaskList(String  taskOwnerUserID, String status) throws DatabaseException, NotFoundException{
         return taskManagementRepository.findByTaskOwnerUserIdAndStatus(taskOwnerUserID,status);
     }
 
+    @Cacheable(value = "tasks")
     @Override
     public List<TaskManagement> getTaskList(String taskReceivedUsername) throws DatabaseException, NotFoundException{
         return taskManagementRepository.findByTaskReceivedUserId(taskReceivedUsername);
     }
 
+    @Cacheable(value = "delegatedTasks")
     @Override
     public List<TaskManagement> getDelegatedTaskList(String taskOwnerUsername) throws DatabaseException, NotFoundException {
         return taskManagementRepository.findByTaskOwnerUserId(taskOwnerUsername);

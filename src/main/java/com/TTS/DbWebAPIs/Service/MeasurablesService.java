@@ -9,6 +9,7 @@ import com.TTS.DbWebAPIs.Repository.InterfaceProjections.MeasurablesIdAndName;
 import com.TTS.DbWebAPIs.Repository.MeasurablesRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -47,11 +48,14 @@ public class MeasurablesService implements MeasurablesServiceInterface{
         return measurablesRepository.findByUserAndDateRange(username,startDate,endDate);
     }
 
+    @Cacheable("measurableNames")
     @Override
     public List<String> getMeasurableListForUsername(String username)  throws DatabaseException{
         return measurablesRepository.findByUsername(username);
     }
 
+
+    @CacheEvict(value = {"measurableNames", "measurables"}, allEntries = true)
     @Transactional
     @Override
     public Measurables addMeasurable(String username, String measurableName, String createdOn) throws DatabaseException,UserNotFoundException {

@@ -12,6 +12,8 @@ import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Exceptions.UserNotFoundException;
 import com.TTS.DbWebAPIs.Repository.DailyTimeShareRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,9 +29,13 @@ import java.util.stream.Collectors;
 public class DailyTimeShareService implements DailyTimeShareServiceInterface{
 
   private final   DailyTimeShareRepository dailyTimeShareRepository;
-  private  final   DailyTimeShareMeasurablesServiceInterface dailyTimeShareMeasurablesServiceInterface;
+//  private  final   DailyTimeShareMeasurablesServiceInterface dailyTimeShareMeasurablesServiceInterface;
   private  final  UserRepository userRepository;
     //get a list of Daily TimeShare
+
+
+
+    @Cacheable(value = "dailyTimeShares")
     @Override
     public List<DailyTimeShareDTO> getDailyTimeShareList(String username, LocalDate dateOfTimeShare) throws DatabaseException {
          return dailyTimeShareRepository
@@ -41,6 +47,7 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
 
     //add a daily timeshare
     /*here need to check how can we pass dailyTimeshare Id to addDailyTimeShareMeasurables function*/
+    @CacheEvict(value = "dailyTimeShares",allEntries = true)
     @Transactional
     @Override
     public DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare) throws UserNotFoundException,DatabaseException{

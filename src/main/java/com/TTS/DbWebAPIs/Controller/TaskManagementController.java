@@ -29,24 +29,16 @@ import java.util.Locale;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("tasksm1")
+@RequestMapping("tasksm")
 public class TaskManagementController {
 
     private  final TaskManagementServiceInterface taskManagementService;
 
     //tested at the 4:41 pm on 3rd of oct
     @PostMapping("/taskm")
-    ResponseEntity<?> addAssignedTask(@RequestBody @Valid TaskManagementDTO taskAssigned) throws UserNotFoundException, DatabaseException, InternalServerException, InvalidAssignTaskRequestException {
-       System.out.println(taskAssigned.getTaskAssignedOn());
-
-
-        System.out.println("Received taskAssignedDTO: " + taskAssigned);
-            String activityName = taskAssigned.getActivityName();
-            System.out.println(activityName);
-
-             TaskManagement taskManagement = taskManagementService.addAssignedTask(taskAssigned);
-
-            System.out.println("taskManagement : " + taskManagement);
+    ResponseEntity<?> addAssignedTask(@RequestBody @Valid TaskManagementDTO taskAssigned)
+            throws UserNotFoundException, DatabaseException, InternalServerException, InvalidAssignTaskRequestException {
+            TaskManagement taskManagement = taskManagementService.addAssignedTask(taskAssigned);
             return ResponseEntity.ok(new APIResponse<>("Successful",taskManagement));
     }
 

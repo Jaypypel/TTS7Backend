@@ -10,6 +10,8 @@ import com.TTS.DbWebAPIs.Repository.ActivityRepository;
 import com.TTS.DbWebAPIs.Repository.ProjectRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,21 +43,26 @@ public class ProjectService implements ProjectServiceInterface  {
     @Override
     public String getProjectCodeViaProjectName(String projectName)  throws DatabaseException, NotFoundException {
         String projectCode =  projectRepository.findByProjectName(projectName);
-        if(projectCode == null) throw new NotFoundException("project code not found by the name");
+        if(projectCode == null) throw new NotFoundException("project code not found by the name: "+projectName);
         return projectCode;
 
     }
 
+
+    @Cacheable(value = "codes")
     @Override
     public List<String> getProjectCodeList()throws DatabaseException {
         return projectRepository.findByProjectCodeList();
     }
 
+    @Cacheable(value = "names")
     @Override
     public List<String> getProjectNameList()throws DatabaseException {
         return projectRepository.findByName();
     }
 
+
+    @CacheEvict(value = {"codes","names"}, allEntries = true)
     @Transactional
     @Override
     public Project addProject(String userId, Long activityID, String projectCode, String projectName, String createdOn) throws DatabaseException, UserNotFoundException,NotFoundException {

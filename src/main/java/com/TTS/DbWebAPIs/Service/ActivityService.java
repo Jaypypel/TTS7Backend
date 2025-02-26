@@ -10,6 +10,8 @@ import com.TTS.DbWebAPIs.Exceptions.UserNotFoundException;
 import com.TTS.DbWebAPIs.Repository.ActivityRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ public class ActivityService implements ActivityServiceInterface{
 
 
     //get a list of names of activity
+    @Cacheable("names")
     @Override
     public List<String> getActivityNames() throws DatabaseException {
         return activityRepository.getActivityNames();
@@ -41,7 +44,7 @@ public class ActivityService implements ActivityServiceInterface{
 //    }
 
 
-
+    @Cacheable("activities")
     //get a list of activity via userId
     @Override
     public List<ActivityDto> getActivityList(String username) throws UserNotFoundException, DatabaseException {
@@ -62,6 +65,7 @@ public class ActivityService implements ActivityServiceInterface{
                 );
     }
 
+    @CacheEvict(value = { "activities", "names","activityNames"}, allEntries = true)
     //add an activity
     @Override
     public Activity addActivity(String username, String activityName, String createdOn) throws UserNotFoundException
@@ -89,6 +93,8 @@ public class ActivityService implements ActivityServiceInterface{
         return activityRepository.findByName(name);
     }
 
+
+    @Cacheable("activityNames")
     @Override
     public List<String> getActivityNamesByUsername(String username) throws UserNotFoundException, DatabaseException {
         userRepository

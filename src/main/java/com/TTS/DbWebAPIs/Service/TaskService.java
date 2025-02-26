@@ -11,6 +11,8 @@ import com.TTS.DbWebAPIs.Repository.InterfaceProjections.TaskName;
 import com.TTS.DbWebAPIs.Repository.TaskRepository;
 import com.TTS.DbWebAPIs.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -27,7 +29,7 @@ public class TaskService implements TaskServiceInterface{
     private final ActivityRepository activityRepository;
 
 
-
+    @Cacheable(value = "tasks")
     @Override
     public List<String> getTaskNameList(String userId)  throws DatabaseException {
         return taskRepository.findById(userId);
@@ -43,6 +45,8 @@ public class TaskService implements TaskServiceInterface{
         return taskRepository.findByIdAndStartDateAndEndDate(username,startDate,endDate);
     }
 
+
+    @CacheEvict(value = {"tasks"},allEntries = true)
     @Override
     public Task addTask(String username, Long activtyId, String taskName, String createdOn)   throws DatabaseException, NotFoundException, UserNotFoundException {
         Activity inputActivity = activityRepository.findById(activtyId).orElseThrow(() -> new NotFoundException("activity not found"));

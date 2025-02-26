@@ -41,4 +41,12 @@ public class GlobalControllerExceptionHandler {
     ResponseEntity<?> handleInvalidAssignTaskRequestException(Exception e){
         return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
     }
+
+
+    @ExceptionHandler(NotFoundException.class)
+    ResponseEntity<?> handleNotFoundException(Exception e){
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .body(e.getMessage());
+    }
 }

@@ -2,6 +2,7 @@ package com.TTS.DbWebAPIs.Repository;
 
 import com.TTS.DbWebAPIs.Entity.Task;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,18 +13,23 @@ import java.util.Optional;
 
 public interface TaskManagementRepository  extends JpaRepository<TaskManagement,Long> {
 
+
+    @Cacheable("trs")
     @Query("SELECT tm from TaskManagement tm WHERE tm.taskReceivedUserID.username =:username AND tm.status =:status")
     List<TaskManagement> findByUserUsernameAndStatus(@Param("username") String username,@Param("status") String status);
 
     @Query(value = "SELECT COUNT(*) FROM  task_management  WHERE task_owner_username =:username AND status  =:status",nativeQuery = true)
     Integer CountByUserUsernameAndStatus(@Param("username") String  username,@Param("status") String status);
 
+    @Cacheable("tts")
     @Query("SELECT tm from TaskManagement tm WHERE tm.taskOwnerUserID.username =:username AND tm.status =:status")
     List<TaskManagement> findByTaskOwnerUserIdAndStatus(String username, String status);
 
+    @Cacheable("tr")
     @Query("SELECT tm from TaskManagement tm WHERE tm.taskReceivedUserID.username =:username")
     List<TaskManagement> findByTaskReceivedUserId(String username);
 
+    @Cacheable("tt")
     @Query("SELECT tm from TaskManagement tm WHERE tm.taskOwnerUserID.username =:username")
     List<TaskManagement> findByTaskOwnerUserId(String username);
 
