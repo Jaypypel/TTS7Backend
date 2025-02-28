@@ -12,13 +12,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity,Long> {
-    @Cacheable("activitesNames")
+
     @Query("Select DISTINCT a.name from Activity a")
     List<String> getActivityNames();
 //
 //    @Query("Select DISTINCT a.name from Activity a")
 //    Page<String> getActivityNames(Pageable pageable);
-    @Cacheable("activitiesByUserName")
+
     @Query("Select DISTINCT a.name from Activity a where a.user.username =:username")
     List<String> getActivityNamesbyUserName(String username);
 

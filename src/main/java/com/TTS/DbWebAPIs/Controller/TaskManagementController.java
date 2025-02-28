@@ -29,7 +29,7 @@ import java.util.Locale;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("tasksm")
+@RequestMapping("tasksm1")
 public class TaskManagementController {
 
     private  final TaskManagementServiceInterface taskManagementService;

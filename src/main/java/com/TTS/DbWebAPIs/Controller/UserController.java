@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/app/user")
+@RequestMapping("/app1/user")
 @RequiredArgsConstructor
 
 

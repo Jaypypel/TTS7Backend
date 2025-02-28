@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("OtherActivities")
+@RequestMapping("OtherActivities1")
 public class OtherActivityController {
 
     private  final OtherActivityServiceInterface otherActivityService;

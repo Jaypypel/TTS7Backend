@@ -52,7 +52,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 //        return taskManagementRepository.save(existingTaskManagement);
 //    }
 //
-@CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks"}, allEntries = true)
+@CacheEvict(value = { "acceptedTasks","modifiedTasks","tasksHandler","delegatedTasks"}, allEntries = true)
     @Override
     public TaskManagement updateTaskManagementStatus(Long taskId, String status)  throws NotFoundException, DatabaseException{
         TaskManagement existingTaskManagement = taskManagementRepository
@@ -160,7 +160,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         return taskManagementRepository.findByTaskOwnerUserIdAndStatus(taskOwnerUserID,status);
     }
 
-    @Cacheable(value = "tasks")
+    @Cacheable(value = "tasksHandler")
     @Override
     public List<TaskManagement> getTaskList(String taskReceivedUsername) throws DatabaseException, NotFoundException{
         return taskManagementRepository.findByTaskReceivedUserId(taskReceivedUsername);

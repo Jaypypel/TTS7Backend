@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("timeshares")
+@RequestMapping("timeshares1")
 public class TimeShareController {
 
     private  final TimeShareServiceInterface timeShareService;

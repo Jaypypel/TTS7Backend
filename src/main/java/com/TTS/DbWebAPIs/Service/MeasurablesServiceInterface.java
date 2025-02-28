@@ -14,7 +14,7 @@ import java.util.List;
 public interface MeasurablesServiceInterface {
      List<Measurables> getDTSMeasurablesList(Long dtsId) throws DatabaseException;
 
-     @Cacheable
+
      List<Measurables> getMeasurableList() throws DatabaseException;
 
   //   List<Measurables> getAllocatedMeasurableList(Long taskId);

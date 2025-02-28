@@ -55,14 +55,14 @@ public class ProjectService implements ProjectServiceInterface  {
         return projectRepository.findByProjectCodeList();
     }
 
-    @Cacheable(value = "names")
+    @Cacheable(value = "ProjectNames")
     @Override
     public List<String> getProjectNameList()throws DatabaseException {
         return projectRepository.findByName();
     }
 
 
-    @CacheEvict(value = {"codes","names"}, allEntries = true)
+    @CacheEvict(value = {"codes","ProjectNames"}, allEntries = true)
     @Transactional
     @Override
     public Project addProject(String userId, Long activityID, String projectCode, String projectName, String createdOn) throws DatabaseException, UserNotFoundException,NotFoundException {

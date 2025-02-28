@@ -32,7 +32,7 @@ public class ActivityService implements ActivityServiceInterface{
 
 
     //get a list of names of activity
-    @Cacheable("names")
+    @Cacheable("activityNames")
     @Override
     public List<String> getActivityNames() throws DatabaseException {
         return activityRepository.getActivityNames();
@@ -65,7 +65,7 @@ public class ActivityService implements ActivityServiceInterface{
                 );
     }
 
-    @CacheEvict(value = { "activities", "names","activityNames"}, allEntries = true)
+    @CacheEvict(value = { "activities", "activityNamesForUser","activityNames"}, allEntries = true)
     //add an activity
     @Override
     public Activity addActivity(String username, String activityName, String createdOn) throws UserNotFoundException
@@ -94,7 +94,7 @@ public class ActivityService implements ActivityServiceInterface{
     }
 
 
-    @Cacheable("activityNames")
+    @Cacheable("activityNamesForUser")
     @Override
     public List<String> getActivityNamesByUsername(String username) throws UserNotFoundException, DatabaseException {
         userRepository
