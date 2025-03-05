@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("delegationMeasurables1")
+@RequestMapping("delegationMeasurables")
 public class DelegationMeasurablesController {
 
     private final DelegationMeasurablesServiceInterface delegationMeasurablesService;

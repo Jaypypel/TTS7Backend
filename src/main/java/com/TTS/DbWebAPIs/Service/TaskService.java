@@ -46,7 +46,7 @@ public class TaskService implements TaskServiceInterface{
     }
 
 
-    @CacheEvict(value = {"tasks"},allEntries = true)
+    @CacheEvict(value = {"tasks,distinctTasks"},allEntries = true)
     @Override
     public Task addTask(String username, Long activtyId, String taskName, String createdOn)   throws DatabaseException, NotFoundException, UserNotFoundException {
         Activity inputActivity = activityRepository.findById(activtyId).orElseThrow(() -> new NotFoundException("activity not found"));
@@ -60,6 +60,8 @@ public class TaskService implements TaskServiceInterface{
 
     }
 
+
+    @Cacheable(value = "distinctTasks")
     @Override
     public List<String> getTaskNames() throws DatabaseException  {
         return taskRepository.findAllDistinctName();

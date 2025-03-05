@@ -52,7 +52,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 //        return taskManagementRepository.save(existingTaskManagement);
 //    }
 //
-@CacheEvict(value = { "acceptedTasks","modifiedTasks","tasksHandler","delegatedTasks"}, allEntries = true)
+@CacheEvict(value = { "acceptedTasks","modifiedTasks","tasksHandler","delegatedTasks","taskCounts"}, allEntries = true)
     @Override
     public TaskManagement updateTaskManagementStatus(Long taskId, String status)  throws NotFoundException, DatabaseException{
         TaskManagement existingTaskManagement = taskManagementRepository
@@ -87,7 +87,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
     //need to refactor and ask delegatonMeasurablesAssociated
     //removed time shareId
 
-    @CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks"}, allEntries = true)
+    @CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks","taskCounts"}, allEntries = true)
     @Transactional
     @Override
     public TaskManagement addAssignedTask(TaskManagementDTO taskManagementDTO)  throws UserNotFoundException, InvalidAssignTaskRequestException, DatabaseException {
@@ -122,7 +122,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         return taskManagementRepository.save(existingTask);
     }
 
-    @CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks"}, allEntries = true)
+    @CacheEvict(value = { "acceptedTasks","modifiedTasks","tasks","delegatedTasks","taskCounts"}, allEntries = true)
     @Override
     public TaskManagement updateTaskManagementSeenOnTime(Long taskId)  throws DatabaseException,NotFoundException{
         TaskManagement existingTaskManagement = taskManagementRepository.findById(taskId).orElseThrow(() -> new RuntimeException("task not found"));
@@ -172,6 +172,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
         return taskManagementRepository.findByTaskOwnerUserId(taskOwnerUsername);
     }
 
+    @Cacheable(value = "taskCounts")
     @Override
     public Integer getTaskCountByStatusAndUsername(String username, String status) {
         return taskManagementRepository.CountByUserUsernameAndStatus(username,status);

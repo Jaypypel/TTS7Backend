@@ -11,8 +11,6 @@ public class DateAndTimeConfig {
     public static String getCurrentDateAndTime(){
         ZonedDateTime ist = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
         DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:MM a");
-
-        String formattedIST = ist.format(dateTimeFormat);
-        return formattedIST;
+        return ist.format(dateTimeFormat);
     }
 }

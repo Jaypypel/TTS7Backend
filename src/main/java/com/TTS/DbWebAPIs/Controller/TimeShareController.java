@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("timeshares1")
+@RequestMapping("timeshares")
 public class TimeShareController {
 
     private  final TimeShareServiceInterface timeShareService;
@@ -65,8 +65,11 @@ public class TimeShareController {
     //tested at 12:27 pm on 4th oct 2024
     @PostMapping("/timeshare")
     ResponseEntity<?> addTimeShare(@RequestBody TimeShareDTO timeShareDTO) throws DatabaseException, InternalServerException {
+        System.out.println("date from input"+timeShareDTO.getDate());
+             System.out.println("Dto"+timeShareDTO);
             TimeShare timeShare = timeShareService.addTimeShare(TimeShareDTO.convertToTimeShare(timeShareDTO));
-            return ResponseEntity.ok(new APIResponse<>("successful",timeShare));
+        System.out.println("timeshare"+timeShare);
+        return ResponseEntity.ok(new APIResponse<>("successful",timeShare));
     }
 
 

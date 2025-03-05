@@ -7,6 +7,8 @@ import com.TTS.DbWebAPIs.Exceptions.UserNotFoundException;
 import com.TTS.DbWebAPIs.Repository.*;
 import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +28,7 @@ public class TimeShareService implements TimeShareServiceInterface{
     private  final TimeShareRepository timeShareRepository;
     private final TaskManagementRepository taskManagementRepository;
 
-
+    @Cacheable("timeshareByUser")
     @Override
     public List<TimeShare> getTimeShareList(String username, LocalDateTime startDate, LocalDateTime endDate)
             throws DatabaseException, UserNotFoundException {
@@ -37,13 +39,14 @@ public class TimeShareService implements TimeShareServiceInterface{
                 .findTimeSharesByUserIdAndDateRange(existingUser.getUsername(),startDate,endDate );
     }
 
+    @Cacheable("timeshareByTaskId")
     @Override
     public List<TimeShare> getTimeShareLists(Long taskId)
             throws NotFoundException, DatabaseException {
         TaskManagement taskManagement = taskManagementRepository
                 .findById(taskId)
                 .orElseThrow(() -> new NotFoundException("task not found "));
-        return timeShareRepository.findTimeShareByTaskManagementId(taskId);
+        return timeShareRepository.findTimeShareByTaskManagementId(taskManagement.getId());
 
     }
 
@@ -52,6 +55,8 @@ public class TimeShareService implements TimeShareServiceInterface{
         return (timeShareRepository.findMaxTimeShareId() != null) ? (timeShareRepository.findMaxTimeShareId() + 1) : 0;
     }
 
+
+    @CacheEvict(allEntries = true,value = {"timeshareByTaskId","timeshareByUser"})
     @Transactional
     @Override
     public TimeShare addTimeShare(TimeShare timeShare) throws DatabaseException{

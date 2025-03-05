@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("Measurables1")
+@RequestMapping("Measurables")
 @RequiredArgsConstructor
 public class MeasurablesController {
 

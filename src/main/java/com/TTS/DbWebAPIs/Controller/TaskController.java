@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/tasks1")
+@RequestMapping("/tasks")
 public class TaskController {
 
     private final TaskServiceInterface  taskService;

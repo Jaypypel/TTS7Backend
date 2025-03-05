@@ -28,7 +28,6 @@ public class TimeShare {
 
     @OneToOne
     @JoinColumn(name = "taskManagementId", referencedColumnName="id")
-    @NotNull
     private TaskManagement fkTaskManagementId;//check
 
 
@@ -38,24 +37,19 @@ public class TimeShare {
 //    @OneToOne(mappedBy = "fkTimeShareId")
 //    private TimeShareMeasurables timeShareMeasurablesAssociated;//check
 
-    @NotNull
     @FutureOrPresent
     private LocalDate dateOfTimeShare;
 
-    @NotBlank
     private String startTime;
 
     @NotBlank
     private String endTime;
 
-    @NotBlank
     private String timeDifference;
 
-    @NotBlank
-    @Size(max = 150, message = "description can not exceed 150 characters")
     private String description;
 
-    @NotNull
+
     private String createdOn;
 
 

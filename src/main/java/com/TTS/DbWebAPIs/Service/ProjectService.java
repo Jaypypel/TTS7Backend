@@ -40,6 +40,7 @@ public class ProjectService implements ProjectServiceInterface  {
         return projectRepository.findByProjectCode(projectCode);
     }
 
+    @Cacheable("projectcode")
     @Override
     public String getProjectCodeViaProjectName(String projectName)  throws DatabaseException, NotFoundException {
         String projectCode =  projectRepository.findByProjectName(projectName);
