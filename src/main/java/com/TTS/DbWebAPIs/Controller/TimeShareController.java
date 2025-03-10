@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("timeshares")
+@RequestMapping("timeshares1")
 public class TimeShareController {
 
     private  final TimeShareServiceInterface timeShareService;
@@ -45,7 +45,7 @@ public class TimeShareController {
     //tested at 12:58 pm on 10 oct
     @GetMapping("/list/{taskId}")
     ResponseEntity<?> getTimeShareLists(@PathVariable Long taskId) throws DatabaseException, InternalServerException, NotFoundException {
-            List<TimeShare> timeShareList = timeShareService.getTimeShareLists(taskId);
+            List<TimeShareDTO> timeShareList = timeShareService.getTimeShareLists(taskId);
             if (timeShareList == null || timeShareList.isEmpty()){
                 return ResponseEntity
                         .status(HttpStatus.NO_CONTENT)
@@ -65,10 +65,7 @@ public class TimeShareController {
     //tested at 12:27 pm on 4th oct 2024
     @PostMapping("/timeshare")
     ResponseEntity<?> addTimeShare(@RequestBody TimeShareDTO timeShareDTO) throws DatabaseException, InternalServerException {
-        System.out.println("date from input"+timeShareDTO.getDate());
-             System.out.println("Dto"+timeShareDTO);
-            TimeShare timeShare = timeShareService.addTimeShare(TimeShareDTO.convertToTimeShare(timeShareDTO));
-        System.out.println("timeshare"+timeShare);
+        TimeShare timeShare = timeShareService.addTimeShare(TimeShareDTO.convertToTimeShare(timeShareDTO));
         return ResponseEntity.ok(new APIResponse<>("successful",timeShare));
     }
 

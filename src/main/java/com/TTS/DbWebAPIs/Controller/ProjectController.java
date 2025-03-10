@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/Projects")
+@RequestMapping("/Projects1")
 public class ProjectController {
 
     private final ProjectServiceInterface projectService;

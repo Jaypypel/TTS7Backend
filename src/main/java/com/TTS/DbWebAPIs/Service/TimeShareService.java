@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Service;
 
+import com.TTS.DbWebAPIs.DTO.TimeShareDTO;
 import com.TTS.DbWebAPIs.Entity.*;
 import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
 import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
@@ -19,6 +20,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 
@@ -41,13 +44,25 @@ public class TimeShareService implements TimeShareServiceInterface{
 
     @Cacheable("timeshareByTaskId")
     @Override
-    public List<TimeShare> getTimeShareLists(Long taskId)
+    public List<TimeShareDTO> getTimeShareLists(Long taskId)
             throws NotFoundException, DatabaseException {
         TaskManagement taskManagement = taskManagementRepository
                 .findById(taskId)
                 .orElseThrow(() -> new NotFoundException("task not found "));
-        return timeShareRepository.findTimeShareByTaskManagementId(taskManagement.getId());
+        return timeShareRepository
+                .findTimeShareByTaskManagementId(taskManagement.getId())
+                .stream()
+                .map(TimeShareDTO::convertToTimeShareDTO)
+                .collect(Collectors.toList());
 
+    }
+
+
+    private List<TimeShareDTO> mapsToTimeShareDto(List<TimeShare> timeShares){
+        return timeShares
+                .stream()
+                .map(TimeShareDTO::convertToTimeShareDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

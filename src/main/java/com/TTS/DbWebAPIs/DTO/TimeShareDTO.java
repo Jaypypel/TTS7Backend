@@ -22,7 +22,7 @@ public class TimeShareDTO {
     private Long taskHandlerId;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private String date;
+    private String dateOfTimeShare;
 
     @NotBlank
     private String startTime;
@@ -48,7 +48,7 @@ public class TimeShareDTO {
         TaskManagement taskManagement = new TaskManagement();
         taskManagement.setId(timeShareDTO.getTaskHandlerId());
         timeShare.setFkTaskManagementId(taskManagement);
-        LocalDate date = LocalDate.parse(timeShareDTO.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate date = LocalDate.parse(timeShareDTO.getDateOfTimeShare(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         timeShare.setDateOfTimeShare(date);
         timeShare.setStartTime(timeShareDTO.getStartTime());
         timeShare.setEndTime(timeShareDTO.getEndTime());
@@ -56,5 +56,17 @@ public class TimeShareDTO {
         timeShare.setDescription(timeShareDTO.getDescription());
         timeShare.setCreatedOn(timeShareDTO.getCreatedOn());
         return timeShare;
+    }
+
+    public static TimeShareDTO convertToTimeShareDTO(TimeShare timeShare){
+        TimeShareDTO timeShareDto = new TimeShareDTO();
+        timeShareDto.setTaskHandlerId(timeShare.getId());
+        timeShareDto.setDateOfTimeShare(timeShare.getDateOfTimeShare().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        timeShareDto.setStartTime(timeShare.getStartTime());
+        timeShareDto.setEndTime(timeShare.getEndTime());
+        timeShareDto.setTimeDifference(timeShare.getTimeDifference());
+        timeShareDto.setDescription(timeShare.getDescription());
+        timeShareDto.setCreatedOn(timeShare.getCreatedOn());
+        return timeShareDto;
     }
 }

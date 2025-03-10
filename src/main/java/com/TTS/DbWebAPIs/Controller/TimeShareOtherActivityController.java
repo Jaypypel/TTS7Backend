@@ -16,7 +16,7 @@ import java.time.LocalTime;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("timeshareotheractivities")
+@RequestMapping("timeshareotheractivities1")
 public class TimeShareOtherActivityController {
 
     private  final TimeShareOtherActivityServiceInterface timeShareOtherActivityService;

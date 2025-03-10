@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Service;
 
+import com.TTS.DbWebAPIs.DTO.TimeShareDTO;
 import com.TTS.DbWebAPIs.Entity.DelegationMeasurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public interface TimeShareServiceInterface {
     List<TimeShare> getTimeShareList(String username, LocalDateTime startDate, LocalDateTime endDate) throws  DatabaseException, UserNotFoundException;
-    List<TimeShare> getTimeShareLists(Long taskId) throws NotFoundException, DatabaseException;
+    List<TimeShareDTO> getTimeShareLists(Long taskId) throws NotFoundException, DatabaseException;
 
     Long getMaxTimeShareId() throws DatabaseException;
 

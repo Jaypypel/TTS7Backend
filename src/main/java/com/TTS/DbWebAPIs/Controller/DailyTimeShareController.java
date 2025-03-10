@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/dailyTimeShares")
+@RequestMapping("/dailyTimeShares1")
 @RequiredArgsConstructor
 public class DailyTimeShareController {
 
