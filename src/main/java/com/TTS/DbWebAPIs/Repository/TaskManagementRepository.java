@@ -1,15 +1,14 @@
 package com.TTS.DbWebAPIs.Repository;
 
-import com.TTS.DbWebAPIs.Entity.Task;
+
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
-import org.springframework.cache.annotation.Cacheable;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TaskManagementRepository  extends JpaRepository<TaskManagement,Long> {
 
