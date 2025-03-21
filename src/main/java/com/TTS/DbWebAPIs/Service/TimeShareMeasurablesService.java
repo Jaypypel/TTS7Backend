@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Service;
 
+import com.TTS.DbWebAPIs.DTO.AssociatedMeasurableDto;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +31,20 @@ public class TimeShareMeasurablesService implements TimeShareMeasurablesServiceI
         timeShareMeasurables.setMeasurableQuantity(measurableQuantity);
         timeShareMeasurables.setMeasurableUnit(measurableUnit);
         return timeShareMeasurablesRepository.save(timeShareMeasurables);
+    }
+
+    @Override
+    public void addAllTimeShareMeasurables(TimeShare timeShare, List<AssociatedMeasurableDto> timeshareMeasurablesDtos) {
+      List<TimeShareMeasurables> timeShareMeasurables =   timeshareMeasurablesDtos.stream().map(timeshareMeasurablesDto -> {
+            TimeShareMeasurables timeShareMeasurable = new TimeShareMeasurables();
+            timeShareMeasurable.setFkTimeShareId(timeShare);
+            Measurables measurables = new Measurables();
+            measurables.setId(timeshareMeasurablesDto.getId());
+            timeShareMeasurable.setFkMeasurablesID(measurables);
+            timeShareMeasurable.setMeasurableQuantity(timeshareMeasurablesDto.getMeasurableQty());
+            timeShareMeasurable.setMeasurableUnit(timeshareMeasurablesDto.getMeasurableUnit());
+            return timeShareMeasurable;
+        }).toList();
+      timeShareMeasurablesRepository.saveAll(timeShareMeasurables);
     }
 }

@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Service;
 
+import com.TTS.DbWebAPIs.DTO.AssociatedMeasurableDto;
 import com.TTS.DbWebAPIs.Entity.DelegationMeasurables;
 import com.TTS.DbWebAPIs.Entity.Measurables;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +43,21 @@ public class DelegationMeasurablesService implements DelegationMeasurablesServic
         delegationMeasurable.setActualMeasurableQuantity(mesrbQuantity);
         delegationMeasurable.setMeasurableUnit(mesrbUnit);
         return delegationMeasurablesRepository.save(delegationMeasurable);
+    }
+
+    @Override
+    public void addAllDelegationMeasurables(TaskManagement taskManagement, List<AssociatedMeasurableDto> associatedMeasurableDtos) {
+     List<DelegationMeasurables>  delegationMeasurables =  associatedMeasurableDtos.stream().map(associatedMeasurableDto -> {
+            DelegationMeasurables delegationMeasurable = new DelegationMeasurables();
+            delegationMeasurable.setFkTaskManagementID(taskManagement);
+            Measurables measurables = new Measurables();
+            measurables.setId(associatedMeasurableDto.getId());
+            delegationMeasurable.setFkMeasurableId(measurables);
+            delegationMeasurable.setExpectedMeasurableQuantity(associatedMeasurableDto.measurableQty);
+            delegationMeasurable.setActualMeasurableQuantity(associatedMeasurableDto.measurableQty);
+            delegationMeasurable.setMeasurableUnit(associatedMeasurableDto.measurableUnit);
+            return delegationMeasurable;
+        }).toList();
+      delegationMeasurablesRepository.saveAll(delegationMeasurables);
     }
 }

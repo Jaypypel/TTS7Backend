@@ -1,17 +1,20 @@
 package com.TTS.DbWebAPIs.Controller;
 
 import com.TTS.DbWebAPIs.DTO.DailyTimeShareDTO;
+import com.TTS.DbWebAPIs.DTO.addDailyTimeShareDto;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 import com.TTS.DbWebAPIs.Exceptions.DatabaseException;
 import com.TTS.DbWebAPIs.Exceptions.InternalServerException;
 import com.TTS.DbWebAPIs.Exceptions.UserNotFoundException;
 import com.TTS.DbWebAPIs.Response.APIResponse;
+import com.TTS.DbWebAPIs.Service.DailyTimeShareMeasurablesServiceInterface;
 import com.TTS.DbWebAPIs.Service.DailyTimeShareServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -20,17 +23,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/dailyTimeShares1")
+@RequestMapping("/dailyTimeShares")
 @RequiredArgsConstructor
 public class DailyTimeShareController {
 
     private final DailyTimeShareServiceInterface dailyTimeShareService;
+    private final DailyTimeShareMeasurablesServiceInterface dailyTimeShareMeasurablesService;
 
     //tested at 1:06 pm on 4th oct
     @PostMapping("/dailyTimeShare/")
-    ResponseEntity<?> addDailyTimeShare(@RequestBody DailyTimeShare dailyTimeShare) throws UserNotFoundException, DatabaseException, InternalServerException {
-        System.out.println("dailytime ob : " + dailyTimeShare );
-        DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare);
+    ResponseEntity<?> addDailyTimeShare(@RequestBody addDailyTimeShareDto dailyTimeShare) throws
+            MethodArgumentNotValidException, UserNotFoundException,
+            DatabaseException, InternalServerException {
+        DailyTimeShare adddailyTimeShare = dailyTimeShareService.addDailyTimeShare(dailyTimeShare.getDailyTimeShare());
+        dailyTimeShareMeasurablesService.addDailyTimeShareMeasurables(  dailyTimeShare.getDailyTimeShare(),dailyTimeShare.getAssociatedMeasurableDtos());
         return ResponseEntity.ok(new APIResponse<>("successful",adddailyTimeShare));
     }
 

@@ -26,7 +26,7 @@ import java.util.List;
 //tested all the endpoints
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/activities1")
+@RequestMapping("/activities")
 public class ActivityController {
 
 

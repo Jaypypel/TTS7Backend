@@ -16,7 +16,7 @@ import java.sql.SQLException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("timesharemeasurables1")
+@RequestMapping("timesharemeasurables")
 public class TimeShareMeasurablesController {
 
     private final TimeShareMeasurablesServiceInterface timeShareMeasurablesService;

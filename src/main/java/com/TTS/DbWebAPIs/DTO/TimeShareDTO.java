@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @Data
 public class TimeShareDTO {
@@ -22,7 +23,7 @@ public class TimeShareDTO {
     private Long taskHandlerId;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private String dateOfTimeShare;
+    private String date;
 
     @NotBlank
     private String startTime;
@@ -48,7 +49,7 @@ public class TimeShareDTO {
         TaskManagement taskManagement = new TaskManagement();
         taskManagement.setId(timeShareDTO.getTaskHandlerId());
         timeShare.setFkTaskManagementId(taskManagement);
-        LocalDate date = LocalDate.parse(timeShareDTO.getDateOfTimeShare(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate date = LocalDate.parse(timeShareDTO.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH));
         timeShare.setDateOfTimeShare(date);
         timeShare.setStartTime(timeShareDTO.getStartTime());
         timeShare.setEndTime(timeShareDTO.getEndTime());
@@ -60,8 +61,8 @@ public class TimeShareDTO {
 
     public static TimeShareDTO convertToTimeShareDTO(TimeShare timeShare){
         TimeShareDTO timeShareDto = new TimeShareDTO();
-        timeShareDto.setTaskHandlerId(timeShare.getId());
-        timeShareDto.setDateOfTimeShare(timeShare.getDateOfTimeShare().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        timeShareDto.setTaskHandlerId(timeShare.getFkTaskManagementId().getId());
+        timeShareDto.setDate(timeShare.getDateOfTimeShare().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         timeShareDto.setStartTime(timeShare.getStartTime());
         timeShareDto.setEndTime(timeShare.getEndTime());
         timeShareDto.setTimeDifference(timeShare.getTimeDifference());

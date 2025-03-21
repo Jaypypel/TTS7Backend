@@ -2,10 +2,12 @@ package com.TTS.DbWebAPIs.Controller;
 
 
 import com.TTS.DbWebAPIs.DTO.TaskManagementDTO;
+import com.TTS.DbWebAPIs.DTO.assignedTaskManagementDto;
 import com.TTS.DbWebAPIs.Entity.DelegationMeasurables;
 import com.TTS.DbWebAPIs.Entity.TaskManagement;
 import com.TTS.DbWebAPIs.Exceptions.*;
 import com.TTS.DbWebAPIs.Response.APIResponse;
+import com.TTS.DbWebAPIs.Service.DelegationMeasurablesServiceInterface;
 import com.TTS.DbWebAPIs.Service.TaskManagementServiceInterface;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
@@ -29,16 +31,20 @@ import java.util.Locale;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("tasksm1")
+@RequestMapping("tasksm")
 public class TaskManagementController {
 
     private  final TaskManagementServiceInterface taskManagementService;
+    private final DelegationMeasurablesServiceInterface delegationMeasurablesService;
 
     //tested at the 4:41 pm on 3rd of oct
     @PostMapping("/taskm")
-    ResponseEntity<?> addAssignedTask(@RequestBody @Valid TaskManagementDTO taskAssigned)
+    ResponseEntity<?> addAssignedTask(@RequestBody assignedTaskManagementDto taskAssigned)
             throws UserNotFoundException, DatabaseException, InternalServerException, InvalidAssignTaskRequestException {
-            TaskManagement taskManagement = taskManagementService.addAssignedTask(taskAssigned);
+            System.out.println("assingedTaskManagementDto "+taskAssigned);
+            System.out.println("taskAssignedDto "+taskAssigned.getDto());
+            TaskManagement taskManagement = taskManagementService.addAssignedTask(taskAssigned.getDto());
+            delegationMeasurablesService.addAllDelegationMeasurables(taskManagement,taskAssigned.getAssociatedMeasurableDtos());
             return ResponseEntity.ok(new APIResponse<>("Successful",taskManagement));
     }
 

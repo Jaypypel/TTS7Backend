@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 import java.time.LocalDate;
@@ -59,7 +60,7 @@ public class TaskManagement {
 
     private LocalDate expectedDate;
     //added new expectedTime
-
+    @DateTimeFormat(fallbackPatterns = "hh:mma")
     @Column(name = "expected_time")
     private String expectedTime;
 

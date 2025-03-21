@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +33,7 @@ public class TimeShareService implements TimeShareServiceInterface{
     private final UserRepository userRepository;
     private  final TimeShareRepository timeShareRepository;
     private final TaskManagementRepository taskManagementRepository;
+    private final Logger logger = Logger.getLogger(TimeShareService.class.getName());
 
     @Cacheable("timeshareByUser")
     @Override
@@ -49,12 +53,15 @@ public class TimeShareService implements TimeShareServiceInterface{
         TaskManagement taskManagement = taskManagementRepository
                 .findById(taskId)
                 .orElseThrow(() -> new NotFoundException("task not found "));
-        return timeShareRepository
-                .findTimeShareByTaskManagementId(taskManagement.getId())
+        List<TimeShare> timeShares = timeShareRepository
+                .findTimeShareByTaskManagementId(taskManagement.getId());
+        logger.log(Level.INFO,"TIME SHARES LIST : "+timeShares);
+        if(timeShares!=null) return timeShares
                 .stream()
+                .filter(Objects::nonNull)
                 .map(TimeShareDTO::convertToTimeShareDTO)
-                .collect(Collectors.toList());
-
+                .toList();
+        return new ArrayList<>();
     }
 
 

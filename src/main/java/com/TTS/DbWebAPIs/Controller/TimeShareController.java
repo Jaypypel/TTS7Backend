@@ -1,5 +1,6 @@
 package com.TTS.DbWebAPIs.Controller;
 
+import com.TTS.DbWebAPIs.DTO.AddTimeshareDto;
 import com.TTS.DbWebAPIs.DTO.TimeShareDTO;
 import com.TTS.DbWebAPIs.Entity.TimeShare;
 import com.TTS.DbWebAPIs.Entity.TimeShareMeasurables;
@@ -8,6 +9,7 @@ import com.TTS.DbWebAPIs.Exceptions.InternalServerException;
 import com.TTS.DbWebAPIs.Exceptions.NotFoundException;
 import com.TTS.DbWebAPIs.Exceptions.UserNotFoundException;
 import com.TTS.DbWebAPIs.Response.APIResponse;
+import com.TTS.DbWebAPIs.Service.TimeShareMeasurablesServiceInterface;
 import com.TTS.DbWebAPIs.Service.TimeShareServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
@@ -23,10 +25,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("timeshares1")
+@RequestMapping("timeshares")
 public class TimeShareController {
 
     private  final TimeShareServiceInterface timeShareService;
+    private final TimeShareMeasurablesServiceInterface timeShareMeasurablesService;
 
     //tested at 12:54 pm on 10 oct
     @GetMapping("/list/{username}/{startDate}/{endDate}")
@@ -34,11 +37,6 @@ public class TimeShareController {
     (@PathVariable String username, @PathVariable LocalDateTime startDate, @PathVariable LocalDateTime endDate)
             throws DatabaseException, InternalServerException, UserNotFoundException {
             List<TimeShare> timeShareList = timeShareService.getTimeShareList(username,startDate,endDate);
-            if (timeShareList == null || timeShareList.isEmpty()){
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body(new APIResponse<>("No time share found", null));
-            }
             return ResponseEntity.ok(new APIResponse<>("successful",timeShareList));
     }
 
@@ -46,11 +44,7 @@ public class TimeShareController {
     @GetMapping("/list/{taskId}")
     ResponseEntity<?> getTimeShareLists(@PathVariable Long taskId) throws DatabaseException, InternalServerException, NotFoundException {
             List<TimeShareDTO> timeShareList = timeShareService.getTimeShareLists(taskId);
-            if (timeShareList == null || timeShareList.isEmpty()){
-                return ResponseEntity
-                        .status(HttpStatus.NO_CONTENT)
-                        .body(new APIResponse<>("No time share found", null));
-            }
+            System.out.println("timeshares : " + timeShareList);
             return ResponseEntity.ok(new APIResponse<>("successful",timeShareList));
     }
 
@@ -64,8 +58,9 @@ public class TimeShareController {
 
     //tested at 12:27 pm on 4th oct 2024
     @PostMapping("/timeshare")
-    ResponseEntity<?> addTimeShare(@RequestBody TimeShareDTO timeShareDTO) throws DatabaseException, InternalServerException {
-        TimeShare timeShare = timeShareService.addTimeShare(TimeShareDTO.convertToTimeShare(timeShareDTO));
+    ResponseEntity<?> addTimeShare(@RequestBody AddTimeshareDto addTimeshareDto) throws DatabaseException, InternalServerException {
+        TimeShare timeShare = timeShareService.addTimeShare(TimeShareDTO.convertToTimeShare(addTimeshareDto.getTimeShareDto()));
+        timeShareMeasurablesService.addAllTimeShareMeasurables(timeShare,addTimeshareDto.getTimeshareMeasurables());
         return ResponseEntity.ok(new APIResponse<>("successful",timeShare));
     }
 

@@ -140,7 +140,7 @@ public class TaskManagementDTO {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate expectDate = LocalDate.parse(taskManagementDTO.getExpectedDate(),formatter);
         assignedTaskManagement.setExpectedDate(expectDate);
-        assignedTaskManagement.setExpectedTime(taskManagementDTO.getExpectedTime());
+        assignedTaskManagement.setExpectedTime(taskManagementDTO.getExpectedTime().formatted("hh:mm:a"));
         assignedTaskManagement.setExpectedTotalTime(taskManagementDTO.getExpectedTotalTime());
         assignedTaskManagement.setDescription(taskManagementDTO.getDescription());
         assignedTaskManagement.setTaskAssignedOn(taskManagementDTO.getTaskAssignedOn());

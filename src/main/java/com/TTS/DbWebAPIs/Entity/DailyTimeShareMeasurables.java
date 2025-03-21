@@ -17,14 +17,14 @@ public class DailyTimeShareMeasurables {
 
     @ManyToOne
     @JoinColumn(name = "daily_time_share_id", referencedColumnName = "id")
-    @Valid
-    @NotNull
+//    @Valid
+//    @NotNull
     private DailyTimeShare dailyTimeShare;//check
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "measurable_id", referencedColumnName = "id")
-    @Valid
-    @NotNull
+//    @Valid
+//    @NotNull
     private Measurables fkMeasurablesID;//check
 
     @Max(value = 1000, message = "Quantity of a measurable can not exceed 1000 characters")

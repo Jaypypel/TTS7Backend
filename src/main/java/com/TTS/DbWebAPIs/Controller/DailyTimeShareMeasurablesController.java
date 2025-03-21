@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/DailyTimeShareMeasurables1")
+@RequestMapping("/DailyTimeShareMeasurables")
 @RequiredArgsConstructor
 public class DailyTimeShareMeasurablesController {
 
@@ -36,7 +36,7 @@ public class DailyTimeShareMeasurablesController {
                                                             @RequestParam Long mesrbQunty, @RequestParam String mesrbUnit) throws DatabaseException,NotFoundException, InternalServerException {
           Measurables measurable = measurablesRepository.findById(measurablesId)
                    .orElseThrow(() -> new NotFoundException("Measurable not found"));
-           DailyTimeShareMeasurables dailyTimeShareMeasurables = dailyTimeShareMeasurablesService.addDailyTimeShareMeasurables(timeShareId,measurable,mesrbQunty,mesrbUnit);
+           DailyTimeShareMeasurables dailyTimeShareMeasurables = dailyTimeShareMeasurablesService.addDailyTimeShareMeasurable(timeShareId,measurable,mesrbQunty,mesrbUnit);
            return ResponseEntity.ok(new APIResponse<>("successful",dailyTimeShareMeasurables));
 
     }

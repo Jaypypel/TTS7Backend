@@ -14,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("measurables1")
+@RequestMapping("measurables")
 public class MeasurableUnitController {
     private final MeasurableUnitServiceInterface measurableUnitService;
 

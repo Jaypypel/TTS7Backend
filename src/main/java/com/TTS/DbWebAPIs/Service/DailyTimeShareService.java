@@ -46,13 +46,13 @@ public class DailyTimeShareService implements DailyTimeShareServiceInterface{
     }
 
     //add a daily timeshare
-    /*here need to check how can we pass dailyTimeshare Id to addDailyTimeShareMeasurables function*/
+    /*here need to check how can we pass dailyTimeshare Id to addDailyTimeShareMeasurable function*/
     @CacheEvict(value = "dailyTimeShares",allEntries = true)
     @Transactional
     @Override
     public DailyTimeShare addDailyTimeShare(DailyTimeShare dailyTimeShare) throws UserNotFoundException,DatabaseException{
 //        for(DailyTimeShareMeasurables dailyTimeShareMeasurable: dailyTimeShareMeasurablesList){
-//            dailyTimeShareMeasurablesServiceInterface.addDailyTimeShareMeasurables(dailyTimeShareMeasurable.getFkTimeShareId(), dailyTimeShareMeasurable.getFkMeasurablesID(),dailyTimeShareMeasurable.getMeasurableQuantity(),dailyTimeShareMeasurable.getMeasurableUnit());
+//            dailyTimeShareMeasurablesServiceInterface.addDailyTimeShareMeasurable(dailyTimeShareMeasurable.getFkTimeShareId(), dailyTimeShareMeasurable.getFkMeasurablesID(),dailyTimeShareMeasurable.getMeasurableQuantity(),dailyTimeShareMeasurable.getMeasurableUnit());
 //        }
         User user = userRepository.findByUsername(dailyTimeShare.getUser().getUsername()).orElseThrow(() ->new UserNotFoundException("User not found"));
          dailyTimeShare.setUser(user);

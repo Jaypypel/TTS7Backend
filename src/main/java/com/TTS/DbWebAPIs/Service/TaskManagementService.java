@@ -21,6 +21,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
     private  final TaskManagementRepository taskManagementRepository;
     private final UserRepository userRepository;
+    private final Logger logger = Logger.getLogger(TaskManagementService.class.getName());
 
 
     /*the function is  used in existing tts app for the receivedModfifcationtAskList,*/
@@ -103,8 +107,15 @@ public class TaskManagementService implements TaskManagementServiceInterface{
 
 
             TaskManagement assignedTaskManagement = TaskManagementDTO.convertToTaskmanagmentEntity(taskManagementDTO);
-            if(assignedTaskManagement.getExpectedDate().isBefore(LocalDate.now())) throw new InvalidAssignTaskRequestException("Expected date "+taskManagementDTO.getExpectedDate()+" can be past date");
-            if (LocalTime.parse(assignedTaskManagement.getExpectedTime(), DateTimeFormatter.ofPattern("h:mma")).isBefore(LocalTime.now())) throw new InvalidAssignTaskRequestException("Expected time "+taskManagementDTO.getExpectedTime()+ " can not be past time");
+            logger.log(Level.INFO,"got by log"+assignedTaskManagement.getExpectedTime());
+            logger.log(Level.INFO,"got by log"+assignedTaskManagement.getExpectedTime().length());
+            if(assignedTaskManagement.getExpectedDate().isBefore(LocalDate.now()))
+                throw new InvalidAssignTaskRequestException("Expected date "+
+                        taskManagementDTO.getExpectedDate()+" can be past date");
+            if (LocalTime.parse(assignedTaskManagement.getExpectedTime(),
+                    DateTimeFormatter.ofPattern("hh:mma", Locale.ENGLISH)).isBefore(LocalTime.now()))
+                throw new InvalidAssignTaskRequestException("Expected time "+taskManagementDTO.getExpectedTime()+ " " +
+                        "can not be past time");
 
             assignedTaskManagement.setTaskReceivedUserID(userWhoReceiveTask);
             assignedTaskManagement

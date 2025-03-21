@@ -1,5 +1,7 @@
 package com.TTS.DbWebAPIs.Service;
 
+import com.TTS.DbWebAPIs.DTO.DailyTimeShareDTO;
+import com.TTS.DbWebAPIs.DTO.AssociatedMeasurableDto;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShare;
 import com.TTS.DbWebAPIs.Entity.DailyTimeShareMeasurables;
 import com.TTS.DbWebAPIs.Entity.Measurables;
@@ -14,11 +16,13 @@ import java.util.Optional;
 
 public interface DailyTimeShareMeasurablesServiceInterface {
 
-    DailyTimeShareMeasurables addDailyTimeShareMeasurables(Long dailyTimeShareId,
+    DailyTimeShareMeasurables addDailyTimeShareMeasurable(Long dailyTimeShareId,
                                                            Measurables mesrblId,
                                                            Long mesrbQuantity,
                                                            String mesrbUnit) throws DatabaseException, NotFoundException;
 
-    List<Measurables> getDailyTimeShareMeasurablesList(Long dtsId)  throws DatabaseException;;
+    List<Measurables> getDailyTimeShareMeasurablesList(Long dtsId)  throws DatabaseException;
+
+    void addDailyTimeShareMeasurables(DailyTimeShare dailyTimeShare, List<AssociatedMeasurableDto> dailyTimeShareMeasurables);
 
 }
